@@ -18,6 +18,7 @@ const Hero = () => {
             />
           </div>
           <div className="py-24 sm:py-32">
+            <form method='POST' action='/api/subscribe'>
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -51,6 +52,7 @@ const Hero = () => {
                 </div>
               </div>
             </div>
+            </form>
           </div>
           <div
             aria-hidden="true"

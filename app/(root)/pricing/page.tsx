@@ -1,67 +1,56 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Radio,
-  RadioGroup,
-} from '@headlessui/react'
-import {  MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
-import { CheckIcon } from '@heroicons/react/20/solid'
-import Image from 'next/image'
-import Testimonials from '@/components/Testimonials'
+import { useState } from "react";
+import { Disclosure, DisclosureButton, DisclosurePanel, Radio, RadioGroup } from "@headlessui/react";
+import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
+import Testimonials from "@/components/Testimonials";
 
 const pricing = {
   frequencies: [
-    { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
-    { value: 'annually', label: 'Annually', priceSuffix: '/year' },
+    { value: "monthly", label: "Monthly", priceSuffix: "/month" },
+    { value: "annually", label: "Annually", priceSuffix: "/year" },
   ],
   tiers: [
     {
-      name: 'Free',
-      id: 'tier-free',
-      href: '/sign-up',
-      price: { monthly: '$0', annually: '$0' },
-      description: 'The essentials to provide your best work for clients.',
-      features: ['3 articles/month', 'Up to 1,500 words', 'Basic options'],
+      name: "Free",
+      id: "tier-free",
+      href: "/sign-up",
+      price: { monthly: "$0", annually: "$0" },
+      description: "The essentials to provide your best work for clients.",
+      features: ["3 articles/month", "Up to 1,500 words", "Basic options"],
       mostPopular: false,
       priceId: null,
     },
     {
-      name: 'Pro',
-      id: 'tier-pro',
-      href: '#',
-      price: { monthly: '$15', annually: '$150' },
-      description: 'The essentials to provide your best work for clients.',
-      features: ['No limit articles', 'Up to 50,000 words', 'Advanced options'],
+      name: "Pro",
+      id: "tier-pro",
+      href: "#",
+      price: { monthly: "$4.99", annually: "$29.99" },
+      description: "The essentials to provide your best work for clients.",
+      features: ["No limit articles", "Up to 50,000 words", "Advanced options"],
       mostPopular: true,
       priceId: {
-        monthly: 'price_1RqYGERsRyFq7mSBRUl2pfnl',
-        annually: 'price_1RqYhgRsRyFq7mSBmL9rimXh'
+        monthly: "price_1RtQX7RsRyFq7mSBngUAWcHC",
+        annually: "price_1RtQX7RsRyFq7mSBLWuC9ddx",
       },
     },
     {
-      name: 'Unlimited',
-      id: 'tier-unlimited',
-      href: '#',
-      price: { monthly: '$50', annually: '$500' },
-      description: 'A plan that scales with your rapidly growing business.',
-      features: [
-        'No limit articles',
-        'No limit words',
-        'Advanced options',
-        '24-hour support response time',
-      ],
+      name: "Unlimited",
+      id: "tier-unlimited",
+      href: "#",
+      price: { monthly: "$14.99", annually: "$89.99" },
+      description: "A plan that scales with your rapidly growing business.",
+      features: ["No limit articles", "No limit words", "Advanced options", "24-hour support response time"],
       mostPopular: false,
       priceId: {
-        monthly: 'price_1RqYmXRsRyFq7mSBLFPa9xoC',
-        annually: 'price_1RqYn5RsRyFq7mSBm7j1RBMZ'
+        monthly: "price_1RtRzkRsRyFq7mSBXQBHBd5G",
+        annually: "price_1RtS0RRsRyFq7mSB1Orea73q",
       },
     },
   ],
-}
+};
 
 const faqs = [
   {
@@ -71,50 +60,48 @@ const faqs = [
   },
   {
     question: "Can I upgrade or downgrade my plan anytime?",
-    answer:
-      "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle.",
+    answer: "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle.",
   },
   {
     question: "Do you offer refunds?",
-    answer:
-      "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance.",
+    answer: "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance.",
   },
   {
     question: "Is there a limit on article length?",
-    answer:
-      "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions.",
+    answer: "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions.",
   },
-]
+];
 
-function classNames(...classes:string[]) {
-  return classes.filter(Boolean).join(' ')
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
 }
 
 // Funcție pentru a gestiona checkout-ul
 const handleCheckout = async (priceId: string) => {
   try {
-    const response = await fetch('/api/checkout', {
-      method: 'POST',
+    const response = await fetch("/api/checkout", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({ priceId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create checkout session');
+      throw new Error("Failed to create checkout session");
     }
 
     const { url } = await response.json();
     window.location.href = url;
   } catch (error) {
-    console.error('Error:', error);
-    alert('Something went wrong. Please try again.');
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
   }
 };
 
 export default function Example() {
-  const [frequency, setFrequency] = useState(pricing.frequencies[0])
+  const [frequency, setFrequency] = useState(pricing.frequencies[0]);
 
   return (
     <div className="bg-white">
@@ -128,8 +115,8 @@ export default function Example() {
             </p>
           </div>
           <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-            Choose an affordable plan that&apos;s packed with the best features for engaging your audience, creating customer
-            loyalty, and driving sales.
+            Choose an affordable plan that&apos;s packed with the best features for engaging your audience, creating
+            customer loyalty, and driving sales.
           </p>
           <div className="mt-16 flex justify-center">
             <fieldset aria-label="Payment frequency">
@@ -155,15 +142,15 @@ export default function Example() {
               <div
                 key={tier.id}
                 className={classNames(
-                  tier.mostPopular ? 'ring-2 ring-indigo-600' : 'ring-1 ring-gray-200',
-                  'rounded-3xl p-8',
+                  tier.mostPopular ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
+                  "rounded-3xl p-8"
                 )}
               >
                 <h2
                   id={tier.id}
                   className={classNames(
-                    tier.mostPopular ? 'text-indigo-600' : 'text-gray-900',
-                    'text-lg font-semibold leading-8',
+                    tier.mostPopular ? "text-indigo-600" : "text-gray-900",
+                    "text-lg font-semibold leading-8"
                   )}
                 >
                   {tier.name}
@@ -177,8 +164,8 @@ export default function Example() {
                 </p>
                 <button
                   onClick={() => {
-                    if (tier.name === 'Free') {
-                      window.location.href = '/sign-up';
+                    if (tier.name === "Free") {
+                      window.location.href = "/sign-up";
                     } else if (tier.priceId) {
                       const priceId = tier.priceId[frequency.value as keyof typeof tier.priceId];
                       handleCheckout(priceId);
@@ -187,12 +174,12 @@ export default function Example() {
                   aria-describedby={tier.id}
                   className={classNames(
                     tier.mostPopular
-                      ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500'
-                      : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300',
-                    'mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer',
+                      ? "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
+                      : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
+                    "mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer"
                   )}
                 >
-                  {tier.name === 'Free' ? 'Get Started' : 'Buy plan'}
+                  {tier.name === "Free" ? "Get Started" : "Buy plan"}
                 </button>
                 <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
                   {tier.features.map((feature) => (
@@ -212,7 +199,7 @@ export default function Example() {
           <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <Image
               alt="Transistor"
-              src='/transistor-horizontal-logo.svg'
+              src="/transistor-horizontal-logo.svg"
               width={158}
               height={48}
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
@@ -248,14 +235,12 @@ export default function Example() {
           </div>
           <div className="mt-16 flex justify-center">
             <p className="relative rounded-full bg-gray-50 px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/5">
-              <span className="hidden md:inline">
-                Trusted by thousands of content creators worldwide.
-              </span>
+              <span className="hidden md:inline">Trusted by thousands of content creators worldwide.</span>
             </p>
           </div>
         </div>
 
-        <Testimonials/>
+        <Testimonials />
 
         {/* FAQ section */}
         <div className="mx-auto my-24 max-w-7xl px-6 sm:my-56 lg:px-8">
@@ -283,5 +268,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }
