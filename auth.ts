@@ -48,4 +48,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/sign-in",
   },
+  callbacks: {
+    async session({ session, token }) {
+      if (token?.sub) {
+        session.user.id = token.sub; // adaugă id-ul în sesiune
+      }
+      return session;
+    },
+  },
 });

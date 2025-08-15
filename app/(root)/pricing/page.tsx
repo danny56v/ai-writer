@@ -79,6 +79,10 @@ function classNames(...classes: string[]) {
 // Funcție pentru a gestiona checkout-ul
 const handleCheckout = async (priceId: string) => {
   try {
+    if (!priceId) {
+      throw new Error("Price ID is required for checkout");
+    }
+   
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: {
@@ -87,7 +91,7 @@ const handleCheckout = async (priceId: string) => {
       credentials: "include",
       body: JSON.stringify({ priceId }),
     });
-
+// console.log("Checkout response:", response);
     if (!response.ok) {
       throw new Error("Failed to create checkout session");
     }
@@ -95,9 +99,14 @@ const handleCheckout = async (priceId: string) => {
     const { url } = await response.json();
     window.location.href = url;
   } catch (error) {
-    console.error("Error:", error);
-    alert("Something went wrong. Please try again.");
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+    } else {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   }
+
 };
 
 export default function Example() {
