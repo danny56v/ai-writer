@@ -1,16 +1,24 @@
 import { auth } from "@/auth";
+import { getCustomer } from "@/lib/mongo";
 import { stripe } from "@/lib/stripe";
+import { get } from "http";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
     const user = session?.user;
-    
 
     if (!session || !user?.id) {
       return new NextResponse("Unauthorized user", { status: 401 });
     }
+
+    const customer = await getCustomer(user.id);
+
+    if (!customer?.customerId) {
+      return new NextResponse("Customer not found", { status: 404 });
+    }
+
 
     const { priceId } = await request.json();
 

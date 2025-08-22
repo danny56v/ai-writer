@@ -1,238 +1,249 @@
+// app/api/webhooks/stripe/route.ts
 
-import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
-import Stripe from 'stripe';
+import { NextRequest, NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
+import Stripe from "stripe";
+
+import { createOrUpdateCustomer, getUserIdByCustomerId } from "@/lib/mongo";
+import { createOrUpdateSubscription } from "@/lib/mongo";
+
+type InvoiceWithSubscription = Stripe.Invoice & {
+  subscription?: string | null;
+};
+type InvoiceLineItemWithPrice = Stripe.InvoiceLineItem & {
+  price?: Stripe.Price;
+};
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: NextRequest) {
-  const rawBody = await new Response(req.body).text();
-  const signature = req.headers.get('stripe-signature')!;
+ const rawBody = await req.text();
 
+  const signature = req.headers.get("stripe-signature")!;
   let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (err) {
-    console.error('⚠️  Webhook signature verification failed.', err);
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    console.error("⚠️ Invalid Stripe signature:", err);
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  const eventType = event.type;
   const data = event.data.object;
+  const eventType = event.type;
 
-  switch (eventType) {
-    case 'checkout.session.completed':
-      console.log('✅ Checkout session completed:', data);
-      break;
+  try {
+    switch (eventType) {
+      case "checkout.session.completed": {
+        const session = data as Stripe.Checkout.Session;
+        console.log("✅ Processing checkout completion...");
+        
+        // 1. Salvează clientul Stripe + userId în colecția customers
+        if (session.customer && session.customer_email && session.metadata?.userId) {
+          await createOrUpdateCustomer({
+            userId: session.metadata.userId,
+            customerId: session.customer.toString(),
+            email: session.customer_email,
+          });
+        }
 
-    case 'invoice.paid':
-      console.log('💰 Invoice paid:', data);
-      break;
+        // 2. Pentru subscription, obține datele complete de la Stripe
+        if (session.subscription && session.metadata?.userId && session.customer) {
+          // Obține subscription-ul complet pentru a avea priceId
+          const subscription = await stripe.subscriptions.retrieve(
+            session.subscription.toString()
+          );
 
-    case 'invoice.payment_failed':
-      console.log('❌ Invoice payment failed:', data);
-      break;
+          await createOrUpdateSubscription({
+            userId: session.metadata.userId,
+            customerId: session.customer.toString(),
+            subscriptionId: subscription.id,
+            priceId: subscription.items.data[0].price.id, // ✅ Acum ai priceId direct
+            status: subscription.status as "pending" | "active" | "failed",
+            createdAt: new Date(subscription.created * 1000),
+            updatedAt: new Date(),
+          });
 
-    default:
-      console.log(`Unhandled event type: ${eventType}`);
+          console.log(`✅ Subscription created with priceId: ${subscription.items.data[0].price.id}`);
+        }
+        
+        console.log(`✅ Checkout completed for user ${session.metadata?.userId}`);
+        break;
+      }
+
+case "customer.subscription.created":{
+        const subscription = data as Stripe.Subscription;
+        console.log(`📦 Processing new subscription:`, subscription.id);
+        
+        const userId = await getUserIdByCustomerId(subscription.customer.toString());
+
+        if (!userId) {
+          console.warn("❌ User not found for customer:", subscription.customer);
+          break;
+        }
+
+        // Salvează subscription-ul în baza de date
+        await createOrUpdateSubscription({
+          userId,
+          customerId: subscription.customer.toString(),
+          subscriptionId: subscription.id,
+          priceId: subscription.items.data[0].price.id,
+          status: subscription.status as "pending" | "active" | "failed",
+          createdAt: new Date(subscription.created * 1000),
+          updatedAt: new Date(),
+        });
+        
+        console.log(`✅ Subscription created for user ${userId}`);
+        break;  
+}
+
+      case "customer.subscription.updated": {
+        const subscription = data as Stripe.Subscription;
+        console.log(`🔄 Processing subscription update:`, subscription.id);
+        
+        const userId = await getUserIdByCustomerId(subscription.customer.toString());
+
+        if (!userId) {
+          console.warn("❌ User not found for customer:", subscription.customer);
+          break;
+        }
+
+        // Actualizează subscription-ul cu noile date
+        await createOrUpdateSubscription({
+          userId,
+          customerId: subscription.customer.toString(),
+          subscriptionId: subscription.id,
+          priceId: subscription.items.data[0].price.id,
+          status: subscription.status as "pending" | "active" | "failed",
+          createdAt: new Date(subscription.created * 1000),
+          updatedAt: new Date(),
+        });
+        
+        console.log(`✅ Subscription updated for user ${userId}`);
+        break;
+      }
+
+      case "customer.subscription.deleted": {
+        const subscription = data as Stripe.Subscription;
+        console.log("🗑️ Processing subscription deletion:", subscription.id);
+
+        const userId = await getUserIdByCustomerId(subscription.customer.toString());
+
+        if (!userId) {
+          console.warn("❌ User not found for customer:", subscription.customer);
+          break;
+        }
+
+        await createOrUpdateSubscription({
+          userId,
+          customerId: subscription.customer.toString(),
+          subscriptionId: subscription.id,
+          priceId: subscription.items.data[0].price.id,
+          status: "canceled",
+          createdAt: new Date(subscription.created * 1000),
+          updatedAt: new Date(),
+        });
+        
+        console.log(`✅ Subscription canceled for user ${userId}`);
+        break;
+      }
+
+      case "invoice.paid": {
+        const invoice = data as InvoiceWithSubscription;
+        console.log("💰 Processing invoice payment:", invoice.id);
+
+        if (!invoice.customer) {
+          console.warn("❌ Invoice customer is null");
+          break;
+        }
+
+        if (!invoice.subscription) {
+          console.warn("❌ Invoice does not have a subscription ID, skipping...");
+          break;
+        }
+
+        const subscriptionId = invoice.subscription.toString();
+        const lineItem = invoice.lines.data[0] as InvoiceLineItemWithPrice;
+
+        if (!lineItem?.price) {
+          console.warn("❌ Invoice line item price is missing");
+          break;
+        }
+
+        const userId = await getUserIdByCustomerId(invoice.customer.toString());
+        if (!userId) {
+          console.warn("❌ User not found for customer:", invoice.customer);
+          break;
+        }
+
+        await createOrUpdateSubscription({
+          userId,
+          customerId: invoice.customer.toString(),
+          subscriptionId,
+          priceId: lineItem.price.id,
+          status: "active", // 🎯 Plata reușită = subscription activ
+          createdAt: new Date(invoice.created * 1000),
+          updatedAt: new Date(),
+        });
+
+        console.log(`✅ Invoice paid - subscription activated for user ${userId}`);
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = data as InvoiceWithSubscription;
+        console.log("❌ Processing failed payment:", invoice.id);
+
+        if (!invoice.customer) {
+          console.warn("❌ Invoice customer is null");
+          break;
+        }
+
+        const subscriptionId = invoice.subscription?.toString();
+
+        if (!subscriptionId) {
+          console.warn("❌ Invoice does not have a subscription ID");
+          break;
+        }
+
+        const lineItem = invoice.lines.data[0] as InvoiceLineItemWithPrice;
+
+        if (!lineItem.price) {
+          console.warn("❌ Invoice line item price is missing");
+          break;
+        }
+
+        const userId = await getUserIdByCustomerId(invoice.customer.toString());
+
+        if (!userId) {
+          console.warn("❌ User not found for customer:", invoice.customer);
+          break;
+        }
+
+        await createOrUpdateSubscription({
+          userId,
+          customerId: invoice.customer.toString(),
+          subscriptionId,
+          priceId: lineItem.price.id,
+          status: "failed",
+          createdAt: new Date(invoice.created * 1000),
+          updatedAt: new Date(),
+        });
+        
+        console.log(`❌ Payment failed for user ${userId}`);
+        break;
+      }
+
+      default:
+        console.log(`ℹ️ Unhandled Stripe event: ${eventType}`);
+    }
+  } catch (error) {
+    console.error(`❌ Error processing webhook ${eventType}:`, error);
+    return NextResponse.json(
+      { error: "Webhook processing failed" },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ received: true });
 }
-
-
-// // // app/api/webhooks/stripe/route.ts
-
-// // import { NextRequest, NextResponse } from 'next/server';
-// // import { stripe } from '@/lib/stripe';
-// // import Stripe from 'stripe';
-// // // import { createOrUpdateCustomer, createOrUpdateSubscription } from '@/lib/mongo'; // funcțiile tale DB
-
-// // const relevantEvents = new Set([
-// //   'checkout.session.completed',
-// //   'customer.subscription.created',
-// //   'customer.subscription.updated',
-// //   'customer.subscription.deleted',
-// //   'invoice.paid',
-// //   'invoice.payment_failed',
-// // ]);
-
-// // export async function POST(request: NextRequest) {
-// //   const body = await request.text();
-// //   const signature = request.headers.get('stripe-signature')!;
-
-// //   let event: Stripe.Event;
-
-// //   try {
-// //     event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
-// //   } catch (err) {
-// //     console.error('Webhook signature verification failed.', err);
-// //     return new NextResponse(`Webhook Error: ${err}`, { status: 400 });
-// //   }
-
-// //   const eventType = event.type;
-
-// //   if (relevantEvents.has(eventType)) {
-// //     try {
-// //       switch (eventType) {
-// //         case 'checkout.session.completed': {
-// //           console.log('Checkout session completed:', event.data.object);
-// //           // const session = event.data.object as Stripe.Checkout.Session;
-
-// //           // if (session.mode === 'subscription') {
-// //           //   const customerId = session.customer as string;
-// //           //   const subscriptionId = session.subscription as string;
-
-// //           //   // Salvezi clientul și subscriptionul
-// //           //   await createOrUpdateCustomer(customerId);
-// //           //   await createOrUpdateSubscription(subscriptionId);
-// //           // }
-// //           break;
-// //         }
-
-// //         case 'customer.subscription.created':{
-// //           console.log('Subscription created:', event.data.object);
-// //           break
-// //         }
-// //         case 'customer.subscription.updated': {
-// //           console.log('Subscription updated:', event.data.object);
-// //           // const subscription = event.data.object as Stripe.Subscription;
-// //           // await createOrUpdateSubscription(subscription.id);
-// //           break;
-// //         }
-
-// //         case 'customer.subscription.deleted': {
-// //           // const subscription = event.data.object as Stripe.Subscription;
-// //           // await deleteSubscription(subscription.id);
-// //           break;
-// //         }
-
-// //         case 'invoice.paid': {
-// //           // const invoice = event.data.object as Stripe.Invoice;
-// //           // Poți actualiza statusul de plată în DB, dacă ai nevoie
-// //           break;
-// //         }
-
-// //         case 'invoice.payment_failed': {
-// //           // const invoice = event.data.object as Stripe.Invoice;
-// //           // Marchezi că utilizatorul trebuie notificat
-// //           break;
-// //         }
-// //       }
-// //     } catch (error) {
-// //       console.error('Error processing webhook event:', error);
-// //       return new NextResponse('Webhook handler error', { status: 500 });
-// //     }
-// //   }
-
-// //   return new NextResponse('Webhook received', { status: 200 });
-// // }
-
-
-
-
-// // Set your secret key. Remember to switch to your live secret key in production.
-// // See your keys here: https://dashboard.stripe.com/apikeys
-
-// import { NextRequest, NextResponse } from 'next/server';
-// import { stripe } from '@/lib/stripe'; // ai stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-// import Stripe from 'stripe';
-
-// export const config = {
-//   api: {
-//     bodyParser: false, // IMPORTANT pentru raw body
-//   },
-// };
-
-// const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-// export async function POST(req: NextRequest) {
-//   const rawBody = await req.text(); // trebuie raw pentru semnătură
-//   const signature = req.headers.get('stripe-signature')!;
-
-//   let event: Stripe.Event;
-
-//   try {
-//     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-//   } catch (err) {
-//     console.error('⚠️  Webhook signature verification failed.', err);
-//     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
-//   }
-
-//   const eventType = event.type;
-//   const data = event.data.object;
-
-//   switch (eventType) {
-//     case 'checkout.session.completed':
-//       console.log('✅ Checkout session completed:', data);
-//       // salvează userId, subscriptionId, customerId, etc.
-//       break;
-
-//     case 'invoice.paid':
-//       console.log('💰 Invoice paid:', data);
-//       // actualizează statusul abonamentului în DB
-//       break;
-
-//     case 'invoice.payment_failed':
-//       console.log('❌ Invoice payment failed:', data);
-//       // trimite notificare utilizatorului
-//       break;
-
-//     default:
-//       console.log(`Unhandled event type: ${eventType}`);
-//   }
-
-//   return NextResponse.json({ received: true });
-// }
-
-// // // import Stripe from "stripe";
-// // // import { stripe } from "@/lib/stripe";
-// // // import { createOrUpdateSubscription } from "@/lib/mongo";
-// // // import { NextRequest, NextResponse } from "next/server";
-
-// // // export async function POST(req: NextRequest) {
-// // //   const rawBody = await req.text();
-// // //   const sig = req.headers.get("stripe-signature")!;
-
-// // //   let event: Stripe.Event;
-
-// // //   try {
-// // //     event = stripe.webhooks.constructEvent(
-// // //       rawBody,
-// // //       sig,
-// // //       process.env.STRIPE_WEBHOOK_SECRET!
-// // //     );
-// // //   } catch (err) {
-// // //     console.error("Webhook error", err);
-// // //     return NextResponse.json({ error: "Webhook invalid" }, { status: 400 });
-// // //   }
-
-// // //   const data = event.data.object;
-
-// // //   if (
-// // //     event.type === "checkout.session.completed" ||
-// // //     event.type === "customer.subscription.updated" ||
-// // //     event.type === "customer.subscription.deleted"
-// // //   ) {
-// // //     const sub: Stripe.Subscription =
-// // //       event.type === "checkout.session.completed"
-// // //         ? await stripe.subscriptions.retrieve(
-// // //             (data as Stripe.Checkout.Session).subscription as string
-// // //           )
-// // //         : (data as Stripe.Subscription);
-
-// // //     const customer = await stripe.customers.retrieve(sub.customer as string);
-// // //     const email = (customer as Stripe.Customer).email!;
-
-// // //     await createOrUpdateSubscription({
-// // //       userEmail: email,
-// // //       stripeSubscriptionId: sub.id,
-// // //       status: sub.status,
-// // //       priceId: sub.items.data[0].price.id,
-// // //       currentPeriodEnd: new Date(sub.current_period_end * 1000),
-// // //     });
-// // //   }
-
-// // //   return NextResponse.json({ received: true });
-// // // }
