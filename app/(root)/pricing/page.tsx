@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { Disclosure, DisclosureButton, DisclosurePanel, Radio, RadioGroup } from "@headlessui/react";
 import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 import { CheckIcon } from "@heroicons/react/20/solid";
@@ -111,6 +112,17 @@ const handleCheckout = async (priceId: string) => {
 
 export default function Example() {
   const [frequency, setFrequency] = useState(pricing.frequencies[0]);
+  const { status } = useSession();
+  const [activePriceId, setActivePriceId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetch("/api/subscription")
+        .then((res) => res.json())
+        .then((data) => setActivePriceId(data.priceId))
+        .catch(() => setActivePriceId(null));
+    }
+  }, [status]);
 
   return (
     <div className="bg-white">
@@ -147,11 +159,14 @@ export default function Example() {
             </fieldset>
           </div>
           <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
-            {pricing.tiers.map((tier) => (
+            {pricing.tiers.map((tier) => {
+              const tierPriceId = tier.priceId?.[frequency.value as keyof typeof tier.priceId];
+              const isCurrentPlan = tierPriceId === activePriceId;
+              return (
               <div
                 key={tier.id}
                 className={classNames(
-                  tier.mostPopular ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
+                  tier.mostPopular || isCurrentPlan ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
                   "rounded-3xl p-8"
                 )}
               >
@@ -172,12 +187,21 @@ export default function Example() {
                   <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
                 </p>
                 <button
-                  onClick={() => {
+                  disabled={isCurrentPlan}
+                  onClick={async () => {
+                    if (isCurrentPlan) return;
                     if (tier.name === "Free") {
                       window.location.href = "/sign-up";
-                    } else if (tier.priceId) {
-                      const priceId = tier.priceId[frequency.value as keyof typeof tier.priceId];
-                      handleCheckout(priceId);
+                    } else if (tierPriceId) {
+                      if (activePriceId && activePriceId !== tierPriceId) {
+                        const response = await fetch("/api/billing/portal", { method: "POST" });
+                        const data = await response.json();
+                        if (data.url) {
+                          window.location.href = data.url;
+                        }
+                      } else {
+                        handleCheckout(tierPriceId);
+                      }
                     }
                   }}
                   aria-describedby={tier.id}
@@ -185,10 +209,11 @@ export default function Example() {
                     tier.mostPopular
                       ? "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
                       : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                    "mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer"
+                    "mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer",
+                    isCurrentPlan && "opacity-50 cursor-not-allowed"
                   )}
                 >
-                  {tier.name === "Free" ? "Get Started" : "Buy plan"}
+                  {isCurrentPlan ? "Current plan" : tier.name === "Free" ? "Get Started" : "Buy plan"}
                 </button>
                 <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
                   {tier.features.map((feature) => (
@@ -199,7 +224,8 @@ export default function Example() {
                   ))}
                 </ul>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
