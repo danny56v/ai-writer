@@ -46,12 +46,12 @@ const Navbar = async () => {
               <Link href="/profile" className="text-sm font-semibold leading-6 text-gray-900">
                 {session?.user?.name}
               </Link>
-              {/* <Link
+              <Link
                 href="/sign-out"
                 className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 Sign out
-              </Link> */}
+              </Link>
             </div>
           ) : (
             <div className="hidden lg:flex items-center gap-5">

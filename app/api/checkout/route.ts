@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { getCustomer } from "@/lib/mongo";
 import { stripe } from "@/lib/stripe";
-import { get } from "http";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

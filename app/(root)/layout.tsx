@@ -1,15 +1,15 @@
 import Navbar from "@/components/Navbar";
+import { SessionProvider } from "next-auth/react";
 import React, { ReactNode } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <Navbar />
-      <div>
-  
-
-      </div>
-      {children}
+      <SessionProvider>
+        <Navbar />
+        <div></div>
+        {children}
+      </SessionProvider>
     </div>
   );
 };
