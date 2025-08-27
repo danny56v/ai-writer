@@ -1,7 +1,7 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
-import client from "../db";
+import { getDb } from "@/lib/db"; // <— important
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { ActionState } from "@/interfaces/auth";
@@ -17,25 +17,23 @@ export const signOutAction = async () => {
   await signOut({ redirectTo: "/sign-in" });
 };
 
-export const SignInAction = async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
+export const SignInAction = async (_prev: ActionState, formData: FormData): Promise<ActionState> => {
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
+
   try {
-    const validatedData = signInSchema.parse(data);
+    const validated = signInSchema.parse(data);
 
     const result = await signIn("credentials", {
-      email: validatedData.email,
-      password: validatedData.password,
-      redirect: false 
+      email: validated.email,
+      password: validated.password,
+      redirect: false, // <— corect
     });
 
     if (result?.error) {
-      return {
-        success: false,
-        message: "Invalid credentials",
-      };
+      return { success: false, message: "Email sau parolă greșită" };
     }
 
     redirect("/");
@@ -43,87 +41,58 @@ export const SignInAction = async (prevState: ActionState, formData: FormData): 
     if (error instanceof AuthError) {
       return {
         success: false,
-        message: error.type === "CredentialsSignin" ? "Invalid Credentials" : "Error",
+        message: error.type === "CredentialsSignin" ? "Email sau parolă greșită" : "Eroare de autentificare",
       };
     }
-
     if (error instanceof ZodError) {
-      return {
-        success: false,
-        message: error.issues[0]?.message || "Invalid input",
-      };
+      return { success: false, message: error.issues[0]?.message || "Date invalide" };
     }
-    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-      throw error; // Re-throw redirect errors
-    }
+    if (error instanceof Error && error.message === "NEXT_REDIRECT") throw error;
 
-    return {
-      success: false,
-      message: "Something went wrong. Please try again. fgfggf",
-    };
+    return { success: false, message: "A apărut o eroare. Încearcă din nou." };
   }
 };
 
-export const SignUpAction = async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
+export const SignUpAction = async (_prev: ActionState, formData: FormData): Promise<ActionState> => {
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
 
   try {
-    const validatedData = signUpSchema.parse(data);
+    const validated = signUpSchema.parse(data);
 
-    const users = await client.db().collection("users");
-    const existingUser = await users.findOne({ email: validatedData.email });
-    if (existingUser) {
-      return {
-        success: false,
-        message: "User with this email already exists",
-      };
+    const db = await getDb();
+    const users = db.collection("users");
+
+    // Normalizează emailul
+    const email = validated.email.trim().toLowerCase();
+
+    // Unicitate
+    const existing = await users.findOne({ email });
+    if (existing) {
+      return { success: false, message: "Există deja un cont cu acest email" };
     }
 
-    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
+    const hashedPassword = await bcrypt.hash(validated.password, 12);
 
     await users.insertOne({
-      name: validatedData.email.split("@")[0],
-      email: validatedData.email,
+      name: email.split("@")[0],
+      email,
       password: hashedPassword,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
+
     redirect("/sign-in");
-  } catch (error: unknown) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "digest" in error &&
-      typeof (error as { digest?: string }).digest === "string" &&
-      (error as { digest: string }).digest.startsWith("NEXT_REDIRECT")
-    ) {
+  } catch (error) {
+    if (typeof error === "object" && error && "digest" in error && String(error.digest).startsWith("NEXT_REDIRECT")) {
       throw error;
     }
     if (error instanceof ZodError) {
-      const fieldErrors: Record<string, string[]> = {};
-
-      (error as ZodError).issues.forEach((err) => {
-        const field = String(err.path[0]);
-        if (!fieldErrors[field]) {
-          fieldErrors[field] = [];
-        }
-        fieldErrors[field]?.push(err.message);
-      });
-
-      const firstErrorMessage = error.issues[0]?.message || "Invalid input";
-
-      return {
-        success: false,
-        message: firstErrorMessage,
-      };
+      return { success: false, message: error.issues[0]?.message || "Date invalide" };
     }
-
-    // Gestionează alte erori
     console.error("Sign up error:", error);
-    return {
-      success: false,
-      message: "Something went wrong. Please try again.",
-    };
+    return { success: false, message: "A apărut o eroare. Încearcă din nou." };
   }
 };

@@ -4,7 +4,7 @@ export const languages = [
   "Arabic",
   "Bengali",
   "Bulgarian",
-  "Chinese (Simpified)",
+  "Chinese (Simplified)",
   "Chinese (Traditional)",
   "Croatian",
   "Czech",

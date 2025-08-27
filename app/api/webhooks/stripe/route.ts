@@ -1,249 +1,151 @@
-// app/api/webhooks/stripe/route.ts
+// /app/api/webhooks/stripe/route.ts
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
-import Stripe from "stripe";
+import { db } from "@/lib/db";
+import { ObjectId } from "mongodb";
+import { planFromPrice } from "@/lib/plans";
 
-import { createOrUpdateCustomer, getUserIdByCustomerId } from "@/lib/mongo";
-import { createOrUpdateSubscription } from "@/lib/mongo";
+// ---------- Utils ----------
+const toDate = (sec?: number | null) => (typeof sec === "number" ? new Date(sec * 1000) : undefined);
 
-type InvoiceWithSubscription = Stripe.Invoice & {
-  subscription?: string | null;
-};
-type InvoiceLineItemWithPrice = Stripe.InvoiceLineItem & {
-  price?: Stripe.Price;
-};
+/** Alege itemul de plan relevant (de obicei ai unul). */
+function pickPlanItem(sub: Stripe.Subscription) {
+  const items = sub.items?.data ?? [];
+  return items[0]; // dacă ai mai multe prețuri, implementează o regulă aici
+}
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+/** Găsește userId-ul tău din informațiile Stripe (customerId → users.stripeCustomerId → email → metadata.userId). */
+async function resolveUserId(
+  d: Awaited<ReturnType<typeof db>>,
+  opts: { stripeCustomerId?: string | null; email?: string | null; metaUserId?: string | null }
+): Promise<string | null> {
+  const { stripeCustomerId, email, metaUserId } = opts;
+  if (stripeCustomerId) {
+    const byCust = await d.collection("users").findOne({ stripeCustomerId });
+    if (byCust?._id) return byCust._id.toString();
+  }
+  if (email) {
+    const byEmail = await d.collection("users").findOne({ email });
+    if (byEmail?._id) return byEmail._id.toString();
+  }
+  return metaUserId ?? null;
+}
 
+/** Upsert Subscription în Mongo, citind perioadele de pe ITEM (Basil). */
+async function upsertSubscription(sub: Stripe.Subscription, userId?: string | null) {
+  const d = await db();
+  const item = pickPlanItem(sub);
+  const priceId = item?.price?.id ?? null;
+
+  // Perioada curentă (Basil: pe item). Fallback minimal pt. compat.
+  const currentPeriodStart = toDate(item?.current_period_start) ?? toDate(sub.start_date);
+  const currentPeriodEnd = toDate(item?.current_period_end) ?? undefined;
+
+  await d.collection("subscriptions").updateOne(
+    { stripeSubscriptionId: sub.id },
+    {
+      $set: {
+        ...(userId ? { userId } : {}),
+        stripePriceId: priceId,
+        status: sub.status, // exact cum vine din Stripe
+        planType: planFromPrice(priceId ?? undefined), // "free" fallback dacă nu găsește
+        currentPeriodStart: currentPeriodStart ?? new Date(),
+        currentPeriodEnd: currentPeriodEnd ?? new Date(),
+        cancelAtPeriodEnd: sub.cancel_at_period_end ?? false,
+        // câmpuri utile pentru UI/debug
+        canceledAt: toDate(sub.canceled_at) ?? null,
+        cancelAt: toDate(sub.cancel_at) ?? null,
+        endedAt: toDate(sub.ended_at) ?? null,
+        latestInvoiceId: typeof sub.latest_invoice === "string" ? sub.latest_invoice : sub.latest_invoice?.id ?? null,
+        updatedAt: new Date(),
+      },
+      $setOnInsert: { createdAt: new Date() },
+    },
+    { upsert: true }
+  );
+}
+
+// ---------- Handler ----------
 export async function POST(req: NextRequest) {
- const rawBody = await req.text();
+  const sig = req.headers.get("stripe-signature");
+  if (!sig) return NextResponse.json({ error: "Missing stripe-signature" }, { status: 400 });
 
-  const signature = req.headers.get("stripe-signature")!;
+  const raw = await req.text();
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+    event = stripe.webhooks.constructEvent(raw, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch (err) {
-    console.error("⚠️ Invalid Stripe signature:", err);
+    console.error("Invalid Stripe signature:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  const data = event.data.object;
-  const eventType = event.type;
-
   try {
-    switch (eventType) {
+    const d = await db();
+
+    switch (event.type) {
+      // 1) După checkout reușit: setează users.stripeCustomerId (dacă lipsește) + upsert subscription
       case "checkout.session.completed": {
-        const session = data as Stripe.Checkout.Session;
-        console.log("✅ Processing checkout completion...");
-        
-        // 1. Salvează clientul Stripe + userId în colecția customers
-        if (session.customer && session.customer_email && session.metadata?.userId) {
-          await createOrUpdateCustomer({
-            userId: session.metadata.userId,
-            customerId: session.customer.toString(),
-            email: session.customer_email,
-          });
+        const s = event.data.object as Stripe.Checkout.Session;
+
+        const stripeCustomerId = (s.customer as string) || null;
+        const stripeSubscriptionId = (s.subscription as string) || null;
+
+        // încearcă să ai un email
+        let email: string | null = s.customer_details?.email ?? null;
+        if (!email && stripeCustomerId) {
+          const cust = (await stripe.customers.retrieve(stripeCustomerId)) as Stripe.Customer;
+          email = cust.email ?? null;
         }
 
-        // 2. Pentru subscription, obține datele complete de la Stripe
-        if (session.subscription && session.metadata?.userId && session.customer) {
-          // Obține subscription-ul complet pentru a avea priceId
-          const subscription = await stripe.subscriptions.retrieve(
-            session.subscription.toString()
-          );
+        const userId = await resolveUserId(d, {
+          stripeCustomerId,
+          email,
+          metaUserId: s.metadata?.userId ?? null,
+        });
 
-          await createOrUpdateSubscription({
-            userId: session.metadata.userId,
-            customerId: session.customer.toString(),
-            subscriptionId: subscription.id,
-            priceId: subscription.items.data[0].price.id, // ✅ Acum ai priceId direct
-            status: subscription.status as "pending" | "active" | "failed",
-            createdAt: new Date(subscription.created * 1000),
-            updatedAt: new Date(),
-          });
-
-          console.log(`✅ Subscription created with priceId: ${subscription.items.data[0].price.id}`);
+        // atașează stripeCustomerId pe user dacă lipsea
+        if (userId && stripeCustomerId) {
+          await d
+            .collection("users")
+            .updateOne({ _id: new ObjectId(userId) }, { $set: { stripeCustomerId, updatedAt: new Date() } });
         }
-        
-        console.log(`✅ Checkout completed for user ${session.metadata?.userId}`);
+
+        // sincronizează sub-ul
+        if (stripeSubscriptionId) {
+          const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+          await upsertSubscription(sub, userId);
+        }
         break;
       }
 
-case "customer.subscription.created":{
-        const subscription = data as Stripe.Subscription;
-        console.log(`📦 Processing new subscription:`, subscription.id);
-        
-        const userId = await getUserIdByCustomerId(subscription.customer.toString());
-
-        if (!userId) {
-          console.warn("❌ User not found for customer:", subscription.customer);
-          break;
-        }
-
-        // Salvează subscription-ul în baza de date
-        await createOrUpdateSubscription({
-          userId,
-          customerId: subscription.customer.toString(),
-          subscriptionId: subscription.id,
-          priceId: subscription.items.data[0].price.id,
-          status: subscription.status as "pending" | "active" | "failed",
-          createdAt: new Date(subscription.created * 1000),
-          updatedAt: new Date(),
-        });
-        
-        console.log(`✅ Subscription created for user ${userId}`);
-        break;  
-}
-
-      case "customer.subscription.updated": {
-        const subscription = data as Stripe.Subscription;
-        console.log(`🔄 Processing subscription update:`, subscription.id);
-        
-        const userId = await getUserIdByCustomerId(subscription.customer.toString());
-
-        if (!userId) {
-          console.warn("❌ User not found for customer:", subscription.customer);
-          break;
-        }
-
-        // Actualizează subscription-ul cu noile date
-        await createOrUpdateSubscription({
-          userId,
-          customerId: subscription.customer.toString(),
-          subscriptionId: subscription.id,
-          priceId: subscription.items.data[0].price.id,
-          status: subscription.status as "pending" | "active" | "failed",
-          createdAt: new Date(subscription.created * 1000),
-          updatedAt: new Date(),
-        });
-        
-        console.log(`✅ Subscription updated for user ${userId}`);
-        break;
-      }
-
+      // 2) Lifecycle subscription: created/updated/deleted → upsert
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
       case "customer.subscription.deleted": {
-        const subscription = data as Stripe.Subscription;
-        console.log("🗑️ Processing subscription deletion:", subscription.id);
-
-        const userId = await getUserIdByCustomerId(subscription.customer.toString());
-
-        if (!userId) {
-          console.warn("❌ User not found for customer:", subscription.customer);
-          break;
-        }
-
-        await createOrUpdateSubscription({
-          userId,
-          customerId: subscription.customer.toString(),
-          subscriptionId: subscription.id,
-          priceId: subscription.items.data[0].price.id,
-          status: "canceled",
-          createdAt: new Date(subscription.created * 1000),
-          updatedAt: new Date(),
+        const sub = event.data.object as Stripe.Subscription;
+        const userId = await resolveUserId(d, {
+          stripeCustomerId: sub.customer as string,
+          email: null,
+          metaUserId: null,
         });
-        
-        console.log(`✅ Subscription canceled for user ${userId}`);
+        await upsertSubscription(sub, userId);
         break;
       }
 
-      case "invoice.paid": {
-        const invoice = data as InvoiceWithSubscription;
-        console.log("💰 Processing invoice payment:", invoice.id);
-
-        if (!invoice.customer) {
-          console.warn("❌ Invoice customer is null");
-          break;
-        }
-
-        if (!invoice.subscription) {
-          console.warn("❌ Invoice does not have a subscription ID, skipping...");
-          break;
-        }
-
-        const subscriptionId = invoice.subscription.toString();
-        const lineItem = invoice.lines.data[0] as InvoiceLineItemWithPrice;
-
-        if (!lineItem?.price) {
-          console.warn("❌ Invoice line item price is missing");
-          break;
-        }
-
-        const userId = await getUserIdByCustomerId(invoice.customer.toString());
-        if (!userId) {
-          console.warn("❌ User not found for customer:", invoice.customer);
-          break;
-        }
-
-        await createOrUpdateSubscription({
-          userId,
-          customerId: invoice.customer.toString(),
-          subscriptionId,
-          priceId: lineItem.price.id,
-          status: "active", // 🎯 Plata reușită = subscription activ
-          createdAt: new Date(invoice.created * 1000),
-          updatedAt: new Date(),
-        });
-
-        console.log(`✅ Invoice paid - subscription activated for user ${userId}`);
-        break;
-      }
-
-      case "invoice.payment_failed": {
-        const invoice = data as InvoiceWithSubscription;
-        console.log("❌ Processing failed payment:", invoice.id);
-
-        if (!invoice.customer) {
-          console.warn("❌ Invoice customer is null");
-          break;
-        }
-
-        const subscriptionId = invoice.subscription?.toString();
-
-        if (!subscriptionId) {
-          console.warn("❌ Invoice does not have a subscription ID");
-          break;
-        }
-
-        const lineItem = invoice.lines.data[0] as InvoiceLineItemWithPrice;
-
-        if (!lineItem.price) {
-          console.warn("❌ Invoice line item price is missing");
-          break;
-        }
-
-        const userId = await getUserIdByCustomerId(invoice.customer.toString());
-
-        if (!userId) {
-          console.warn("❌ User not found for customer:", invoice.customer);
-          break;
-        }
-
-        await createOrUpdateSubscription({
-          userId,
-          customerId: invoice.customer.toString(),
-          subscriptionId,
-          priceId: lineItem.price.id,
-          status: "failed",
-          createdAt: new Date(invoice.created * 1000),
-          updatedAt: new Date(),
-        });
-        
-        console.log(`❌ Payment failed for user ${userId}`);
-        break;
-      }
-
+      // (opțional) invoice.payment_succeeded/failed → poți salva facturi/alerts
       default:
-        console.log(`ℹ️ Unhandled Stripe event: ${eventType}`);
+        // ignoră restul evenimentelor
+        break;
     }
-  } catch (error) {
-    console.error(`❌ Error processing webhook ${eventType}:`, error);
-    return NextResponse.json(
-      { error: "Webhook processing failed" },
-      { status: 500 }
-    );
-  }
 
-  return NextResponse.json({ received: true });
+    return NextResponse.json({ ok: true }, { status: 200 });
+  } catch (err) {
+    console.error("Webhook handler error:", err);
+    return NextResponse.json({ error: "Webhook handler error" }, { status: 500 });
+  }
 }
