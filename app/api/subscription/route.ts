@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import { getUserSubscription } from "@/lib/subscription-helpers";
+import { getUserPriceId } from "@/lib/billing";
 
 export async function GET() {
   try {
@@ -11,8 +11,8 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const subscription = await getUserSubscription(user.id);
-    const priceId = subscription?.priceId || null;
+    const priceId = await getUserPriceId(user.id);
+
 
     return NextResponse.json({ priceId });
   } catch (error) {

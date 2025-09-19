@@ -2,11 +2,11 @@
 export type PlanKey = "free" | "pro_monthly" | "pro_yearly" | "unlimited_monthly" | "unlimited_yearly";
 
 export const PLAN_LIMITS = {
-  free: { articlesPerMonth: 3, maxWordsPerArticle: 1000 },
-  pro_monthly: { articlesPerMonth: 50, maxWordsPerArticle: 6000 },
-  pro_yearly: { articlesPerMonth: 50, maxWordsPerArticle: 6000 },
-  unlimited_monthly: { articlesPerMonth: 9999, maxWordsPerArticle: 6000 },
-  unlimited_yearly: { articlesPerMonth: 9999, maxWordsPerArticle: 6000 },
+  free: { articlesPerMonth: 3, maxWordsPerArticle: 500 },
+  pro_monthly: { articlesPerMonth: 50, maxWordsPerArticle: 1500 },
+  pro_yearly: { articlesPerMonth: 50, maxWordsPerArticle: 1500 },
+  unlimited_monthly: { articlesPerMonth: 9999, maxWordsPerArticle: 1500 },
+  unlimited_yearly: { articlesPerMonth: 9999, maxWordsPerArticle: 1500 },
 } as const;
 
 // map priceId → plan; tipat cu `satisfies` ca să nu ajungi la `any`

@@ -19,7 +19,7 @@ interface ArticleData {
   audience: AudienceType;
   length: LengthType;
   language: string;
-  keywords: string;
+  keywords: string; 
 }
 
 export const GeneratePrompt = async (

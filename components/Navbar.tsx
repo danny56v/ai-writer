@@ -2,6 +2,7 @@ import React from "react";
 import MobileMenu from "./MobileMenu";
 import Link from "next/link";
 import { auth } from "@/auth";
+import { signOutAction } from "@/lib/actions/auth";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -16,11 +17,12 @@ const Navbar = async () => {
     <nav
       aria-label="Global"
       className="
-      fixed top-4 left-8 right-8 z-50
+      sticky top-4 left-8 right-8 z-50
       bg-white/10 backdrop-blur-md
       border border-white/20
       rounded-4xl
       shadow-sm
+      mb-4
     "
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
@@ -46,12 +48,10 @@ const Navbar = async () => {
               <Link href="/profile" className="text-sm font-semibold leading-6 text-gray-900">
                 {session?.user?.name}
               </Link>
-              <Link
-                href="/sign-out"
-                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
-              >
-                Sign out
-              </Link>
+
+              <form action={signOutAction}>
+                <button type="submit">Sign Out</button>
+              </form>
             </div>
           ) : (
             <div className="hidden lg:flex items-center gap-5">

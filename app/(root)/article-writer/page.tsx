@@ -1,7 +1,7 @@
 "use client";
 import LanguageSelect from "@/components/LanguageSelect";
 import RadioButtons from "@/components/RadioButtons";
-import Select from "@/components/Select";
+import Select from "@/components/SelectOld";
 import { GeneratePrompt } from "@/lib/actions/actions";
 import { languages } from "@/utils/languages";
 import React, { useActionState, useState } from "react";

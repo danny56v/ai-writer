@@ -6,8 +6,11 @@ const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <SessionProvider>
+        {/* <div className="mb-32"> */}
         <Navbar />
-        <div></div>
+
+        {/* </div> */}
+
         {children}
       </SessionProvider>
     </div>
