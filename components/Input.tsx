@@ -33,9 +33,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
             className={cx(
-              "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-              "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-              "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
+              "block w-full h-11 rounded-2xl border border-slate-200/80 bg-white/90 px-3 text-slate-900 shadow-inner shadow-white/60 transition",
+              "placeholder:text-slate-400 hover:border-purple-200 hover:bg-white",
+              "focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-200/60",
               iconLeft ? "pl-10" : "pl-3",
               iconRight ? "pr-10" : "pr-3",
               error && "border-red-500 focus:border-red-500 focus:ring-red-100",

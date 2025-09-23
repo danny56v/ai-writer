@@ -10,17 +10,16 @@ const RealEstateGeneratorPage = async () => {
 
   if (!userId) {
     return (
-      <div className="text-center text-red-500">
-        Ești neautentificat. Te rugăm să te autentifici pentru a accesa această pagină.
-      </div>
+      <section className="mt-16 rounded-3xl border border-white/80 bg-white/80 px-6 py-12 text-center shadow-soft-xl backdrop-blur">
+        <h2 className="text-2xl font-semibold text-slate-900">Autentificare necesară</h2>
+        <p className="mt-3 text-sm text-slate-600">
+          Ești neautentificat. Te rugăm să te autentifici pentru a accesa această pagină.
+        </p>
+      </section>
     );
   }
   const userPlan = await getUserPlan(userId);
-  return (
-    <>
-      <RealEstateClient userPlan={userPlan}/>
-    </>
-  );
+  return <RealEstateClient userPlan={userPlan} />;
 };
 
 export default RealEstateGeneratorPage;

@@ -11,85 +11,56 @@ interface AuthFormProps {
 const AuthForm = ({ action, buttonText, title }: AuthFormProps) => {
   const [state, formAction, pending] = useActionState(action, { success: true, message: "" });
   return (
-    <>
-      <form action={formAction} className="space-y-6">
-        <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">{title}</h2>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+    <form action={formAction} className="space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-semibold text-slate-900">{title}</h2>
+        <p className="text-sm text-slate-500">Welcome back to Aurora. Enter your credentials to access the studio.</p>
+      </div>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-semibold text-slate-900">
             Email address
           </label>
-          <div className="mt-2">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            className="h-11 w-full rounded-2xl border border-slate-200/80 bg-white/90 px-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-200/60"
+          />
         </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+        <div className="space-y-2">
+          <label htmlFor="password" className="text-sm font-semibold text-slate-900">
             Password
           </label>
-          <div className="mt-2">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            className="h-11 w-full rounded-2xl border border-slate-200/80 bg-white/90 px-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-200/60"
+          />
         </div>
+      </div>
 
-        {/* <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                      <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-700">
-                        Remember me
-                      </label>
-                    </div>
+      <button
+        type="submit"
+        disabled={pending}
+        className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-amber-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-fuchsia-400/40 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {pending ? "Loading..." : buttonText}
+      </button>
 
-                    <div className="text-sm leading-6">
-                      <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                        Forgot password?
-                      </a>
-                    </div>
-                  </div> */}
+      {state.success === false && state.message && (
+        <div className="rounded-2xl border border-red-200/60 bg-red-50/80 px-4 py-3 text-sm text-red-700">{state.message}</div>
+      )}
 
-        <div>
-          <button
-            type="submit"
-            disabled={pending}
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            {pending ? "Loading ... " : buttonText}
-          </button>
-        </div>
-        {/* General error message */}
-        {state.success === false && state.message && (
-          <div className="rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-800">{state.message}</p>
-          </div>
-        )}
-
-        {/* Success message (if needed) */}
-        {state.success === true && state.message && (
-          <div className="rounded-md bg-green-50 p-4">
-            <p className="text-sm text-green-800">{state.message}</p>
-          </div>
-        )}
-      </form>
-    </>
+      {state.success === true && state.message && (
+        <div className="rounded-2xl border border-green-200/60 bg-green-50/80 px-4 py-3 text-sm text-green-700">{state.message}</div>
+      )}
+    </form>
   );
 };
 

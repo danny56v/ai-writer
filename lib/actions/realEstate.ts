@@ -21,9 +21,6 @@ export async function genererateRealEstateDescription(
   const lotRaw       = formData.get("lot");
   const yearRaw      = formData.get("year");
   const description  = (formData.get("description") as string) || "";
-  const name         = (formData.get("name") as string) || "";
-  const email        = (formData.get("email") as string) || "";
-  const phone        = (formData.get("phone") as string) || "";
   const features   = formData.getAll("features").map(String); // ["pool","garage",...]
 
   // Normalizează numeric

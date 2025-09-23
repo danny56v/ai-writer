@@ -30,9 +30,9 @@ export default function ManageSubscriptionButton() {
     <button
       onClick={openPortal}
       disabled={loading}
-      className="px-4 py-2 rounded bg-blue-600 text-white"
+      className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-amber-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-fuchsia-400/40 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {loading ? "Loading..." : "Manage Subscription"}
+      {loading ? "Loading..." : "Manage subscription"}
     </button>
   );
 }
