@@ -325,17 +325,13 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                 Reset
               </button>
               <button type="submit" disabled={pending}
+
                 className="rounded-2xl bg-indigo-600 px-5 py-2.5 text-white disabled:opacity-60">
           {pending ? "Generating..." : "Preview / Publish"}
         </button>
             </div>
           </form>
         </div>
-
-        {/* micro footer */}
-        <p className="mx-auto mt-4 px-4 text-center text-xs text-gray-500">
-          UI optimizat pentru Safari / Chrome / Firefox (fără stiluri native <code>&lt;select&gt;</code>).
-        </p>
       </div>
       {/* </div> */}
     </>
