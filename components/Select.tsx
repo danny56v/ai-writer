@@ -1,3 +1,5 @@
+"use client";
+
 import { cx } from "@/lib/utils";
 import { Listbox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
@@ -13,10 +15,10 @@ function Select({
   return (
     <div>
       <div className="mb-1 flex items-center justify-between">
-        <label className="block text-sm font-medium text-gray-800">
+        <label className="block text-sm font-medium text-slate-900">
           {label}{required && <span className="text-red-500"> *</span>}
         </label>
-        {hint && <span className="text-xs text-gray-500">{hint}</span>}
+        {hint && <span className="text-xs text-slate-500">{hint}</span>}
       </div>
 
       {/* păstrăm valoarea la submit */}
@@ -27,14 +29,14 @@ function Select({
           <Listbox.Button
             className={cx(
               "group relative w-full h-11 cursor-default rounded-2xl",
-              "border border-gray-200 bg-white/90 pl-3 pr-10 text-left text-gray-900",
-              "shadow-sm transition hover:border-indigo-300 hover:bg-white",
-              "focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500"
+              "border border-[#e8defd] bg-white/90 pl-3 pr-10 text-left text-slate-900",
+              "shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)] transition hover:border-[#c2afff] hover:bg-white",
+              "focus:outline-none focus:ring-4 focus:ring-[#cabaff]/40 focus:border-[#c2afff]"
             )}
           >
-            <span className={cx("block truncate", !value && "text-gray-400")}>{display}</span>
+            <span className={cx("block truncate", !value && "text-slate-400")}>{display}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon className="h-5 w-5 text-gray-400 transition group-data-[headlessui-state=open]:rotate-180" />
+              <ChevronUpDownIcon className="h-5 w-5 text-slate-400 transition group-data-[headlessui-state=open]:rotate-180" />
             </span>
           </Listbox.Button>
 
@@ -42,7 +44,7 @@ function Select({
             <Listbox.Options
               className={cx(
                 "absolute z-20 mt-2 w-full max-h-64 overflow-auto rounded-2xl",
-                "border border-gray-100 bg-white/95 shadow-xl ring-1 ring-black/5 backdrop-blur-sm",
+                "border border-[#e8defd] bg-white/95 shadow-[0_24px_48px_-28px_rgba(32,5,94,0.2)] backdrop-blur-sm",
                 "focus:outline-none"
               )}
             >
@@ -53,17 +55,17 @@ function Select({
                   className={({ active, selected }) =>
                     cx(
                       "relative flex cursor-default select-none items-center gap-2 px-3 py-2.5",
-                      active ? "bg-indigo-50" : "",
-                      selected ? "text-indigo-700" : "text-gray-800"
+                      active ? "bg-[#f3ecff]" : "",
+                      selected ? "text-[#6b4dff]" : "text-slate-800"
                     )
                   }
                 >
                   {({ selected }) => (
                     <>
-                      {selected ? <CheckIcon className="h-5 w-5 shrink-0 text-indigo-600" /> : <span className="h-5 w-5 shrink-0" />}
+                      {selected ? <CheckIcon className="h-5 w-5 shrink-0 text-[#6b4dff]" /> : <span className="h-5 w-5 shrink-0" />}
                       <span className={cx("block truncate", selected ? "font-semibold" : "font-normal")}>{opt}</span>
                       {selected && (
-                        <span className="ml-auto inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">
+                        <span className="ml-auto inline-flex items-center rounded-full bg-[#f3ecff] px-2 py-0.5 text-xs font-medium text-[#6b4dff]">
                           Selected
                         </span>
                       )}

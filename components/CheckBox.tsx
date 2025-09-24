@@ -5,11 +5,11 @@ function Checkbox({ name, value, label }: { name: string; value: string; label: 
       <input type="checkbox" name={name} value={value} className="peer sr-only" />
       <div
         className={cx(
-          "flex items-center justify-center rounded-xl border px-3 py-2 text-sm shadow-sm transition",
-          "border-gray-200 bg-white text-gray-700",
-          "hover:border-indigo-300 hover:bg-indigo-50/50",
-          "peer-checked:bg-indigo-600 peer-checked:border-indigo-500 peer-checked:text-white",
-          "peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500"
+          "flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)] transition",
+          "border-[#e8defd] bg-white/90 text-slate-700",
+          "hover:border-[#c2afff] hover:bg-[#f3ecff]",
+          "peer-checked:bg-gradient-to-r peer-checked:from-[#6b4dff] peer-checked:via-[#ff47c5] peer-checked:to-[#ffb347] peer-checked:border-transparent peer-checked:text-white peer-checked:shadow-[0_20px_36px_-20px_rgba(112,64,255,0.85)]",
+          "peer-focus-visible:ring-2 peer-focus-visible:ring-[#cabaff]/60"
         )}
       >
         {label}

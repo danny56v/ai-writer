@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={cx("w-full", wrapperClass)}>
         {label && (
-          <label htmlFor={props.id} className="mb-1 block text-sm font-medium text-gray-800">
+          <label htmlFor={props.id} className="mb-1 block text-sm font-medium text-slate-900">
             {label} {props.required && <span className="text-red-500">*</span>}
           </label>
         )}
@@ -33,9 +33,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
             className={cx(
-              "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-              "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-              "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
+              "block w-full h-11 rounded-2xl border border-[#e8defd] bg-white/90 px-3 text-slate-900 shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)] transition",
+              "placeholder:text-slate-400 hover:border-[#c2afff] hover:bg-white",
+              "focus:border-[#c2afff] focus:outline-none focus:ring-4 focus:ring-[#cabaff]/40",
               iconLeft ? "pl-10" : "pl-3",
               iconRight ? "pr-10" : "pr-3",
               error && "border-red-500 focus:border-red-500 focus:ring-red-100",
@@ -46,7 +46,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {iconRight && <span className="absolute inset-y-0 right-3 flex items-center text-gray-400">{iconRight}</span>}
         </div>
 
-        {hint && !error && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
+        {hint && !error && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
         {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
       </div>
     );
