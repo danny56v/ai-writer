@@ -1,6 +1,7 @@
+"use client";
+
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
-
 
 interface SelectProps {
   value: string;
@@ -9,32 +10,32 @@ interface SelectProps {
   data: string[];
 }
 
-const SelectOld = ({value, onChange, label, data}: SelectProps) => {
+const SelectOld = ({ value, onChange, label, data }: SelectProps) => {
   return (
     <Listbox value={value} onChange={onChange}>
-      <Label className=" text-sm font-bold leading-6 text-gray-900">{label}</Label>
+      <Label className="text-sm font-semibold text-slate-900">{label}</Label>
       <div className="relative mt-2">
-        <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          <span className=" truncate">{value}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <ChevronUpDownIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />
+        <ListboxButton className="relative w-full cursor-default rounded-2xl border border-[#e8defd] bg-white/90 py-2.5 pl-4 pr-10 text-left text-sm font-medium text-slate-700 shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)] focus:outline-none focus:ring-4 focus:ring-[#cabaff]/40">
+          <span className="truncate">{value}</span>
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <ChevronUpDownIcon aria-hidden="true" className="h-5 w-5 text-slate-400" />
           </span>
         </ListboxButton>
 
         <ListboxOptions
           transition
-          className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
+          className="absolute z-10 mt-2 max-h-60 w-full overflow-auto rounded-2xl border border-[#e8defd] bg-white/95 py-2 text-sm shadow-[0_24px_48px_-28px_rgba(32,5,94,0.2)] backdrop-blur-sm focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in"
         >
           {data.map((item) => (
             <ListboxOption
               key={item}
               value={item}
-              className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+              className="group relative cursor-default select-none px-4 py-2 text-slate-700 data-[focus]:rounded-xl data-[focus]:bg-[#f3ecff] data-[focus]:text-[#6b4dff]"
             >
-              <span className="truncate font-normal group-data-[selected]:font-semibold">{item}</span>
+              <span className="truncate font-medium group-data-[selected]:text-[#6b4dff]">{item}</span>
 
-              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
-                <CheckIcon aria-hidden="true" className="h-5 w-5" />
+              <span className="absolute inset-y-0 right-4 flex items-center text-[#6b4dff] group-data-[focus]:text-[#6b4dff] [.group:not([data-selected])_&]:hidden">
+                <CheckIcon aria-hidden="true" className="h-5 w-5 text-[#6b4dff]" />
               </span>
             </ListboxOption>
           ))}

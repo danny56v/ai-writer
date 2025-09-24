@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Radio, RadioGroup, Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
+import { PlusSmallIcon } from "@heroicons/react/24/outline";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Testimonials from "@/components/Testimonials";
@@ -57,10 +57,30 @@ const pricing = {
 };
 
 const faqs = [
-  { question: "What's included in the Free plan?", answer: "The Free plan includes 3 articles per month, up to 1,500 words per article, and basic customization options." },
-  { question: "Can I upgrade or downgrade my plan anytime?", answer: "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle." },
-  { question: "Do you offer refunds?", answer: "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance." },
-  { question: "Is there a limit on article length?", answer: "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions." },
+  {
+    question: "What's included in the Free plan?",
+    answer:
+      "The Free plan includes 3 articles per month, up to 1,500 words per article, and basic customization options.",
+  },
+  {
+    question: "Can I upgrade or downgrade my plan anytime?",
+    answer: "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle.",
+  },
+  {
+    question: "Do you offer refunds?",
+    answer: "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance.",
+  },
+  {
+    question: "Is there a limit on article length?",
+    answer:
+      "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions.",
+  },
+];
+
+const valueProps = [
+  "Unlimited brand libraries",
+  "Real-time collaboration",
+  "Enterprise-ready security",
 ];
 
 function classNames(...classes: string[]) {
@@ -77,7 +97,7 @@ export default function Pricing() {
   useEffect(() => {
     if (status === "authenticated") {
       fetch("/api/subscription")
-        .then((res) => res.ok ? res.json() : Promise.reject())
+        .then((res) => (res.ok ? res.json() : Promise.reject()))
         .then((data) => setActivePriceId(data?.priceId ?? null))
         .catch(() => setActivePriceId(null));
     }
@@ -89,7 +109,6 @@ export default function Pricing() {
         throw new Error("Price ID is required for checkout");
       }
 
-      // dacă userul nu e logat, îl ducem la login și revenim la /pricing
       if (!session?.user?.email) {
         router.push("/sign-in?callbackUrl=/pricing");
         return;
@@ -121,32 +140,46 @@ export default function Pricing() {
   };
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-32 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-base font-semibold leading-7 text-indigo-600">Pricing</h1>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Pricing plans for teams of&nbsp;all&nbsp;sizes
+    <div className="relative py-12 sm:py-16">
+      <div className="absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_top,_rgba(203,186,255,0.35),transparent_65%)] blur-3xl" />
+
+      <section className="relative overflow-hidden rounded-[3.25rem] border border-white/70 bg-gradient-to-br from-[#ffffff]/95 via-[#f6f0ff]/95 to-[#fff1fb]/95 px-6 py-16 shadow-soft-xl backdrop-blur sm:px-10 lg:px-16">
+        <div className="absolute -left-24 top-20 h-56 w-56 rounded-full bg-gradient-to-br from-[#c4b0ff]/45 via-[#ff92d7]/35 to-transparent blur-3xl" aria-hidden="true" />
+        <div className="absolute -right-20 bottom-10 h-64 w-64 rounded-full bg-gradient-to-br from-[#ffc87f]/45 via-[#ff80cc]/35 to-transparent blur-3xl" aria-hidden="true" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.75),transparent_55%)]" aria-hidden="true" />
+
+        <div className="relative mx-auto max-w-4xl text-center">
+          <span className="glow-pill">Pricing</span>
+          <h1 className="mt-6 text-pretty text-4xl font-semibold text-[color:var(--foreground)] sm:text-5xl">
+            Choose the plan that keeps your storytelling brilliant
+          </h1>
+          <p className="mt-4 text-lg leading-8 text-slate-600">
+            Transparent tiers crafted for teams of all sizes. Switch between monthly and annual billing at any time.
           </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+            {valueProps.map((prop) => (
+              <span
+                key={prop}
+                className="rounded-full border border-[#d9cfff] bg-white/90 px-3 py-1 shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)]"
+              >
+                {prop}
+              </span>
+            ))}
+          </div>
         </div>
 
-        <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-          Choose an affordable plan that&apos;s packed with the best features for engaging your audience, creating
-          customer loyalty, and driving sales.
-        </p>
-
-        <div className="mt-16 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <fieldset aria-label="Payment frequency">
             <RadioGroup
               value={frequency}
               onChange={setFrequency}
-              className="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-gray-200"
+              className="grid grid-cols-2 gap-1 rounded-full bg-white/70 p-1 text-xs font-semibold text-slate-500 shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)]"
             >
               {pricing.frequencies.map((option) => (
                 <Radio
                   key={option.value}
                   value={option}
-                  className="cursor-pointer rounded-full px-2.5 py-1 text-gray-500 data-[checked]:bg-indigo-600 data-[checked]:text-white"
+                  className="cursor-pointer rounded-full px-4 py-2 transition data-[checked]:bg-[color:var(--foreground)] data-[checked]:text-white data-[checked]:shadow-[0_18px_32px_-20px_rgba(21,1,74,0.7)]"
                 >
                   {option.label}
                 </Radio>
@@ -155,7 +188,7 @@ export default function Pricing() {
           </fieldset>
         </div>
 
-        <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
+        <div className="relative mt-14 grid gap-8 lg:grid-cols-3">
           {pricing.tiers.map((tier) => {
             const tierPriceId = tier.priceId?.[frequency.value as "monthly" | "annually"] ?? null;
             const isCurrentPlan = !!tierPriceId && tierPriceId === activePriceId;
@@ -164,122 +197,134 @@ export default function Pricing() {
               <div
                 key={tier.id}
                 className={classNames(
-                  tier.mostPopular || isCurrentPlan ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
-                  "rounded-3xl p-8"
+                  "relative flex h-full flex-col overflow-hidden rounded-[2.75rem] border border-white/70 bg-white/90 p-8 shadow-[inset_0_1px_12px_rgba(255,255,255,0.75)] transition",
+                  tier.mostPopular
+                    ? "ring-2 ring-[#c2afff] shadow-[0_30px_70px_-40px_rgba(34,7,94,0.25)]"
+                    : "hover:-translate-y-1 hover:border-[#c2afff] hover:shadow-[0_30px_70px_-45px_rgba(34,7,94,0.2)]"
                 )}
               >
-                <h2
-                  id={tier.id}
-                  className={classNames(
-                    tier.mostPopular ? "text-indigo-600" : "text-gray-900",
-                    "text-lg font-semibold leading-8"
-                  )}
-                >
-                  {tier.name}
-                </h2>
-
-                <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
-
-                <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className="text-4xl font-bold tracking-tight text-gray-900">
-                    {tier.price[frequency.value as "monthly" | "annually"]}
+                {tier.mostPopular && (
+                  <span className="absolute left-1/2 top-0 -translate-y-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#6b4dff] via-[#ff47c5] to-[#ffb347] px-4 py-1 text-xs font-semibold text-white shadow-[0_24px_44px_-22px_rgba(110,71,255,0.85)]">
+                    Most loved
                   </span>
-                  <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
-                </p>
+                )}
+                <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-[#c2afff]/40 via-[#ff92d7]/30 to-[#ffb347]/40" aria-hidden="true" />
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <h2 id={tier.id} className="text-lg font-semibold text-slate-900">
+                      {tier.name}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{tier.description}</p>
+                  </div>
 
-                <button
-                  disabled={isCurrentPlan || loading}
-                  onClick={async () => {
-                    if (isCurrentPlan) return;
+                  <div className="mt-2 flex items-baseline gap-x-2">
+                    <span className="text-4xl font-semibold text-slate-900">
+                      {tier.price[frequency.value as "monthly" | "annually"]}
+                    </span>
+                    <span className="text-sm font-semibold text-slate-500">{frequency.priceSuffix}</span>
+                  </div>
 
-                    if (tier.name === "Free") {
-                      router.push("/sign-up");
-                      return;
-                    }
+                  <button
+                    disabled={isCurrentPlan || loading}
+                    onClick={async () => {
+                      if (isCurrentPlan) return;
 
-                    if (!tierPriceId) return;
-
-                    // dacă user-ul are deja un abonament diferit, deschide portalul
-                    if (activePriceId && activePriceId !== tierPriceId) {
-                      const resp = await fetch("/api/billing/portal", { method: "POST" });
-                      const data = await resp.json().catch(() => ({}));
-                      if (data?.url) {
-                        window.location.href = data.url;
-                      } else {
-                        alert("Could not open billing portal");
+                      if (tier.name === "Free") {
+                        router.push("/sign-up");
+                        return;
                       }
-                    } else {
-                      await handleCheckout(tierPriceId);
-                    }
-                  }}
-                  aria-describedby={tier.id}
-                  className={classNames(
-                    tier.mostPopular
-                      ? "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
-                      : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                    "mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer",
-                    (isCurrentPlan || loading) ? "opacity-50 cursor-not-allowed" : ""
-                  )}
-                >
-                  {isCurrentPlan ? "Current plan" : tier.name === "Free" ? "Get Started" : (loading ? "Processing..." : "Buy plan")}
-                </button>
 
-                <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                      if (!tierPriceId) return;
+
+                      if (activePriceId && activePriceId !== tierPriceId) {
+                        const resp = await fetch("/api/billing/portal", { method: "POST" });
+                        const data = await resp.json().catch(() => ({}));
+                        if (data?.url) {
+                          window.location.href = data.url;
+                        } else {
+                          alert("Could not open billing portal");
+                        }
+                      } else {
+                        await handleCheckout(tierPriceId);
+                      }
+                    }}
+                    aria-describedby={tier.id}
+                    className={classNames(
+                      "mt-6 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                      tier.mostPopular
+                        ? "bg-gradient-to-r from-[#6b4dff] via-[#ff47c5] to-[#ffb347] text-white shadow-[0_24px_44px_-22px_rgba(110,71,255,0.85)] hover:opacity-95"
+                        : "border border-[#d9cfff] bg-white/90 text-[#6b4dff] hover:border-[#c2afff] hover:text-[#6b4dff]",
+                      (isCurrentPlan || loading) ? "cursor-not-allowed opacity-60" : ""
+                    )}
+                  >
+                    {isCurrentPlan
+                      ? "Current plan"
+                      : tier.name === "Free"
+                      ? "Get started"
+                      : loading
+                      ? "Processing..."
+                      : "Choose plan"}
+                  </button>
+
+                  <ul role="list" className="mt-6 space-y-3 text-sm leading-6 text-slate-600">
+                    {tier.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-3">
+                        <CheckIcon aria-hidden="true" className="h-5 w-5 text-[#6b4dff]" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             );
           })}
         </div>
+      </section>
 
-        {/* Logo cloud */}
-        <div className="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8">
-          <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <Image alt="Transistor" src="/transistor-horizontal-logo.svg" width={158} height={48} className="col-span-2 max-h-12 w-full object-contain lg:col-span-1" />
-            <Image alt="Microsoft" src="/microsoft.svg" width={158} height={48} className="col-span-2 max-h-12 w-full object-contain lg:col-span-1" />
-            <Image alt="Uber" src="/uber.svg" width={158} height={48} className="col-span-2 max-h-12 w-full object-contain lg:col-span-1" />
-            <Image alt="Stripe" src="/stripe-3.svg" width={158} height={48} className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1" />
-            <Image alt="Statamic" src="/statamic.svg" width={158} height={48} className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1" />
-          </div>
-          <div className="mt-16 flex justify-center">
-            <p className="relative rounded-full bg-gray-50 px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/5">
-              <span className="hidden md:inline">Trusted by thousands of content creators worldwide.</span>
-            </p>
-          </div>
+      <section className="relative mt-20 rounded-[3.25rem] border border-white/70 bg-white/90 px-6 py-12 shadow-soft-xl backdrop-blur sm:px-10">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 items-center gap-6 sm:grid-cols-3 lg:grid-cols-5">
+          <Image alt="Transistor" src="/transistor-horizontal-logo.svg" width={158} height={48} className="mx-auto h-10 w-auto opacity-80" />
+          <Image alt="Microsoft" src="/microsoft.svg" width={158} height={48} className="mx-auto h-10 w-auto opacity-80" />
+          <Image alt="Uber" src="/uber.svg" width={158} height={48} className="mx-auto h-10 w-auto opacity-80" />
+          <Image alt="Stripe" src="/stripe-3.svg" width={158} height={48} className="mx-auto h-10 w-auto opacity-80" />
+          <Image alt="Statamic" src="/statamic.svg" width={158} height={48} className="mx-auto h-10 w-auto opacity-80" />
         </div>
+        <p className="mt-8 text-center text-sm font-medium text-slate-500">
+          Trusted by design-forward teams around the world
+        </p>
+      </section>
 
-        <Testimonials />
+      <Testimonials />
 
-        {/* FAQ */}
-        <div className="mx-auto my-24 max-w-7xl px-6 sm:my-56 lg:px-8">
-          <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-            <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
-            <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-              {faqs.map((faq) => (
-                <Disclosure key={faq.question} as="div" className="pt-6">
-                  <dt>
-                    <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
-                      <span className="text-base font-semibold leading-7">{faq.question}</span>
-                      <span className="ml-6 flex h-7 items-center">
-                        <PlusSmallIcon aria-hidden="true" className="h-6 w-6 group-data-[open]:hidden" />
-                        <MinusSmallIcon aria-hidden="true" className="h-6 w-6 [.group:not([data-open])_&]:hidden" />
-                      </span>
-                    </DisclosureButton>
-                  </dt>
-                  <DisclosurePanel as="dd" className="mt-2 pr-12">
-                    <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
-                  </DisclosurePanel>
-                </Disclosure>
-              ))}
-            </dl>
-          </div>
+      <section className="relative mt-24 overflow-hidden rounded-[3.25rem] border border-white/70 bg-white/90 px-6 py-16 shadow-soft-xl backdrop-blur sm:px-10 lg:px-16">
+        <div className="absolute -left-16 top-10 h-48 w-48 rounded-full bg-gradient-to-br from-[#c4b0ff]/45 via-[#ff92d7]/35 to-transparent blur-3xl" aria-hidden="true" />
+        <div className="absolute -right-24 bottom-10 h-60 w-60 rounded-full bg-gradient-to-br from-[#ffc87f]/45 via-[#ff80cc]/35 to-transparent blur-3xl" aria-hidden="true" />
+        <div className="relative mx-auto max-w-3xl">
+          <h2 className="text-3xl font-semibold text-[color:var(--foreground)] sm:text-4xl">Frequently asked questions</h2>
+          <p className="mt-3 text-base text-slate-600">Everything you need to know about billing, licensing and support.</p>
+          <dl className="mt-10 space-y-4">
+            {faqs.map((faq) => (
+              <Disclosure key={faq.question} as="div" className="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-[inset_0_1px_10px_rgba(255,255,255,0.7)]">
+                {({ open }) => (
+                  <>
+                    <dt>
+                      <DisclosureButton className="flex w-full items-center justify-between text-left">
+                        <span className="text-sm font-semibold text-slate-900">{faq.question}</span>
+                        <span className="ml-4 flex h-7 w-7 items-center justify-center rounded-full border border-[#d9cfff] bg-white text-slate-500">
+                          <PlusSmallIcon aria-hidden="true" className={classNames("h-4 w-4 transition", open ? "rotate-45" : "")} />
+                        </span>
+                      </DisclosureButton>
+                    </dt>
+                    <DisclosurePanel as="dd" className="mt-4 text-sm leading-6 text-slate-600">
+                      {faq.answer}
+                    </DisclosurePanel>
+                  </>
+                )}
+              </Disclosure>
+            ))}
+          </dl>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
