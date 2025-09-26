@@ -26,27 +26,32 @@ export async function getEffectivePlan(userId: string): Promise<{
 
 export async function getUserPlan(
   userId: string
-): Promise<{ planType: PlanKey; currentPeriodEnd: Date | null; status: SubscriptionStatus }> {
+): Promise<{ planType: PlanKey; currentPeriodEnd: Date | null; status: SubscriptionStatus; priceId: string | null }> {
   const d = await db();
   const plan = await d
     .collection("subscriptions")
-    .findOne({ userId }, { projection: { planType: 1, currentPeriodEnd: 1, status: 1 } });
+    .findOne({ userId }, { projection: { planType: 1, currentPeriodEnd: 1, status: 1, priceId: 1, stripePriceId: 1 } });
   console.log("User Plan from DB:", plan);
+  const resolvedPriceId = (plan?.priceId as string | undefined) ?? (plan?.stripePriceId as string | undefined) ?? null;
   return plan
     ? {
         planType: plan.planType as PlanKey,
         currentPeriodEnd: plan.currentPeriodEnd,
         status: plan.status as SubscriptionStatus,
+        priceId: resolvedPriceId,
       }
     : {
         planType: "free",
         currentPeriodEnd: null,
         status: "free" as SubscriptionStatus,
+        priceId: null,
       };
 }
 
 export async function getUserPriceId(userId: string) {
   const d = await db();
-  const subscription = await d.collection("subscriptions").findOne({ userId }, { projection: { priceId: 1 } });
-  return subscription?.priceId || null;
+  const subscription = await d
+    .collection("subscriptions")
+    .findOne({ userId }, { projection: { priceId: 1, stripePriceId: 1 } });
+  return (subscription?.priceId as string | undefined) ?? (subscription?.stripePriceId as string | undefined) ?? null;
 }

@@ -1,10 +1,220 @@
 "use server";
 
 import OpenAI from "openai";
+import { ObjectId } from "mongodb";
+
+import { auth } from "@/auth";
+import { db } from "@/lib/db";
+import { getUserPlan } from "@/lib/billing";
+import type { PlanKey } from "@/lib/plans";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export type RealEstateDescriptionState = { text: string; error?: string };
+
+const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
+  free: 3,
+  pro_monthly: 50,
+  pro_yearly: 50,
+  unlimited_monthly: null,
+  unlimited_yearly: null,
+};
+
+function getPlanPeriodKey(planType: PlanKey, currentPeriodEnd: Date | null) {
+  if (REAL_ESTATE_LIMITS[planType] === null) {
+    return `${planType}-unlimited`;
+  }
+
+  if (planType === "free") {
+    const now = new Date();
+    const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+    return `${planType}-${now.getUTCFullYear()}-${month}`;
+  }
+
+  if (currentPeriodEnd) {
+    const end = currentPeriodEnd instanceof Date ? currentPeriodEnd : new Date(currentPeriodEnd);
+    if (!Number.isNaN(end.getTime())) {
+      return `${planType}-${end.toISOString()}`;
+    }
+  }
+
+  const now = new Date();
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  return `${planType}-${now.getUTCFullYear()}-${month}`;
+}
+
+async function consumeRealEstateQuota(userId: string, planType: PlanKey, currentPeriodEnd: Date | null) {
+  const limit = REAL_ESTATE_LIMITS[planType] ?? REAL_ESTATE_LIMITS.free;
+  const periodKey = getPlanPeriodKey(planType, currentPeriodEnd);
+  const database = await db();
+  const users = database.collection("users");
+  const userObjectId = new ObjectId(userId);
+  const now = new Date();
+
+  if (limit === null) {
+    await users.updateOne(
+      { _id: userObjectId },
+      {
+        $set: {
+          "usage.realEstate": {
+            planType,
+            limit: null,
+            used: null,
+            periodKey,
+            updatedAt: now,
+          },
+        },
+      }
+    );
+    return { ok: true as const, limit: null, remaining: null };
+  }
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const current = await users.findOne<{
+      usage?: { realEstate?: { planType?: string; used?: number; periodKey?: string } };
+    }>({ _id: userObjectId }, { projection: { "usage.realEstate": 1 } });
+
+    const usage = current?.usage?.realEstate;
+    const samePlan = usage?.planType === planType;
+    const samePeriod = usage?.periodKey === periodKey;
+
+    console.log("[real-estate] consume", {
+      userId,
+      planType,
+      periodKey,
+      limit,
+      attempt,
+      usage,
+    });
+
+    if (!samePlan || !samePeriod || typeof usage?.used !== "number") {
+      const initialUsed = 1;
+      await users.updateOne(
+        { _id: userObjectId },
+        {
+          $set: {
+            "usage.realEstate": {
+              planType,
+              limit,
+              used: initialUsed,
+              periodKey,
+              updatedAt: now,
+            },
+          },
+        }
+      );
+      return { ok: true as const, limit, remaining: Math.max(limit - initialUsed, 0) };
+    }
+
+    if (usage.used >= limit) {
+      return {
+        ok: false as const,
+        error: `Ai folosit toate cele ${limit} generări incluse în planul tău.`,
+      };
+    }
+
+    const nextUsed = usage.used + 1;
+    const updated = await users.findOneAndUpdate(
+      {
+        _id: userObjectId,
+        "usage.realEstate.planType": planType,
+        "usage.realEstate.periodKey": periodKey,
+        "usage.realEstate.used": usage.used,
+      },
+      {
+        $set: {
+          "usage.realEstate": {
+            planType,
+            limit,
+            used: nextUsed,
+            periodKey,
+            updatedAt: now,
+          },
+        },
+      },
+      { returnDocument: "after" }
+    );
+
+    if (updated) {
+      console.log("[real-estate] consume -> ok", {
+        userId,
+        planType,
+        periodKey,
+        limit,
+        usedBefore: usage.used,
+        usedAfter: nextUsed,
+      });
+      return { ok: true as const, limit, remaining: Math.max(limit - nextUsed, 0) };
+    }
+  }
+
+  return {
+    ok: false as const,
+    error: "Nu am putut rezerva o generare în acest moment. Încearcă din nou.",
+  };
+}
+
+async function restoreRealEstateQuota(userId: string, planType: PlanKey, currentPeriodEnd: Date | null) {
+  const limit = REAL_ESTATE_LIMITS[planType] ?? REAL_ESTATE_LIMITS.free;
+  if (limit === null) return;
+
+  const periodKey = getPlanPeriodKey(planType, currentPeriodEnd);
+  const database = await db();
+  const users = database.collection("users");
+  const userObjectId = new ObjectId(userId);
+  const now = new Date();
+
+  const current = await users.findOne<{
+    usage?: { realEstate?: { used?: number; planType?: string; periodKey?: string; limit?: number } };
+  }>({ _id: userObjectId }, { projection: { "usage.realEstate": 1 } });
+
+  const usage = current?.usage?.realEstate;
+  const samePlan = usage?.planType === planType;
+  const samePeriod = usage?.periodKey === periodKey;
+
+  console.log("[real-estate] restore", {
+    userId,
+    planType,
+    periodKey,
+    limit,
+    usage,
+  });
+
+  if (!samePlan || !samePeriod || typeof usage?.used !== "number") {
+    await users.updateOne(
+      { _id: userObjectId },
+      {
+        $set: {
+          "usage.realEstate": {
+            planType,
+            limit,
+            used: 0,
+            periodKey,
+            updatedAt: now,
+          },
+        },
+      }
+    );
+    return;
+  }
+
+  const restored = Math.max(usage.used - 1, 0);
+
+  await users.updateOne(
+    { _id: userObjectId },
+    {
+      $set: {
+        "usage.realEstate": {
+          planType,
+          limit,
+          used: restored,
+          periodKey,
+          updatedAt: now,
+        },
+      },
+    }
+  );
+}
 
 export async function genererateRealEstateDescription(
   _prev: RealEstateDescriptionState,
@@ -75,6 +285,20 @@ Instructions:
 5) 120–200 words in 2–3 short paragraphs.
 `;
 
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return { text: "", error: "Trebuie să fii autentificat pentru a folosi generatorul." };
+  }
+
+  const userPlan = await getUserPlan(userId);
+  const planType = userPlan.planType;
+
+  const quota = await consumeRealEstateQuota(userId, planType, userPlan.currentPeriodEnd ?? null);
+  if (!quota.ok) {
+    return { text: "", error: quota.error };
+  }
+
   try {
     const resp = await openai.responses.create({
       model: "gpt-5-mini",
@@ -90,10 +314,10 @@ Instructions:
     const text = resp.output_text?.trim() || "";
 
     if (!text) return { text: "", error: "Empty response from model." };
-
     return { text };
   } catch (err) {
     console.error("Error generating description:", err);
+    await restoreRealEstateQuota(userId, planType, userPlan.currentPeriodEnd ?? null);
     return { text: "", error: "An unexpected error occurred. Please try again later." };
   }
 }

@@ -5,20 +5,14 @@ import { auth } from "@/auth";
 
 const RealEstateGeneratorPage = async () => {
   const session = await auth();
-  const userId = session?.user?.id;
-  
+  const userId = session?.user?.id ?? null;
 
-  if (!userId) {
-    return (
-      <div className="text-center text-red-500">
-        Ești neautentificat. Te rugăm să te autentifici pentru a accesa această pagină.
-      </div>
-    );
-  }
-  const userPlan = await getUserPlan(userId);
+  const defaultPlan = { planType: "free", currentPeriodEnd: null, status: "free" } as const;
+  const userPlan = userId ? await getUserPlan(userId) : defaultPlan;
+
   return (
     <>
-      <RealEstateClient userPlan={userPlan}/>
+      <RealEstateClient userPlan={userPlan} isAuthenticated={Boolean(userId)} />
     </>
   );
 };

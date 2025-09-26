@@ -1,4 +1,6 @@
 import React, { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Input from "../Input";
 import Select from "../Select";
 import Checkbox from "../CheckBox";
@@ -8,8 +10,10 @@ import { genererateRealEstateDescription } from "@/lib/actions/realEstate";
 type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 interface RealEstateFormProps {
   userPlan: Plan;
+  isAuthenticated: boolean;
   onOpen: () => void;
   onResult: (t: string) => void;
+  onLoadingChange?: (value: boolean) => void;
 }
 
 const PROPERTY_TYPES = [
@@ -32,22 +36,72 @@ function cx(...c: Array<string | false | null | undefined>) {
   return c.filter(Boolean).join(" ");
 }
 
-const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => {
+const amenitiesValues = AMENITIES.map((a) => a.toLowerCase());
+
+function createEmptyFormValues() {
+  return {
+    location: "",
+    price: "",
+    area: "",
+    lot: "",
+    year: "",
+    description: "",
+    name: "",
+    email: "",
+    phone: "",
+    amenities: [] as string[],
+  };
+}
+
+const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoadingChange }: RealEstateFormProps) => {
+  const router = useRouter();
+  const { status } = useSession();
   const [propertyType, setPropertyType] = useState<string | null>(null);
   const [bedrooms, setBedrooms] = useState<string | null>(null);
   const [bathrooms, setBathrooms] = useState<string | null>(null);
   const [listingType, setListingType] = useState<"sale" | "rent">("sale");
 
-    const [state, formAction, pending] = useActionState(genererateRealEstateDescription, { text: "" });
+  const [formValues, setFormValues] = useState(createEmptyFormValues);
+
+  const [state, formAction, pending] = useActionState(genererateRealEstateDescription, { text: "" });
+
+  useEffect(() => {
+    onLoadingChange?.(pending);
+  }, [pending, onLoadingChange]);
+
+  const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const toggleAmenity = (value: string) => {
+    setFormValues((prev) => {
+      const exists = prev.amenities.includes(value);
+      return {
+        ...prev,
+        amenities: exists ? prev.amenities.filter((item) => item !== value) : [...prev.amenities, value],
+      };
+    });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!isAuthenticated && status !== "authenticated") {
+      event.preventDefault();
+      router.push("/sign-in?callbackUrl=/real-estate-generator");
+      return;
+    }
+
+    onOpen();
+    onLoadingChange?.(true);
+  };
 
 
 
     useEffect(() => {
     if (state.text) {
       onResult?.(state.text);
-      onOpen();
     }
-  }, [state.text, onOpen, onResult]);
+  }, [state.text, onResult]);
 
 
   return (
@@ -65,7 +119,7 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
           </div>
 
           {/* Form */}
-          <form className="px-4 sm:px-6 py-6" action={formAction}>
+          <form className="px-4 sm:px-6 py-6" action={formAction} onSubmit={handleSubmit}>
             {/* Grid principal: 1 col pe mobil, 3 coloane cu minim la md+ */}
             <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
               {/* Secțiune 3 câmpuri: 1 col pe mobil, 3 la md+ */}
@@ -88,19 +142,22 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                   type="text"
                   placeholder="ex. Victoria St, London, UK"
                   required
-                  hint={userPlan.planType === "free" ? "Available in Pro plan." : undefined}
-                  disabled={userPlan.planType === "free"}
                   className="w-full"
+                  value={formValues.location}
+                  onChange={handleFieldChange}
                 />
 
                 <Input
                   label="Price (USD)"
                   name="price"
                   type="number"
+                  inputMode="numeric"
                   placeholder="0"
                   required
                   hint="In USD"
                   className="w-full"
+                  value={formValues.price}
+                  onChange={handleFieldChange}
                 />
               </div>
 
@@ -164,6 +221,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                     type="number"
                     min={0}
                     placeholder="e.g., 75"
+                    value={formValues.area}
+                    onChange={handleFieldChange}
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -188,6 +247,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                     type="number"
                     min={0}
                     placeholder="e.g., 300"
+                    value={formValues.lot}
+                    onChange={handleFieldChange}
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -205,19 +266,21 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                 <label htmlFor="year" className="mb-1 block text-sm font-medium text-gray-800">
                   Year built
                 </label>
-                <input
-                  id="year"
-                  name="year"
-                  type="number"
-                  min={1800}
-                  max={2025}
-                  placeholder="e.g., 2015"
-                  className={cx(
-                    "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                    "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-                    "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
-                  )}
-                />
+                  <input
+                    id="year"
+                    name="year"
+                    type="number"
+                    min={1800}
+                    max={2025}
+                    placeholder="e.g., 2015"
+                    value={formValues.year}
+                    onChange={handleFieldChange}
+                    className={cx(
+                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
+                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                    )}
+                  />
               </div>
             </div>
 
@@ -225,8 +288,15 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
             <div className="mt-8">
               <span className="mb-2 block text-sm font-medium text-gray-800">Features</span>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                {AMENITIES.map((a) => (
-                  <Checkbox key={a} name="amenities" value={a.toLowerCase()} label={a} />
+                {amenitiesValues.map((amenity, index) => (
+                  <Checkbox
+                    key={amenity}
+                    name="amenities"
+                    value={amenity}
+                    label={AMENITIES[index]}
+                    checked={formValues.amenities.includes(amenity)}
+                    onChange={() => toggleAmenity(amenity)}
+                  />
                 ))}
               </div>
             </div>
@@ -241,6 +311,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                 name="description"
                 rows={5}
                 placeholder="Add relevant details about the property…"
+                value={formValues.description}
+                onChange={handleFieldChange}
                 className={cx(
                   "block w-full rounded-2xl border border-gray-200 bg-white/90 px-3 py-2 text-gray-900 shadow-sm transition",
                   "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -262,6 +334,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                     name="name"
                     type="text"
                     placeholder="Full name"
+                    value={formValues.name}
+                    onChange={handleFieldChange}
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -279,6 +353,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                     name="email"
                     type="email"
                     placeholder="e.g., name@email.com"
+                    value={formValues.email}
+                    onChange={handleFieldChange}
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -296,6 +372,8 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                     name="phone"
                     type="tel"
                     placeholder="+373 60 000 000"
+                    value={formValues.phone}
+                    onChange={handleFieldChange}
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
@@ -320,6 +398,7 @@ const RealEstateForm = ({ userPlan, onOpen, onResult }: RealEstateFormProps) => 
                   setBedrooms(null);
                   setBathrooms(null);
                   setListingType("sale");
+                  setFormValues(createEmptyFormValues());
                 }}
               >
                 Reset

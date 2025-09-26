@@ -1,6 +1,6 @@
 "use client";
 
-import React, {  useState } from "react";
+import React, { useState } from "react";
 
 
 
@@ -11,16 +11,17 @@ type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 
 interface Props {
   userPlan: Plan;
+  isAuthenticated: boolean;
 }
 
 
 
-const RealEstateClient = ({ userPlan }: Props) => {
+const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
-   const [result, setResult] = useState("");
 
- 
   return (
     <>
       <div className="mx-auto max-w-full px-4 py-8  bg-gradient-to-br from-sky-50 via-white to-indigo-50">
@@ -35,8 +36,17 @@ const RealEstateClient = ({ userPlan }: Props) => {
           >
             <RealEstateForm
               userPlan={userPlan}
-              onOpen={() => setIsOpen(true)}
-       onResult={setResult}
+              isAuthenticated={isAuthenticated}
+              onOpen={() => {
+                setIsOpen(true);
+                setResult("");
+                setLoading(true);
+              }}
+              onLoadingChange={setLoading}
+              onResult={(value) => {
+                setResult(value);
+                setLoading(false);
+              }}
             />
           </div>
           <div
@@ -53,6 +63,7 @@ const RealEstateClient = ({ userPlan }: Props) => {
             <RealEstateResponse
               onClose={() => setIsOpen(false)}
               text={result}
+              loading={loading}
              
             />
           </div>

@@ -5,8 +5,8 @@ import { auth } from "@/auth";
 import { signOutAction } from "@/lib/actions/auth";
 
 const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
+  { name: "Real Estate", href: "/real-estate-generator" },
+  { name: "Article Writer", href: "/article-writer" },
   { name: "Pricing", href: "/pricing" },
   { name: "Company", href: "#" },
 ];

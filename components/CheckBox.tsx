@@ -1,8 +1,23 @@
 import { cx } from "@/lib/utils";
-function Checkbox({ name, value, label }: { name: string; value: string; label: string }) {
+type Props = {
+  name: string;
+  value: string;
+  label: string;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+};
+
+function Checkbox({ name, value, label, checked, onChange }: Props) {
   return (
     <label className="cursor-pointer">
-      <input type="checkbox" name={name} value={value} className="peer sr-only" />
+      <input
+        type="checkbox"
+        name={name}
+        value={value}
+        className="peer sr-only"
+        checked={checked}
+        onChange={(event) => onChange?.(event.target.checked)}
+      />
       <div
         className={cx(
           "flex items-center justify-center rounded-xl border px-3 py-2 text-sm shadow-sm transition",
