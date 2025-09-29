@@ -168,12 +168,13 @@ export default function Pricing({ currentPriceId }: Props) {
                     activePriceId &&
                       (tier.priceId?.monthly === activePriceId || tier.priceId?.annually === activePriceId)
                   );
+            const isHighlighted = tier.mostPopular;
 
             return (
               <div
                 key={tier.id}
                 className={classNames(
-                  tier.mostPopular || isCurrentPlan ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
+                  isHighlighted ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
                   "rounded-3xl p-8"
                 )}
               >

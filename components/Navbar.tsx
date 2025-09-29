@@ -5,8 +5,10 @@ import { auth } from "@/auth";
 import { signOutAction } from "@/lib/actions/auth";
 
 const navigation = [
+  { name: "Home", href: "/" },
   { name: "Real Estate", href: "/real-estate-generator" },
   { name: "Article Writer", href: "/article-writer" },
+  { name: "About", href: "/about" },
   { name: "Pricing", href: "/pricing" },
   { name: "Company", href: "#" },
 ];
@@ -29,7 +31,7 @@ const Navbar = async () => {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="#" className="-m-1.5 p-1.5">
+            <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               {/* Logo aici */}
             </Link>
