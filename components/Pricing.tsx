@@ -160,7 +160,7 @@ export default function Pricing({ currentPriceId }: Props) {
           {pricing.tiers.map((tier) => {
     const tierPriceId = tier.priceId?.[frequency.value] ?? null;
 
-            // Free = current dacă NU există priceId activ
+            // The "Free" tier is the current plan only when no active price ID exists
             const isCurrentPlan =
               tier.name === "Free"
                 ? !activePriceId
@@ -206,7 +206,7 @@ export default function Pricing({ currentPriceId }: Props) {
                     }
                     if (!tierPriceId) return;
 
-                    // dacă are deja alt abonament (oricare din cele 2 priceId ale tierului curent ≠ active)
+                    // If the user already has a different subscription (any priceId other than this tier’s options)
                     const switchingToDifferentPrice =
                       activePriceId &&
                       activePriceId !== tierPriceId &&

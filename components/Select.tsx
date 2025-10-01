@@ -19,7 +19,7 @@ function Select({
         {hint && <span className="text-xs text-gray-500">{hint}</span>}
       </div>
 
-      {/* păstrăm valoarea la submit */}
+      {/* keep the selected value when submitting the form */}
       <input type="hidden" name={name} value={value ?? ""} />
 
       <Listbox value={value} onChange={onChange}>

@@ -9,21 +9,21 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   try {
-    // Folosește getToken care funcționează în Edge Runtime
+    // Use getToken, which works inside the Edge Runtime
     const token = await getToken({ 
       req: request,
       secret: process.env.AUTH_SECRET 
     });
 
-    // Verifică dacă utilizatorul este autentificat
+    // Check if the user is authenticated
     const isAuthenticated = !!token;
 
-    // Dacă utilizatorul este autentificat și încearcă să acceseze pagini de auth
+    // If an authenticated user tries to reach auth pages, send them home
     if (isAuthenticated && authRoutes.includes(pathname)) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    // Dacă utilizatorul nu este autentificat și încearcă să acceseze rute protejate
+    // Redirect unauthenticated users away from protected routes
     if (!isAuthenticated && protectedRoutes.some((route) => pathname.startsWith(route))) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   } catch (error) {
     console.error("Middleware error:", error);
-    // În caz de eroare, permite accesul (fallback)
+    // In case of an unexpected error, allow the request (fallback)
     return NextResponse.next();
   }
 }

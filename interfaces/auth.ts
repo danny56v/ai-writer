@@ -6,4 +6,6 @@ export interface ActionState {
     email?: string[];
     password?: string[];
   };
+  allowResend?: boolean;
+  email?: string;
 }

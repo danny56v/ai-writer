@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -156,8 +155,6 @@ function GradientCard({ className }: { className?: string }) {
 export default async function AboutPage() {
   return (
     <div className="bg-white text-gray-900">
-      <Navbar />
-
       <main className="isolate">
         {/* Hero section */}
         <section className="relative isolate -z-10">
@@ -179,7 +176,7 @@ export default async function AboutPage() {
           </div>
 
           <div className="overflow-hidden">
-            <div className="mx-auto max-w-7xl px-6 pb-32 pt-32 sm:pt-48 lg:px-8 lg:pt-32">
+            <div className="mx-auto max-w-7xl px-6 pb-24 pt-24 sm:pt-36 lg:px-8 lg:pt-28">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About ScriptNest</p>
@@ -406,4 +403,3 @@ export default async function AboutPage() {
     </div>
   );
 }
-

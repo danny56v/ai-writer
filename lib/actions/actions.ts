@@ -6,7 +6,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// Definim tipurile pentru tone și alte opțiuni (sincronizate cu front-end)
+// Define tone and option types (kept in sync with the front end)
 type ToneType = "Professional" | "Neutral" | "Friendly" | "Technical" | "Optimistic" | "Casual" | "Humorous";
 type LengthType = "Short" | "Medium" | "Long";
 type AudienceType = "General Audience" | "Students" | "Developers" | "Journalists" | "Investors" | "Entrepreneurs" | "Researchers" | "Parents" | "Consumers" | "Healthcare Professionals";
@@ -37,7 +37,7 @@ export const GeneratePrompt = async (
     keywords: formData.get("keywords")?.toString() || "",
   };
 
-  // Mapare pentru lungime mai precisă
+  // Map target length to approximate word range
   const lengthMapping: Record<LengthType, string> = {
     "Short": "400-600 words",
     "Medium": "700-1000 words", 
@@ -103,24 +103,24 @@ Write the article now, ensuring it sounds like it was written by a seasoned jour
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.8, // Crescut pentru mai multă creativitate
-      max_tokens: 2000, // Crescut pentru articole mai detaliate
-      presence_penalty: 0.1, // Evită repetițiile
-      frequency_penalty: 0.1, // Încurajează vocabular variat
+      temperature: 0.8, // Slightly higher for more creative phrasing
+      max_tokens: 2000, // Allow longer, in-depth articles
+      presence_penalty: 0.1, // Reduce repetitive talking points
+      frequency_penalty: 0.1, // Encourage varied vocabulary
     });
 
-    console.log("ARTICOL:", response.choices[0].message.content);
-  
+    console.log("ARTICLE:", response.choices[0].message.content);
+
     return {
       success: true,
-      message: "Articol generat cu succes.",
-      response: response.choices[0].message.content || "", 
+      message: "Article generated successfully.",
+      response: response.choices[0].message.content || "",
     };
   } catch (error) {
     console.error("Error generating article:", error);
     return {
       success: false,
-      message: "Eroare la generarea articolului.",
+      message: "We couldn’t generate the article. Please try again.",
       response: "",
     };
   }

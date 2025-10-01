@@ -30,12 +30,39 @@ export interface Subscription {
   updatedAt: Date;
 }
 
+export interface InvoiceItem {
+  id: string;
+  description: string | null;
+  amount: number;
+  currency: string;
+  periodStart?: Date | null;
+  periodEnd?: Date | null;
+  metadata?: Record<string, string | number | null>;
+}
+
+export interface Invoice {
+  id: string;
+  status: "draft" | "open" | "paid" | "uncollectible" | "void";
+  amountDue: number;
+  amountPaid: number;
+  currency: string;
+  created: Date;
+  hostedInvoiceUrl?: string | null;
+  pdfUrl?: string | null;
+  periodStart?: Date | null;
+  periodEnd?: Date | null;
+  total: number;
+  subtotal: number;
+  items: InvoiceItem[];
+  metadata?: Record<string, string | number | null>;
+}
+
 export interface User {
   _id: ObjectId;
   email: string;
   name?: string;
   image?: string;
-  stripeCustomerId?: string; // opțional până la primul checkout
+  stripeCustomerId?: string; // optional until the first checkout completes
   createdAt: Date;
   updatedAt: Date;
 }
@@ -59,7 +86,7 @@ export interface Tool {
   name: string;
   descriptiom?: string;
   unitType: UnitType;
-  entitlements: ToolEntitlement[]; // ce planuri au acces la tool-ul ăsta
+  entitlements: ToolEntitlement[]; // which plans can use this tool
   createdAt: Date;
   updatedAt: Date;
 }
@@ -67,6 +94,6 @@ export interface Tool {
 export interface ToolEntitlement {
   toolId: ObjectId | string;
   planType: PlanKey; // "free" e permis aici
-  freeUnitsPerMonth: number; // ex: 3 articole/lună
-  maxWordsPerArticle?: number; // opțional, ex: 1500 cuvinte/articol
+  freeUnitsPerMonth: number; // e.g. 3 articles per month
+  maxWordsPerArticle?: number; // optional, e.g. 1500 words per article
 }

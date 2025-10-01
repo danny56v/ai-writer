@@ -19,7 +19,7 @@
 // /** Cheia lunii curente */
 // function ym(d = new Date()) { return { year: d.getFullYear(), month: d.getMonth() }; }
 
-// /** Citește usage-ul pe luna curentă (fallback 0) */
+// /** Utility helpers for usage tracking */
 // export async function getMonthlyUsage(userId: string) {
 //   const d = await db();
 //   const { year, month } = ym();
@@ -27,18 +27,18 @@
 //   return doc ?? { userId, year, month, articles: 0, words: 0 };
 // }
 
-// /** Verifică limitele înainte de generare */
+// /** Check usage limits before generating content */
 // export async function canGenerate(userId: string, requestedWords = 1200) {
 //   const { planType } = await getUserPlan(userId);
 //   const limits = PLAN_LIMITS[planType];
 //   const usage = await getMonthlyUsage(userId);
 
-//   // dacă ai și limită pe cuvinte/articol, o verifici aici (ex: limits.maxWordsPerArticle)
+//   // If you also enforce per-article word limits, validate them here (e.g. limits.maxWordsPerArticle)
 //   if ("maxWordsPerArticle" in limits && limits.maxWordsPerArticle! < requestedWords) {
 //     return { ok: false as const, reason: `Limita de ${limits.maxWordsPerArticle} cuvinte/articol` };
 //   }
 //   if (usage.articles >= limits.articlesPerMonth) {
-//     return { ok: false as const, reason: `Ai atins ${limits.articlesPerMonth} articole/lună` };
+//     return { ok: false as const, reason: `You reached ${limits.articlesPerMonth} articles per month` };
 //   }
 //   return {
 //     ok: true as const,

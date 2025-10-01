@@ -347,7 +347,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
         {/* micro footer */}
         <p className="mx-auto mt-4 text-center text-xs text-gray-500">
-          UI optimizat pentru Safari / Chrome / Firefox (fără stiluri native <code>&lt;select&gt;</code>).
+          UI refined for Safari / Chrome / Firefox (no native <code>&lt;select&gt;</code> styling).
         </p>
       </div>
     </div>

@@ -49,7 +49,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
               🏠 Real Estate
             </div>
             <h2 className="mt-3 text-lg sm:text-xl font-semibold tracking-tight">Listing Description Generator</h2>
-            <p className="mt-1 text-sm text-gray-500">Beautiful, consistent UI in Safari / Chrome / Firefox.</p>
+            <p className="mt-1 text-sm text-gray-500">Consistent experience across Safari, Chrome, and Firefox.</p>
           </div>
 
           {/* Form */}
@@ -60,9 +60,9 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
               // handle submit
             }}
           >
-            {/* Grid principal: 1 col pe mobil, 3 coloane cu minim la md+ */}
+            {/* Layout: single column on mobile, expands to three columns on medium screens */}
             <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-[repeat(3,_minmax(12rem,_1fr))]">
-              {/* Secțiune 3 câmpuri: 1 col pe mobil, 3 la md+ */}
+              {/* Section containing three inputs; stacks on mobile, spreads across columns at md+ */}
               <div className="col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 min-w-0">
                 <Select
                   label="Property Type"
@@ -98,7 +98,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                 />
               </div>
 
-              {/* Listing type – segmented, cu wrap pe mobil */}
+              {/* Listing type – segmented buttons with wrapping on smaller screens */}
               <div className="md:col-span-2 min-w-0">
                 <span className="mb-1 block text-sm font-medium text-gray-800">Listing type</span>
                 <input type="hidden" name="listingType" value={listingType} />
@@ -124,7 +124,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                 </div>
               </div>
 
-              {/* Bedrooms / Bathrooms: 1 col pe mobil, 2 la sm+ */}
+              {/* Bedrooms / Bathrooms: single column on mobile, two columns from small screens */}
               <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 min-w-0">
                 <Select
                   label="Bedrooms"
@@ -327,7 +327,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
         {/* micro footer */}
         <p className="mx-auto mt-4 px-4 text-center text-xs text-gray-500">
-          UI optimizat pentru Safari / Chrome / Firefox (fără stiluri native <code>&lt;select&gt;</code>).
+          Interface refined for Safari / Chrome / Firefox (no native <code>&lt;select&gt;</code> styling).
         </p>
       </div>
     </div>

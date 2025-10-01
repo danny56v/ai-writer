@@ -23,7 +23,7 @@ function Checkbox({ name, value, label, checked, onChange }: Props) {
           "flex items-center justify-center rounded-xl border px-3 py-2 text-sm shadow-sm transition",
           "border-gray-200 bg-white text-gray-700",
           "hover:border-indigo-300 hover:bg-indigo-50/50",
-          "peer-checked:bg-indigo-600 peer-checked:border-indigo-500 peer-checked:text-white",
+          "peer-checked:bg-indigo-600 peer-checked:border-indigo-500 peer-checked:text-white peer-checked:hover:bg-indigo-500",
           "peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500"
         )}
       >

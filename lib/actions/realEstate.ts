@@ -109,7 +109,7 @@ async function consumeRealEstateQuota(userId: string, planType: PlanKey, current
     if (usage.used >= limit) {
       return {
         ok: false as const,
-        error: `Ai folosit toate cele ${limit} generări incluse în planul tău.`,
+        error: `You have used all ${limit} generations included in your plan for this period.`,
       };
     }
 
@@ -150,7 +150,7 @@ async function consumeRealEstateQuota(userId: string, planType: PlanKey, current
 
   return {
     ok: false as const,
-    error: "Nu am putut rezerva o generare în acest moment. Încearcă din nou.",
+    error: "We couldn’t reserve a generation right now. Please try again.",
   };
 }
 
@@ -234,9 +234,11 @@ export async function genererateRealEstateDescription(
   const name         = (formData.get("name") as string) || "";
   const email        = (formData.get("email") as string) || "";
   const phone        = (formData.get("phone") as string) || "";
+  const languageRaw  = (formData.get("language") as string) || "English";
+  const language     = languageRaw.trim() || "English";
   const features   = formData.getAll("features").map(String); // ["pool","garage",...]
 
-  // Normalizează numeric
+  // Normalize numeric fields
   const price = priceRaw ? Number(priceRaw) : 0;
   const area  = areaRaw  ? Number(areaRaw)  : 0;
   const lot   = lotRaw   ? Number(lotRaw)   : undefined;
@@ -246,7 +248,7 @@ export async function genererateRealEstateDescription(
   const bedrooms = bedroomsStr.toLowerCase() === "studio" ? "Studio" : bedroomsStr || "-";
   const bathrooms = bathroomsStr || "-";
 
-  // Validare minimă
+  // Minimal validation
   if (!propertyType || !location || !price || !area) {
     return { text: "", error: "Please fill in property type, location, price and living area." };
   }
@@ -276,6 +278,7 @@ Property details:
 - Bathrooms: ${bathrooms}
 - Features: ${features.length ? features.join(", ") : "—"}
 - Additional notes: ${description || "—"}
+- Preferred language: ${language}
 
 Instructions:
 1) Highlight the main selling points (space, location, modern design, features).
@@ -283,12 +286,13 @@ Instructions:
 3) Keep it natural, clear, persuasive — no filler.
 4) Avoid clichés like “unique opportunity” or “ultimate luxury”.
 5) 120–200 words in 2–3 short paragraphs.
+6) Write the entire listing in ${language}.
 `;
 
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
-    return { text: "", error: "Trebuie să fii autentificat pentru a folosi generatorul." };
+    return { text: "", error: "You must be signed in to use the generator." };
   }
 
   const userPlan = await getUserPlan(userId);
@@ -372,7 +376,7 @@ Instructions:
 //     features: formData.getAll("features").map((f) => f.toString()),
 //   };
 
-//   // Validare simplă
+//   // Basic validation
 //   if (!data.propertyType || !data.location || !data.price || !data.bedrooms || !data.bathrooms || !data.livingArea) {
 //     return { text: "", error: "Please fill in all required fields." };
 //   }
@@ -380,7 +384,7 @@ Instructions:
 //     return { text: "", error: "Price, bedrooms, bathrooms, and living area must be positive numbers." };
 //   }
 
-//   // Construim descrierea proprietății
+//   // Build the property description
 //   const system = `
 // You are a professional real estate copywriter.
 // Write clear, market-ready property listings that are attractive, realistic, and persuasive.

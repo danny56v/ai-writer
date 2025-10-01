@@ -12,13 +12,13 @@ import { planFromPrice } from "@/lib/plans";
 // ---------- Utils ----------
 const toDate = (sec?: number | null) => (typeof sec === "number" ? new Date(sec * 1000) : undefined);
 
-/** Alege itemul de plan relevant (de obicei ai unul). */
+/** Pick the relevant subscription item (typically there is only one). */
 function pickPlanItem(sub: Stripe.Subscription) {
   const items = sub.items?.data ?? [];
-  return items[0]; // dacă ai mai multe prețuri, implementează o regulă aici
+  return items[0]; // Adjust this if you ever attach multiple prices to the same subscription
 }
 
-/** Găsește userId-ul tău din informațiile Stripe (customerId → users.stripeCustomerId → email → metadata.userId). */
+/** Resolve our internal user id from the Stripe payload. */
 async function resolveUserId(
   d: Awaited<ReturnType<typeof db>>,
   opts: { stripeCustomerId?: string | null; email?: string | null; metaUserId?: string | null }
@@ -35,13 +35,13 @@ async function resolveUserId(
   return metaUserId ?? null;
 }
 
-/** Upsert Subscription în Mongo, citind perioadele de pe ITEM (Basil). */
+/** Upsert subscription data in Mongo, reading the period from the first line item. */
 async function upsertSubscription(sub: Stripe.Subscription, userId?: string | null) {
   const d = await db();
   const item = pickPlanItem(sub);
   const priceId = item?.price?.id ?? null;
 
-  // Perioada curentă (Basil: pe item). Fallback minimal pt. compat.
+  // Determine the current period window; fall back to subscription-level timestamps when item data is missing.
   const currentPeriodStart = toDate(item?.current_period_start) ?? toDate(sub.start_date);
   const currentPeriodEnd = toDate(item?.current_period_end) ?? undefined;
 
@@ -51,12 +51,12 @@ async function upsertSubscription(sub: Stripe.Subscription, userId?: string | nu
       $set: {
         ...(userId ? { userId } : {}),
         stripePriceId: priceId,
-        status: sub.status, // exact cum vine din Stripe
-        planType: planFromPrice(priceId ?? undefined), // "free" fallback dacă nu găsește
+        status: sub.status,
+        planType: planFromPrice(priceId ?? undefined), // Falls back to "free" when the price is unknown
         currentPeriodStart: currentPeriodStart ?? new Date(),
         currentPeriodEnd: currentPeriodEnd ?? new Date(),
         cancelAtPeriodEnd: sub.cancel_at_period_end ?? false,
-        // câmpuri utile pentru UI/debug
+        // Helpful debug/UI fields
         canceledAt: toDate(sub.canceled_at) ?? null,
         cancelAt: toDate(sub.cancel_at) ?? null,
         endedAt: toDate(sub.ended_at) ?? null,
@@ -88,14 +88,14 @@ export async function POST(req: NextRequest) {
     const d = await db();
 
     switch (event.type) {
-      // 1) După checkout reușit: setează users.stripeCustomerId (dacă lipsește) + upsert subscription
+      // 1) After a completed checkout: attach stripeCustomerId (if missing) and sync the subscription record
       case "checkout.session.completed": {
         const s = event.data.object as Stripe.Checkout.Session;
 
         const stripeCustomerId = (s.customer as string) || null;
         const stripeSubscriptionId = (s.subscription as string) || null;
 
-        // încearcă să ai un email
+        // Try to ensure we have an email address
         let email: string | null = s.customer_details?.email ?? null;
         if (!email && stripeCustomerId) {
           const cust = (await stripe.customers.retrieve(stripeCustomerId)) as Stripe.Customer;
@@ -108,14 +108,14 @@ export async function POST(req: NextRequest) {
           metaUserId: s.metadata?.userId ?? null,
         });
 
-        // atașează stripeCustomerId pe user dacă lipsea
+        // Attach the stripeCustomerId to the user if it wasn’t stored yet
         if (userId && stripeCustomerId) {
           await d
             .collection("users")
             .updateOne({ _id: new ObjectId(userId) }, { $set: { stripeCustomerId, updatedAt: new Date() } });
         }
 
-        // sincronizează sub-ul
+        // Sync the subscription payload
         if (stripeSubscriptionId) {
           const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId);
           await upsertSubscription(sub, userId);
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      // 2) Lifecycle subscription: created/updated/deleted → upsert
+      // 2) Subscription lifecycle events → keep our record up to date
       case "customer.subscription.created":
       case "customer.subscription.updated":
       case "customer.subscription.deleted": {
@@ -137,9 +137,9 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      // (opțional) invoice.payment_succeeded/failed → poți salva facturi/alerts
+      // Other events (invoice payment, etc.) can be handled here if needed
       default:
-        // ignoră restul evenimentelor
+        // Ignore everything else for now
         break;
     }
 

@@ -6,7 +6,7 @@ if (!uri) throw new Error('Invalid/Missing env var: "MONGODB_URI"');
 
 const options = {
   serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
-  // opțional: pool tuning
+  // Optional: tune the connection pool
   // maxPoolSize: 10,
 };
 
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri, options);
 }
 
-// Conectare lazy, reutilizată
+// Lazy, reusable connection
 export const clientPromise = client.connect();
 
 export async function getDb(dbName = process.env.MONGODB_DB) {
