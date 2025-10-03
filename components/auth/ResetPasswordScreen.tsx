@@ -69,7 +69,7 @@ export default function ResetPasswordScreen({ token }: ResetPasswordScreenProps)
     <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-indigo-50 via-white to-slate-100 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/Logo.png" alt="ScriptNest" width={44} height={44} className="h-11 w-11 drop-shadow" />
+          <Image src="/Logo.png" alt="HomeListerAi" width={44} height={44} className="h-11 w-11 drop-shadow" />
           <div className="text-center">
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Choose a new password</h1>
             <p className="mt-2 text-sm text-slate-600">

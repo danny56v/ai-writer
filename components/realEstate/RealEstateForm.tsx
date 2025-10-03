@@ -1,5 +1,5 @@
-import React, { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useActionState, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Input from "../Input";
 import Select from "../Select";
@@ -17,6 +17,7 @@ interface RealEstateFormProps {
   onOpen: () => void;
   onResult: (t: string) => void;
   onLoadingChange?: (value: boolean) => void;
+  regenerateSignal?: number;
 }
 
 const PROPERTY_TYPES = [
@@ -33,7 +34,16 @@ const PROPERTY_TYPES = [
 ] as const;
 const BEDROOMS = ["Studio", "1", "2", "3", "4", "5", "6+"] as const;
 const BATHROOMS = ["1", "2", "3", "4", "5", "6+"] as const;
-const AMENITIES = ["Pool", "Garage", "Garden", "Fireplace", "Basement"] as const;
+const AMENITIES = [
+  "Pool",
+  "Garage",
+  "Garden",
+  "Fireplace",
+  "Basement",
+  "Home Office",
+  "Smart Home",
+  "Rooftop Terrace",
+] as const;
 
 function abbreviateLanguage(name: string) {
   const cleaned = name.replace(/[()]/g, " ");
@@ -76,8 +86,10 @@ function createEmptyFormValues() {
   };
 }
 
-const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoadingChange }: RealEstateFormProps) => {
+const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoadingChange, regenerateSignal }: RealEstateFormProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { status } = useSession();
   const [propertyType, setPropertyType] = useState<string | null>(null);
   const [bedrooms, setBedrooms] = useState<string | null>(null);
@@ -92,6 +104,20 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
   useEffect(() => {
     onLoadingChange?.(pending);
   }, [pending, onLoadingChange]);
+
+  const regenerateRef = useRef(false);
+
+  useEffect(() => {
+    if (regenerateSignal === undefined) return;
+    if (!regenerateRef.current) {
+      regenerateRef.current = true;
+      return;
+    }
+    const form = document.getElementById("real-estate-form") as HTMLFormElement | null;
+    if (form) {
+      form.requestSubmit();
+    }
+  }, [regenerateSignal]);
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -111,7 +137,9 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isAuthenticated && status !== "authenticated") {
       event.preventDefault();
-      router.push("/sign-in?callbackUrl=/real-estate-generator");
+      const search = searchParams?.toString();
+      const callbackUrl = `${pathname}${search ? `?${search}` : ""}`;
+      router.push(`/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`);
       return;
     }
 
@@ -121,7 +149,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
 
 
 
-    useEffect(() => {
+  useEffect(() => {
     if (state.text) {
       onResult?.(state.text);
     }
@@ -143,11 +171,11 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
           </div>
 
           {/* Form */}
-          <form className="px-4 sm:px-6 py-4" action={formAction} onSubmit={handleSubmit}>
+          <form id="real-estate-form" className="px-4 sm:px-6 py-3 space-y-6" action={formAction} onSubmit={handleSubmit}>
             {/* Layout: single column on mobile, expands to three columns on medium screens */}
-            <div className="grid grid-cols-1 gap-2.5 sm:gap-3.5 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:gap-6 lg:grid-cols-3">
               {/* Section containing three inputs; stacks on mobile, spreads across columns at md+ */}
-              <div className="col-span-1 md:col-span-3 grid grid-cols-1 gap-2.5 md:grid-cols-3 min-w-0">
+              <div className="col-span-1 md:col-span-3 grid grid-cols-1 gap-6 md:grid-cols-3 min-w-0">
                 <Select
                   label="Property Type"
                   name="propertyType"
@@ -178,59 +206,63 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
                   inputMode="numeric"
                   placeholder="0"
                   required
-                  hint="In USD"
+                  // hint="In USD"
                   className="w-full"
                   value={formValues.price}
                   onChange={handleFieldChange}
                 />
               </div>
 
-              {/* Listing type – segmented buttons with wrapping on small screens */}
-              <div className="md:col-span-2 min-w-0">
-                <span className="mb-1 block text-sm font-medium text-gray-800">Listing type</span>
-                <input type="hidden" name="listingType" value={listingType} />
-                <div className="flex flex-row flex-wrap gap-2.5">
-                  {[
-                    { key: "sale", label: "Sale" },
-                    { key: "rent", label: "Rent" },
-                  ].map((opt) => (
-                    <button
-                      key={opt.key}
-                      type="button"
-                      onClick={() => setListingType(opt.key as "sale" | "rent")}
-                      className={cx(
-                        "rounded-xl border px-3 py-2 text-sm font-medium shadow-sm transition",
-                        listingType === opt.key
-                          ? "border-indigo-500 bg-indigo-600 text-white hover:bg-indigo-500"
-                          : "border-gray-300 bg-white text-gray-700 hover:border-indigo-300 hover:bg-indigo-50/50"
-                      )}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="col-span-1 md:col-span-3">
+                <div className="flex flex-col gap-4 sm:flex-row sm:flex-nowrap sm:items-end sm:gap-4">
+                 
 
-              {/* Bedrooms / Bathrooms: 1 col pe mobil, 2 la sm+ */}
-              <div className="col-span-1 md:col-span-2 grid grid-cols-1 gap-2 sm:grid-cols-2 min-w-0">
-                <Select
-                  label="Bedrooms"
-                  name="bedrooms"
-                  value={bedrooms}
-                  onChange={setBedrooms}
-                  options={BEDROOMS}
-                  placeholder="Select bedrooms…"
-                  // className="w-full"
-                />
-                <Select
-                  label="Bathrooms"
-                  name="bathrooms"
-                  value={bathrooms}
-                  onChange={setBathrooms}
-                  options={BATHROOMS}
-                  placeholder="Select bathrooms…"
-                  // className="w-full"
-                />
+                  <div className="sm:flex-1">
+                    <Select
+                      label="Bedrooms"
+                      name="bedrooms"
+                      value={bedrooms}
+                      onChange={setBedrooms}
+                      options={BEDROOMS}
+                      placeholder="Select bedrooms…"
+                    />
+                  </div>
+
+                  <div className="sm:flex-1">
+                    <Select
+                      label="Bathrooms"
+                      name="bathrooms"
+                      value={bathrooms}
+                      onChange={setBathrooms}
+                      options={BATHROOMS}
+                      placeholder="Select bathrooms…"
+                    />
+                  </div>
+                   <div className="sm:flex-1">
+                    <span className="block text-sm font-medium text-gray-800">Listing type</span>
+                    <input type="hidden" name="listingType" value={listingType} />
+                    <div className="flex flex-row flex-wrap gap-2">
+                      {[
+                        { key: "sale", label: "Sale" },
+                        { key: "rent", label: "Rent" },
+                      ].map((opt) => (
+                        <button
+                          key={opt.key}
+                          type="button"
+                          onClick={() => setListingType(opt.key as "sale" | "rent")}
+                          className={cx(
+                            "rounded-xl border px-3 py-2 text-sm font-medium shadow-sm transition",
+                            listingType === opt.key
+                              ? "border-indigo-500 bg-indigo-600 text-white hover:bg-indigo-500"
+                              : "border-gray-300 bg-white text-gray-700 hover:border-indigo-300 hover:bg-indigo-50/50"
+                          )}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Living area */}
@@ -248,7 +280,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
                     value={formValues.area}
                     onChange={handleFieldChange}
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
+                      "block w-full h-10 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
@@ -274,7 +306,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
                     value={formValues.lot}
                     onChange={handleFieldChange}
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
+                      "block w-full h-10 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
@@ -300,7 +332,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
                     value={formValues.year}
                     onChange={handleFieldChange}
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
+                      "block w-full h-10 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
@@ -309,9 +341,9 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
             </div>
 
             {/* Features */}
-            <div className="mt-6">
+            <div>
               <span className="mb-2 block text-sm font-medium text-gray-800">Features</span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
                 {amenitiesValues.map((amenity, index) => (
                   <Checkbox
                     key={amenity}
@@ -326,7 +358,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
             </div>
 
             {/* Description */}
-            <div className="mt-6">
+            <div>
               <label htmlFor="description" className="mb-1 block text-sm font-medium text-gray-800">
                 Description
               </label>
@@ -413,7 +445,7 @@ const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoading
               <p className="mt-6 rounded-2xl bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>
             ) : null}
 
-            <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <div className="flex items-center gap-2">
                 <input type="hidden" name="language" value={language} />
                 <Listbox value={language} onChange={setLanguage}>

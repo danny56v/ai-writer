@@ -3,9 +3,31 @@ import { getDb } from "@/lib/db";
 import { hashToken } from "@/lib/tokens";
 import { ObjectId } from "mongodb";
 
+function resolveCallbackUrl(value: string | null) {
+  if (!value) {
+    return null;
+  }
+  if (!value.startsWith("/")) {
+    return null;
+  }
+  if (value.startsWith("//")) {
+    return null;
+  }
+  return value;
+}
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
+  const callbackUrl = resolveCallbackUrl(url.searchParams.get("callbackUrl"));
+
+  const buildRedirectUrl = (pathname: string) => {
+    const redirectUrl = new URL(pathname, url);
+    if (callbackUrl) {
+      redirectUrl.searchParams.set("callbackUrl", callbackUrl);
+    }
+    return redirectUrl;
+  };
 
   if (!token) {
     return NextResponse.json({ error: "Missing token" }, { status: 400 });
@@ -18,12 +40,12 @@ export async function GET(request: NextRequest) {
   const tokenDoc = await verificationTokens.findOne({ token: hashedToken });
 
   if (!tokenDoc) {
-    return NextResponse.redirect(new URL("/sign-in?verified=0", url));
+    return NextResponse.redirect(buildRedirectUrl("/sign-in?verified=0"));
   }
 
   if (tokenDoc.expiresAt && new Date(tokenDoc.expiresAt) < new Date()) {
     await verificationTokens.deleteOne({ _id: tokenDoc._id });
-    return NextResponse.redirect(new URL("/sign-in?verified=expired", url));
+    return NextResponse.redirect(buildRedirectUrl("/sign-in?verified=expired"));
   }
 
   const users = db.collection("users");
@@ -36,7 +58,5 @@ export async function GET(request: NextRequest) {
 
   await verificationTokens.deleteMany({ userId });
 
-  const redirectUrl = new URL("/sign-in?verified=1", url);
-  return NextResponse.redirect(redirectUrl);
+  return NextResponse.redirect(buildRedirectUrl("/sign-in?verified=1"));
 }
-

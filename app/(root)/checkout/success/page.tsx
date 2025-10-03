@@ -56,10 +56,10 @@ export default async function Return({ searchParams }: { searchParams: { session
 
                 <div className="mt-6 space-y-3">
                   <Link
-                    href="/article-writer"
+                    href="/real-estate-generator"
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    Start Writing Articles
+                    Generate a Listing
                   </Link>
                   <Link
                     href="/"

@@ -1,9 +1,14 @@
 import { signInGoogle } from "@/lib/actions/auth";
 
-const GoogleButton = () => {
+interface GoogleButtonProps {
+  callbackUrl?: string;
+}
+
+const GoogleButton = ({ callbackUrl }: GoogleButtonProps) => {
   return (
     <>
       <form action={signInGoogle}>
+        <input type="hidden" name="callbackUrl" value={callbackUrl ?? ""} />
 
         <button type="submit" className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent hover: cursor-pointer">
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">

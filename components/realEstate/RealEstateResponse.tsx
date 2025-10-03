@@ -1,19 +1,90 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 interface Props {
   onClose: () => void;
+  onRegenerate: () => void;
   text: string;
   loading: boolean;
 }
 
-const RealEstateResponse = ({ onClose, text, loading }: Props) => {
+const RealEstateResponse = ({ onClose, onRegenerate, text, loading }: Props) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error("Copy failed", error);
+    }
+  };
+
+  const handleDownload = () => {
+    if (!text) return;
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "homelisterai-listing.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleRegenerate = () => {
+    if (loading || !text) return;
+    onRegenerate();
+  };
+
+  const regenerateDisabled = loading || !text;
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-semibold text-gray-900">Generated listing</h2>
-        {/* <button onClick={onClose} className="text-sm text-indigo-600 hover:underline">
-          Închide
-        </button> */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">Descriere generată</h2>
+          {!loading && text && (
+            <p className="mt-1 text-xs text-gray-500">
+              Copiază textul, descarcă varianta curentă sau generează încă o versiune folosind aceleași detalii.
+            </p>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleCopy}
+            disabled={loading || !text}
+            className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {copied ? "Copiat!" : "Copiază"}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={loading || !text}
+            className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Descarcă
+          </button>
+          <button
+            type="button"
+            onClick={handleRegenerate}
+            disabled={regenerateDisabled}
+            className={
+              `inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm transition ` +
+              (regenerateDisabled
+                ? "cursor-not-allowed bg-indigo-200 text-indigo-500"
+                : "bg-indigo-600 text-white hover:bg-indigo-500")
+            }
+          >
+            Generează din nou
+          </button>
+        </div>
       </div>
 
       <div className="mt-4 flex-1 overflow-auto rounded-2xl border border-dashed border-indigo-100 bg-indigo-50/40 p-4 text-sm text-gray-700">
@@ -48,7 +119,16 @@ const RealEstateResponse = ({ onClose, text, loading }: Props) => {
         ) : text ? (
           <pre className="whitespace-pre-wrap rounded-xl border bg-gray-50 p-4 text-sm">{text}</pre>
         ) : (
-          <p className="text-sm text-gray-500">No content yet.</p>
+          <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-sm text-gray-500">
+            <p>Rezultatul va apărea aici după ce trimiți formularul din stânga.</p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-xs font-semibold text-indigo-600 hover:text-indigo-500"
+            >
+              Închide panoul
+            </button>
+          </div>
         )}
       </div>
     </div>

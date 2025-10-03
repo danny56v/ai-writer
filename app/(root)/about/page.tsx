@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { FeaturedPosts } from "@/components/blog/FeaturedPosts";
+import { blogPosts } from "@/data/blogPosts";
+
 const stats = [
   { label: "Listings generated this year", value: "68k" },
   { label: "Words written for clients", value: "420M" },
@@ -36,14 +39,14 @@ const values = [
   {
     name: "Celebrate wins together",
     description:
-      "We highlight customer launches in every all-hands. When your campaign lands, the whole ScriptNest Crew is cheering with you.",
+      "We highlight customer launches in every all-hands. When your campaign lands, the whole HomeListerAi Crew is cheering with you.",
   },
 ];
 
 const milestones = [
   {
     year: "2023",
-    title: "ScriptNest is born",
+    title: "HomeListerAi is born",
     description:
       "We started as a weekend project for a brokerage drowning in listing descriptions. Within a month, their agents cut copywriting time in half.",
   },
@@ -106,33 +109,6 @@ const team = [
   },
 ];
 
-const updates = [
-  {
-    id: 1,
-    title: "Boosting long-form output with structured briefs",
-    description:
-      "We launched collaborative briefs so marketers can capture brand voice, key messages, and SEO angles before AI drafting begins.",
-    date: "Aug 12, 2025",
-    href: "/blog/structured-briefs",
-  },
-  {
-    id: 2,
-    title: "Usage insights for revenue teams",
-    description:
-      "Plan owners now see live usage, upcoming renewals, and exportable invoices—no more guesswork around AI spend.",
-    date: "Jul 02, 2025",
-    href: "/blog/usage-insights",
-  },
-  {
-    id: 3,
-    title: "Portal upgrades powered by Stripe",
-    description:
-      "Self-serve upgrades, downgrades, and payment method management are now built into the customer portal.",
-    date: "Jun 15, 2025",
-    href: "/blog/portal-upgrades",
-  },
-];
-
 const partnerLogos = [
   { alt: "Transistor", src: "/transistor-horizontal-logo.svg" },
   { alt: "Primer", src: "/primer.svg" },
@@ -179,19 +155,19 @@ export default async function AboutPage() {
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-24 sm:pt-36 lg:px-8 lg:pt-28">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About ScriptNest</p>
+                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About HomeListerAi</p>
                   <h1 className="mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                     We help teams tell richer stories with responsible AI.
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                    ScriptNest brings real estate agents, marketers, and founders into a shared workspace where briefs,
+                    HomeListerAi brings real estate agents, marketers, and founders into a shared workspace where briefs,
                     AI suggestions, and final copy live side by side. From property listings to long-form thought
                     leadership, we turn scattered workflows into a single source of truth.
                   </p>
                   <div className="mt-10 flex flex-wrap gap-3">
                     <Link
                       href="/pricing"
-                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Explore plans
                     </Link>
@@ -236,7 +212,7 @@ export default async function AboutPage() {
             <div className="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
               <div className="lg:w-full lg:max-w-2xl lg:flex-auto space-y-6 text-gray-600">
                 <p className="text-xl leading-8 text-gray-700">
-                  ScriptNest exists to remove the blank-page anxiety so teams can focus on client relationships and
+                  HomeListerAi exists to remove the blank-page anxiety so teams can focus on client relationships and
                   creative strategy. We blend structured data, reusable prompts, and team-wide guardrails to keep every
                   piece of copy consistent with your brand.
                 </p>
@@ -271,7 +247,7 @@ export default async function AboutPage() {
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How we got here</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              From a single listing generator to a full AI content workspace, here are the moments that shaped ScriptNest.
+              From a single listing generator to a full AI content workspace, here are the moments that shaped HomeListerAi.
             </p>
           </div>
           <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -322,7 +298,16 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* Team */}
+      
+
+        <FeaturedPosts
+          posts={blogPosts.slice(3, 6)}
+          eyebrow="Latest from the blog"
+          title="How teams are scaling content with HomeListerAi"
+          description="Dive into customer stories, roadmap updates, and practical playbooks from our crew."
+        />
+
+          {/* Team */}
         <section className="mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet the team</h2>
@@ -348,58 +333,18 @@ export default async function AboutPage() {
             ))}
           </ul>
         </section>
-
-        {/* Latest updates */}
-        <section className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Latest updates</h2>
-                <p className="mt-2 text-lg leading-8 text-gray-600">
-                  Product changelog, customer stories, and behind-the-scenes learnings from the ScriptNest Crew.
-                </p>
-              </div>
-              <Link href="/blog" className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                View all updates <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-
-            <div className="mt-16 grid gap-8 lg:grid-cols-3">
-              {updates.map((post) => (
-                <article
-                  key={post.id}
-                  className="relative isolate flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-indigo-100 bg-white shadow-sm ring-1 ring-indigo-50"
-                >
-                  <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-                  <div className="flex flex-col gap-4 px-8 pb-10 pt-12">
-                    <time className="text-xs font-semibold uppercase tracking-wide text-indigo-500" dateTime={post.date}>
-                      {post.date}
-                    </time>
-                    <h3 className="text-xl font-semibold leading-7 text-gray-900">
-                      <Link href={post.href}>
-                        <span className="absolute inset-0" />
-                        {post.title}
-                      </Link>
-                    </h3>
-                    <p className="text-sm leading-6 text-gray-600">{post.description}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
       </main>
 
-      <footer className="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-16 sm:mt-56 sm:pb-24 lg:px-8">
+      {/* <footer className="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-16 sm:mt-56 sm:pb-24 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 border-t border-gray-100 pt-10 sm:flex-row">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} ScriptNest. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} HomeListerAi. All rights reserved.</p>
           <div className="flex gap-6 text-sm font-semibold text-gray-600">
             <Link href="/pricing">Pricing</Link>
             <Link href="/real-estate-generator">Real Estate AI</Link>
-            <Link href="/article-writer">Article Writer</Link>
+            <Link href="/blog">Blog</Link>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

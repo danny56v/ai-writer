@@ -33,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
             className={cx(
-              "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
+              "block w-full h-10 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
               "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
               "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
               iconLeft ? "pl-10" : "pl-3",

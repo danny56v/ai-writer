@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/user-info", "/article-writer"];
+const protectedRoutes = ["/user-info", "/real-estate-generator"];
 const authRoutes = ["/sign-in", "/sign-up", "/login", "/register"];
 
 export async function middleware(request: NextRequest) {
@@ -25,7 +25,11 @@ export async function middleware(request: NextRequest) {
 
     // Redirect unauthenticated users away from protected routes
     if (!isAuthenticated && protectedRoutes.some((route) => pathname.startsWith(route))) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      const signInUrl = new URL("/sign-in", request.url);
+      const search = request.nextUrl.search.length > 0 ? request.nextUrl.search : "";
+      const callbackUrl = `${pathname}${search}`;
+      signInUrl.searchParams.set("callbackUrl", callbackUrl);
+      return NextResponse.redirect(signInUrl);
     }
 
     return NextResponse.next();

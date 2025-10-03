@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Radio, RadioGroup, Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
+import { Radio, RadioGroup} from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
 import Testimonials from "@/components/Testimonials";
 
 type Frequency = { value: "monthly" | "annually"; label: string; priceSuffix: string };
@@ -60,25 +58,25 @@ const pricing = {
   ],
 };
 
-const faqs = [
-  {
-    question: "What's included in the Free plan?",
-    answer:
-      "The Free plan includes 3 articles per month, up to 1,500 words per article, and basic customization options.",
-  },
-  {
-    question: "Can I upgrade or downgrade my plan anytime?",
-    answer: "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle.",
-  },
-  {
-    question: "Do you offer refunds?",
-    answer: "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance.",
-  },
-  {
-    question: "Is there a limit on article length?",
-    answer: "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions.",
-  },
-];
+// const faqs = [
+//   {
+//     question: "What's included in the Free plan?",
+//     answer:
+//       "The Free plan includes 3 articles per month, up to 1,500 words per article, and basic customization options.",
+//   },
+//   {
+//     question: "Can I upgrade or downgrade my plan anytime?",
+//     answer: "Yes, you can change your plan at any time. Changes will be reflected in your next billing cycle.",
+//   },
+//   {
+//     question: "Do you offer refunds?",
+//     answer: "We offer a 30-day money-back guarantee for all paid plans. Contact support for assistance.",
+//   },
+//   {
+//     question: "Is there a limit on article length?",
+//     answer: "Free plan has a 1,500 word limit, Pro plan allows up to 50,000 words, and Unlimited has no restrictions.",
+//   },
+// ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -91,6 +89,9 @@ export default function Pricing({ currentPriceId }: Props) {
   const [frequency, setFrequency] = useState<Frequency>(pricing.frequencies[0]);
   const [activePriceId] = useState<string | null>(currentPriceId);
   const [loading, setLoading] = useState(false);
+  const isAuthenticated = Boolean(session?.user);
+
+  const freeCallbackUrl = "/pricing";
 
   const handleCheckout = async (priceId: string) => {
     try {
@@ -123,9 +124,9 @@ export default function Pricing({ currentPriceId }: Props) {
 
   return (
     <div className="bg-white">
-      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-32 lg:px-8">
+      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-8 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-base font-semibold leading-7 text-indigo-600">Pricing</h1>
+          <h1 className="text-base font-semibold leading-7 text-indigo-600">PRICING</h1>
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Pricing plans for teams of&nbsp;all&nbsp;sizes
           </p>
@@ -161,13 +162,14 @@ export default function Pricing({ currentPriceId }: Props) {
     const tierPriceId = tier.priceId?.[frequency.value] ?? null;
 
             // The "Free" tier is the current plan only when no active price ID exists
-            const isCurrentPlan =
-              tier.name === "Free"
+            const isCurrentPlan = isAuthenticated
+              ? tier.name === "Free"
                 ? !activePriceId
                 : Boolean(
                     activePriceId &&
                       (tier.priceId?.monthly === activePriceId || tier.priceId?.annually === activePriceId)
-                  );
+                  )
+              : false;
             const isHighlighted = tier.mostPopular;
 
             return (
@@ -201,7 +203,23 @@ export default function Pricing({ currentPriceId }: Props) {
                     if (isCurrentPlan) return;
 
                     if (tier.name === "Free") {
-                      router.push("/sign-up");
+                      if (!isAuthenticated) {
+                        router.push(`/sign-up?callbackUrl=${encodeURIComponent(freeCallbackUrl)}`);
+                        return;
+                      }
+
+                      try {
+                        setLoading(true);
+                        const resp = await fetch("/api/billing/portal", { method: "POST" });
+                        const data = await resp.json().catch(() => ({}));
+                        if (data?.url) {
+                          window.location.href = data.url;
+                        } else {
+                          alert("Could not open billing portal");
+                        }
+                      } finally {
+                        setLoading(false);
+                      }
                       return;
                     }
                     if (!tierPriceId) return;
@@ -232,7 +250,9 @@ export default function Pricing({ currentPriceId }: Props) {
                   {isCurrentPlan
                     ? "Current plan"
                     : tier.name === "Free"
-                    ? "Get Started"
+                    ? isAuthenticated
+                      ? "Switch to Free"
+                      : "Start Free"
                     : loading
                     ? "Processing..."
                     : "Buy plan"}
@@ -250,7 +270,7 @@ export default function Pricing({ currentPriceId }: Props) {
           })}
         </div>
 
-        {/* Logo cloud */}
+        {/* Logo cloud
         <div className="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8">
           <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <Image
@@ -294,12 +314,12 @@ export default function Pricing({ currentPriceId }: Props) {
               <span className="hidden md:inline">Trusted by thousands of content creators worldwide.</span>
             </p>
           </div>
-        </div>
-
+        </div> */}
+<div className="mt-16">
         <Testimonials />
-
+</div>
         {/* FAQ */}
-        <div className="mx-auto my-24 max-w-7xl px-6 sm:my-56 lg:px-8">
+        {/* <div className="mx-auto my-24 max-w-7xl px-6 sm:my-56 lg:px-8">
           <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
             <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
             <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
@@ -321,7 +341,7 @@ export default function Pricing({ currentPriceId }: Props) {
               ))}
             </dl>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

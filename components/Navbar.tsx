@@ -11,8 +11,8 @@ import { usePathname } from "next/navigation";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Real Estate", href: "/real-estate-generator" },
-  { name: "Article Writer", href: "/article-writer" },
   { name: "Pricing", href: "/pricing" },
+  { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
 ];
 
@@ -106,8 +106,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between gap-4 rounded-full border border-white/40 bg-white/80 px-4 py-2.5 shadow-lg transition-colors supports-[backdrop-filter]:bg-white/40 supports-[backdrop-filter]:backdrop-blur-2xl">
           <div className="flex items-center gap-3 lg:flex-1">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/Logo.png" alt="ScriptNest" width={36} height={36} className="h-9 w-9" />
-              <span className="text-base font-semibold text-gray-900">ScriptNest</span>
+              <Image src="/Logo.png" alt="HomeListerAi" width={36} height={36} className="h-9 w-9" />
+              <span className="text-base font-semibold text-gray-900">HomeListerAi</span>
             </Link>
           </div>
 
@@ -142,7 +142,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/profile"
-                  className="rounded-full bg-white px-3 py-2 text-gray-900 shadow-sm ring-1 ring-white/60 transition hover:bg-white/90 hover:ring-indigo-200"
+                  className="rounded-full bg-white px-3 py-2 text-gray-900 shadow-md ring-1 ring-indigo-50 transition hover:bg-white/90 hover:ring-indigo-300"
                 >
                   {session.user.name ?? session.user.email ?? "Profile"}
                 </Link>
@@ -182,8 +182,8 @@ export default function Navbar() {
         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-              <Image src="/Logo.png" alt="ScriptNest" width={32} height={32} className="h-8 w-8" />
-              <span className="text-sm font-semibold text-gray-900">ScriptNest</span>
+              <Image src="/Logo.png" alt="HomeListerAi" width={32} height={32} className="h-8 w-8" />
+              <span className="text-sm font-semibold text-gray-900">HomeListerAi</span>
             </Link>
             <button
               type="button"

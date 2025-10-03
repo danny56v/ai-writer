@@ -106,7 +106,7 @@ export default function ChangeNameModal({ currentName }: ChangeNameModalProps) {
                   Update full name
                 </DialogTitle>
                 <p className="mt-2 text-sm text-gray-500">
-                  This name appears across your ScriptNest experiences and communications.
+                  This name appears across your HomeListerAi experiences and communications.
                 </p>
               </div>
             </div>

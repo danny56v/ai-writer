@@ -11,8 +11,30 @@ import { AuthError } from "next-auth";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/email";
 
-export const signInGoogle = async () => {
-  await signIn("google", { redirectTo: "/" });
+function resolveCallbackUrl(target: FormDataEntryValue | null | undefined) {
+  if (typeof target !== "string") {
+    return "/";
+  }
+  if (!target.startsWith("/")) {
+    return "/";
+  }
+  if (target.startsWith("//")) {
+    return "/";
+  }
+  return target;
+}
+
+function appendCallbackParam(url: string, callbackUrl: string) {
+  if (!callbackUrl) {
+    return url;
+  }
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}callbackUrl=${encodeURIComponent(callbackUrl)}`;
+}
+
+export const signInGoogle = async (formData: FormData) => {
+  const callbackUrl = resolveCallbackUrl(formData.get("callbackUrl"));
+  await signIn("google", { redirectTo: callbackUrl });
 };
 
 export const signOutAction = async () => {
@@ -35,6 +57,7 @@ function mapZodFieldErrors(error: ZodError): NonNullable<ActionState["errors"]> 
 }
 
 export const SignInAction = async (_prev: ActionState, formData: FormData): Promise<ActionState> => {
+  const callbackUrl = resolveCallbackUrl(formData.get("callbackUrl"));
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
@@ -90,7 +113,7 @@ export const SignInAction = async (_prev: ActionState, formData: FormData): Prom
       };
     }
 
-    redirect("/");
+    redirect(callbackUrl);
   } catch (error) {
     if (error instanceof AuthError) {
       if (error.type === "CredentialsSignin") {
@@ -123,6 +146,7 @@ export const SignInAction = async (_prev: ActionState, formData: FormData): Prom
 };
 
 export const SignUpAction = async (_prev: ActionState, formData: FormData): Promise<ActionState> => {
+  const callbackUrl = resolveCallbackUrl(formData.get("callbackUrl"));
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
@@ -162,10 +186,13 @@ export const SignUpAction = async (_prev: ActionState, formData: FormData): Prom
 
       const baseUrl =
         process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
-      const verificationUrl = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
+      const verificationUrl = appendCallbackParam(
+        `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`,
+        callbackUrl
+      );
       await sendVerificationEmail({ to: email, url: verificationUrl });
 
-      redirect(`/check-email?email=${encodeURIComponent(email)}&resent=1`);
+      redirect(appendCallbackParam(`/check-email?email=${encodeURIComponent(email)}&resent=1`, callbackUrl));
     }
 
     const hashedPassword = await bcrypt.hash(validated.password, 12);
@@ -192,10 +219,13 @@ export const SignUpAction = async (_prev: ActionState, formData: FormData): Prom
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
-    const verificationUrl = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
+    const verificationUrl = appendCallbackParam(
+      `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`,
+      callbackUrl
+    );
     await sendVerificationEmail({ to: email, url: verificationUrl });
 
-    redirect(`/check-email?email=${encodeURIComponent(email)}`);
+    redirect(appendCallbackParam(`/check-email?email=${encodeURIComponent(email)}`, callbackUrl));
   } catch (error) {
     if (typeof error === "object" && error && "digest" in error && String(error.digest).startsWith("NEXT_REDIRECT")) {
       throw error;

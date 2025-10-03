@@ -1,66 +1,99 @@
 import Image from "next/image";
 
 const featuredTestimonial = {
-  body: "Integer id nunc sit semper purus. Bibendum at lacus ut arcu blandit montes vitae auctor libero. Hac condimentum dignissim nibh vulputate ut nunc. Amet nibh orci mi venenatis blandit vel et proin. Non hendrerit in vel ac diam.",
+  body: "HomeListerAi is the first platform that treats our listing pipeline like a real content workflow. Drafts land in minutes, our tone stays on-brand, and compliance checks happen before an agent ever hits publish.",
   author: {
-    name: "Brenna Goyette",
-    handle: "brennagoyette",
+    name: "Maya Thompson",
+    handle: "maya.thompson",
     imageUrl:
-      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80",
+      "https://images.unsplash.com/photo-1544723795-43253756d6f5?auto=format&fit=facearea&facepad=2.5&w=1024&h=1024&q=80",
     logoUrl: "https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg",
   },
 };
+
 const testimonials = [
   [
     [
       {
-        body: "Laborum quis quam. Dolorum et ut quod quia. Voluptas numquam delectus nihil. Aut enim doloremque et ipsam.",
+        body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. HomeListerAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
         author: {
-          name: "Leslie Alexander",
-          handle: "lesliealexander",
+          name: "Elena Rossi",
+          handle: "elena.rossi",
           imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            "https://images.unsplash.com/photo-1536520002442-39764a41e067?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
       },
-      // More testimonials...
+      {
+        body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. HomeListerAi finally got sales, ops, and creative on the same page.",
+        author: {
+          name: "Jordan Wells",
+          handle: "jordanwells",
+          imageUrl:
+            "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        },
+      },
     ],
     [
       {
-        body: "Aut reprehenderit voluptatem eum asperiores beatae id. Iure molestiae ipsam ut officia rem nulla blanditiis.",
+        body: "We tested five AI tools and kept coming back to HomeListerAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
         author: {
-          name: "Lindsay Walton",
-          handle: "lindsaywalton",
+          name: "Sofia Martinez",
+          handle: "sofia.martinez",
           imageUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80",
         },
       },
-      // More testimonials...
+      {
+        body: "Listing volume doubled after launch because our agents stopped rewriting paragraphs from scratch. Templates, comments, and analytics live together so we can prove the ROI every month.",
+        author: {
+          name: "Connor Blake",
+          handle: "connorblake",
+          imageUrl:
+            "https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        },
+      },
     ],
   ],
   [
     [
       {
-        body: "Voluptas quos itaque ipsam in voluptatem est. Iste eos blanditiis repudiandae. Earum deserunt enim molestiae ipsum perferendis recusandae saepe corrupti.",
+        body: "Our franchise network writes in four languages. HomeListerAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
         author: {
-          name: "Tom Cook",
-          handle: "tomcook",
+          name: "Aiko Tanaka",
+          handle: "aikotanaka",
           imageUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
       },
-      // More testimonials...
+      {
+        body: "The billing portal plus usage dashboards have been a gift for our operations team. We can experiment with new campaigns, see results, and scale credits without surprise invoices.",
+        author: {
+          name: "Priya Chandrasekar",
+          handle: "priyac",
+          imageUrl:
+            "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        },
+      },
     ],
     [
       {
-        body: "Molestias ea earum quos nostrum doloremque sed. Quaerat quasi aut velit incidunt excepturi rerum voluptatem minus harum.",
+        body: "We produce weekly investor memos and property spotlights. HomeListerAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
         author: {
-          name: "Leonard Krasner",
-          handle: "leonardkrasner",
+          name: "Malik Thompson",
+          handle: "malik.thompson",
           imageUrl:
-            "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
       },
-      // More testimonials...
+      {
+        body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. HomeListerAi turned approvals into a shared workflow instead of an email chain.",
+        author: {
+          name: "Gabrielle Monroe",
+          handle: "gabriellemonroe",
+          imageUrl:
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        },
+      },
     ],
   ],
 ];
@@ -100,7 +133,7 @@ export default function Testimonials() {
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonials</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            We have worked with thousands of amazing people
+            Teams trust HomeListerAi to keep every launch on message
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">

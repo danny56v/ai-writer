@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import GoogleButton from "@/components/GoogleButton";
 import type { ActionState } from "@/interfaces/auth";
@@ -12,6 +13,8 @@ const INITIAL_STATE: ActionState = { success: true, message: "" };
 
 const SignUpScreen = () => {
   const [state, formAction, pending] = useActionState(SignUpAction, INITIAL_STATE);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams?.get("callbackUrl") ?? "";
   const [emailInput, setEmailInput] = useState("");
 
   useEffect(() => {
@@ -23,9 +26,9 @@ const SignUpScreen = () => {
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Image src="/Logo.png" alt="ScriptNest" width={40} height={40} className="mx-auto h-10 w-10" />
+        <Image src="/Logo.png" alt="HomeListerAi" width={40} height={40} className="mx-auto h-10 w-10" />
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Create your ScriptNest account
+          Create your HomeListerAi account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Generate your first three listings for free. Upgrade when you invite your team.
@@ -35,6 +38,7 @@ const SignUpScreen = () => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div className="rounded-3xl bg-white px-6 py-12 shadow sm:px-12">
           <form action={formAction} className="space-y-6">
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Work email
@@ -107,13 +111,16 @@ const SignUpScreen = () => {
           </div>
 
           <div className="mt-6">
-            <GoogleButton />
+            <GoogleButton callbackUrl={callbackUrl} />
           </div>
         </div>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href="/sign-in" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link
+            href={callbackUrl ? `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/sign-in"}
+            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >
             Sign in
           </Link>
         </p>

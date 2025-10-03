@@ -64,17 +64,20 @@ function formatDate(date: Date | null) {
 
 export default async function ProfilePage() {
   const session = await auth();
+  const baseUser = session?.user;
 
-  if (!session?.user?.id) {
+  if (!baseUser?.id) {
     redirect("/sign-in");
   }
 
-  const user = session.user as typeof session.user & {
+  const user = baseUser as typeof baseUser & {
     hasPassword?: boolean;
     hasGoogleAccount?: boolean;
     canChangeEmail?: boolean;
     emailVerified?: Date | null;
     name?: string | null;
+    id: string;
+    stripeCustomerId?: string | null;
   };
   const { planType, status, currentPeriodEnd } = await getUserPlan(user.id);
 
@@ -86,7 +89,7 @@ export default async function ProfilePage() {
   const canChangeEmail = !!user.canChangeEmail;
   const emailVerified = user.emailVerified ?? null;
   const displayName = user.name ?? "No name added";
-  const customerId = session.user.stripeCustomerId ?? null;
+  const customerId = user.stripeCustomerId ?? null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-32 pb-16 sm:px-6 lg:flex lg:gap-x-16 lg:px-8">
@@ -116,44 +119,44 @@ export default async function ProfilePage() {
           <section id="profile">
             <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
             <p className="mt-1 text-sm leading-6 text-gray-500">
-              Basic details tied to your ScriptNest account.
+              Basic details tied to your HomeListerAi account.
             </p>
 
-            <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-              <div className="pt-6 sm:flex">
-                <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
-                <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                  <div className="text-gray-900">{displayName}</div>
-                  <ChangeNameModal currentName={displayName === "No name added" ? "" : displayName} />
-                </dd>
+            <div className="mt-6 space-y-4 text-sm leading-6">
+              <div className="flex flex-col gap-4 rounded-lg border border-gray-200 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-medium text-gray-900">Full name</p>
+                  <p className="text-gray-900 font-bold">{displayName}</p>
+                </div>
+                <ChangeNameModal currentName={displayName === "No name added" ? "" : displayName} />
               </div>
-              <div className="pt-6 sm:flex">
-                <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
-                <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                  <div className="text-gray-900">{user.email}</div>
-                  {canChangeEmail ? (
-                    <ChangeEmailModal currentEmail={user.email ?? ""} />
-                  ) : (
-                    <span className="text-sm text-gray-400">
-                      {hasGoogleAccount
-                        ? "Email managed via Google sign-in"
-                        : "Email updates unavailable"}
-                    </span>
-                  )}
-                </dd>
+              <div className="flex flex-col gap-4 rounded-lg border border-gray-200 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-medium text-gray-900">Email address</p>
+                  <p className="text-gray-900 font-bold">{user.email}</p>
+                </div>
+                {canChangeEmail ? (
+                  <ChangeEmailModal currentEmail={user.email ?? ""} />
+                ) : (
+                  <span className="text-sm text-gray-400">
+                    {hasGoogleAccount
+                      ? "Email managed via Google sign-in"
+                      : "Email updates unavailable"}
+                  </span>
+                )}
               </div>
               {!emailVerified && !hasGoogleAccount && (
-                <div className="pt-6 text-sm text-amber-600">
+                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
                   Your email is awaiting verification. Check your inbox for the latest confirmation link.
                 </div>
               )}
-            </dl>
+            </div>
           </section>
 
           <section id="notifications">
             <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
             <p className="mt-1 text-sm leading-6 text-gray-500">
-              Control when ScriptNest reaches out and what updates you receive.
+              Control when HomeListerAi reaches out and what updates you receive.
             </p>
 
             <div className="mt-6 space-y-4 text-sm leading-6">
@@ -162,7 +165,7 @@ export default async function ProfilePage() {
                   <p className="font-medium text-gray-900">Product announcements</p>
                   <p className="text-gray-500">Hear about new features and workflow tips.</p>
                 </div>
-                <span className="text-indigo-600">Enabled</span>
+                <span className="text-gray-400">Coming Soon</span>
               </div>
               <div className="flex items-start justify-between gap-x-6 rounded-lg border border-gray-200 p-6">
                 <div>

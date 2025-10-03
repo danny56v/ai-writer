@@ -21,6 +21,7 @@ const SignInScreen = () => {
   const [state, formAction, pending] = useActionState(SignInAction, INITIAL_STATE);
   const searchParams = useSearchParams();
   const verifiedStatus = searchParams?.get("verified");
+  const callbackUrl = searchParams?.get("callbackUrl") ?? "";
   const [emailInput, setEmailInput] = useState("");
   const [resending, setResending] = useState(false);
   const [resendFeedback, setResendFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
@@ -79,10 +80,10 @@ const SignInScreen = () => {
     <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-indigo-50 via-white to-slate-100 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/Logo.png" alt="ScriptNest" width={44} height={44} className="h-11 w-11 drop-shadow" />
+          <Image src="/Logo.png" alt="HomeListerAi" width={44} height={44} className="h-11 w-11 drop-shadow" />
           <div className="text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-slate-900">
-              Welcome back to <span className="bg-gradient-to-r from-indigo-600 to-purple-500 bg-clip-text text-transparent">ScriptNest</span>
+              Welcome back to <span className="bg-gradient-to-r from-indigo-600 to-purple-500 bg-clip-text text-transparent">HomeListerAi</span>
             </h2>
             <p className="mt-2 text-sm text-slate-600">
               Sign in with your email and password or continue with Google in just a tap.
@@ -100,6 +101,7 @@ const SignInScreen = () => {
         )}
         <div className="rounded-3xl border border-white/70 bg-white/80 px-6 py-12 shadow-xl ring-1 ring-black/5 backdrop-blur sm:px-12">
           <form action={formAction} className="space-y-6">
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
@@ -228,13 +230,16 @@ const SignInScreen = () => {
           </div>
 
           <div className="mt-6">
-            <GoogleButton />
+            <GoogleButton callbackUrl={callbackUrl} />
           </div>
         </div>
 
         <p className="mt-10 text-center text-sm text-slate-600">
-          New to ScriptNest?{" "}
-          <Link href="/sign-up" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          New to HomeListerAi?{" "}
+          <Link
+            href={callbackUrl ? `/sign-up?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/sign-up"}
+            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >
             Create an account
           </Link>
         </p>

@@ -26,7 +26,7 @@ function Select({
         <div className="relative">
           <Listbox.Button
             className={cx(
-              "group relative w-full h-11 cursor-default rounded-2xl",
+              "group relative w-full h-10 cursor-default rounded-2xl",
               "border border-gray-200 bg-white/90 pl-3 pr-10 text-left text-gray-900",
               "shadow-sm transition hover:border-indigo-300 hover:bg-white",
               "focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500"

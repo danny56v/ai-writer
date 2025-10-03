@@ -43,7 +43,7 @@ export async function sendVerificationEmail({ to, url }: VerificationEmailPayloa
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937;">
       <h2 style="color:#4f46e5;">Confirm your email address</h2>
-      <p>Welcome to ScriptNest! Click the button below to activate your account.</p>
+      <p>Welcome to HomeListerAi! Click the button below to activate your account.</p>
       <p style="margin: 24px 0;">
         <a href="${url}" style="display:inline-block;padding:12px 20px;background:#4f46e5;color:#fff;text-decoration:none;border-radius:8px;">Activate account</a>
       </p>
@@ -62,7 +62,7 @@ export async function sendVerificationEmail({ to, url }: VerificationEmailPayloa
   await transporter.sendMail({
     to,
     from,
-    subject: "Confirm your email for ScriptNest",
+    subject: "Confirm your email for HomeListerAi",
     html,
   });
 }
@@ -73,7 +73,7 @@ export async function sendPasswordResetEmail({ to, url }: PasswordResetEmailPayl
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937;">
-      <h2 style="color:#4f46e5;">Reset your ScriptNest password</h2>
+      <h2 style="color:#4f46e5;">Reset your HomeListerAi password</h2>
       <p>We received a request to reset your password. Click the button below to choose a new one.</p>
       <p style="margin: 24px 0;">
         <a href="${url}" style="display:inline-block;padding:12px 20px;background:#4f46e5;color:#fff;text-decoration:none;border-radius:8px;">Reset password</a>
@@ -93,7 +93,7 @@ export async function sendPasswordResetEmail({ to, url }: PasswordResetEmailPayl
   await transporter.sendMail({
     to,
     from,
-    subject: "Reset your ScriptNest password",
+    subject: "Reset your HomeListerAi password",
     html,
   });
 }
