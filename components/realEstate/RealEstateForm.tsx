@@ -8,11 +8,7 @@ import { genererateRealEstateDescription } from "@/lib/actions/realEstate";
 import { languages } from "@/utils/languages";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-
-
-type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 interface RealEstateFormProps {
-  userPlan: Plan;
   isAuthenticated: boolean;
   onOpen: () => void;
   onResult: (t: string) => void;
@@ -86,7 +82,7 @@ function createEmptyFormValues() {
   };
 }
 
-const RealEstateForm = ({ userPlan, isAuthenticated, onOpen, onResult, onLoadingChange, regenerateSignal }: RealEstateFormProps) => {
+const RealEstateForm = ({ isAuthenticated, onOpen, onResult, onLoadingChange, regenerateSignal }: RealEstateFormProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

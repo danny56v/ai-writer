@@ -238,6 +238,8 @@ export async function genererateRealEstateDescription(
   const language     = languageRaw.trim() || "English";
   const features   = formData.getAll("features").map(String); // ["pool","garage",...]
 
+  const agentContact = [name, email, phone].filter(Boolean).join(" • ") || "—";
+
   // Normalize numeric fields
   const price = priceRaw ? Number(priceRaw) : 0;
   const area  = areaRaw  ? Number(areaRaw)  : 0;
@@ -278,6 +280,7 @@ Property details:
 - Bathrooms: ${bathrooms}
 - Features: ${features.length ? features.join(", ") : "—"}
 - Additional notes: ${description || "—"}
+- Agent contact: ${agentContact}
 - Preferred language: ${language}
 
 Instructions:

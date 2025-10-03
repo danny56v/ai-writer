@@ -8,12 +8,11 @@ interface CheckEmailSearchParams {
 }
 
 type Props = {
-  searchParams: CheckEmailSearchParams | Promise<CheckEmailSearchParams>;
+  searchParams?: CheckEmailSearchParams;
 };
 
-export default async function CheckEmailPage({ searchParams }: Props) {
-  const resolvedParams = await Promise.resolve(searchParams);
-  const { email, resent, callbackUrl } = resolvedParams;
+export default function CheckEmailPage({ searchParams }: Props) {
+  const { email, resent, callbackUrl } = searchParams ?? {};
 
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
