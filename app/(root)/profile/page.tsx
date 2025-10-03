@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { auth } from "@/auth";
 import ManageSubscriptionButton from "@/components/ManageSubscriptionButton";
 import ResetPasswordModal from "@/components/ResetPasswordModal";
@@ -43,6 +45,16 @@ const statusLabels: Record<string, string> = {
   paused: "Paused",
   inactive: "Inactive",
   free: "Free tier",
+};
+
+export const metadata: Metadata = {
+  title: "Account settings",
+  description:
+    "Manage your HomeListerAi profile, subscription plan, billing history, and security preferences from one dashboard.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 function classNames(...classes: Array<string | false | null | undefined>) {

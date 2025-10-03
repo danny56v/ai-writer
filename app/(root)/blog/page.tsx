@@ -1,6 +1,33 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { blogPosts } from "@/data/blogPosts";
+
+export const metadata: Metadata = {
+  title: "HomeListerAi Blog",
+  description:
+    "Read product deep dives, customer spotlights, and content strategy tips from the HomeListerAi team.",
+  openGraph: {
+    title: "HomeListerAi Blog",
+    description:
+      "Fresh insights on AI-assisted real estate marketing, customer success stories, and workflow best practices.",
+    images: [
+      {
+        url: "/Logo.png",
+        width: 800,
+        height: 800,
+        alt: "HomeListerAi blog logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HomeListerAi Blog",
+    description:
+      "Stay ahead with articles on AI workflows, listing optimization, and campaign strategy for real estate teams.",
+    images: ["/Logo.png"],
+  },
+};
 
 const BlogPage = () => {
   return (

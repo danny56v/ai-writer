@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -127,6 +128,32 @@ function GradientCard({ className }: { className?: string }) {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "About HomeListerAi",
+  description:
+    "Learn how HomeListerAi helps real estate teams and marketers pair human storytelling with responsible AI, from our product values to the crew building it.",
+  openGraph: {
+    title: "About HomeListerAi",
+    description:
+      "Discover the mission, team, and milestones behind HomeListerAi—the platform powering high-converting real estate content.",
+    images: [
+      {
+        url: "/Logo.png",
+        width: 800,
+        height: 800,
+        alt: "HomeListerAi brand mark",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About HomeListerAi",
+    description:
+      "Explore our product principles, customer impact, and the people shaping smarter real estate marketing.",
+    images: ["/Logo.png"],
+  },
+};
 
 export default async function AboutPage() {
   return (
