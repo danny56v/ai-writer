@@ -1,7 +1,10 @@
+import { Suspense } from "react";
 import SignInScreen from "@/components/auth/SignInScreen";
 
-const SignIn = () => {
-  return <SignInScreen />;
-};
-
-export default SignIn;
+export default function SignIn() {
+  return (
+    <Suspense fallback={null}>
+      <SignInScreen />
+    </Suspense>
+  );
+}

@@ -83,7 +83,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const userId = token?.sub;
       if (userId) {
         const database = client.db();
-        const users = database.collection("users");
+        type UserDocument = {
+          password?: string;
+          email?: string;
+          emailVerified?: Date | null;
+          name?: string | null;
+          stripeCustomerId?: string | null;
+        };
+        const users = database.collection<UserDocument>("users");
         const accounts = database.collection("accounts");
 
         const objectId = new ObjectId(userId);
@@ -100,6 +107,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           hasGoogleAccount?: boolean;
           canChangeEmail?: boolean;
           emailVerified?: Date | null;
+          stripeCustomerId?: string | null;
         };
 
         if (user?.email) {

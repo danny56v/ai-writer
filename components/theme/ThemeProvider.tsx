@@ -2,16 +2,20 @@
 
 import { createContext, useContext } from "react";
 
+type ThemeMode = "light" | "dark";
+
 type ThemeContextValue = {
-  theme: "light";
+  theme: ThemeMode;
   toggleTheme: () => void;
-  setTheme: () => void;
+  setTheme: (mode: ThemeMode) => void;
 };
+
+const noop = () => {};
 
 const defaultValue: ThemeContextValue = {
   theme: "light",
-  toggleTheme: () => {},
-  setTheme: () => {},
+  toggleTheme: noop,
+  setTheme: noop,
 };
 
 const ThemeContext = createContext<ThemeContextValue>(defaultValue);
