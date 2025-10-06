@@ -130,8 +130,7 @@ export default async function ProfilePage() {
   };
 
   const database = await db();
-  const usersCollection = database.collection("users");
-  let usageDoc: {
+  type RealEstateUsageDocument = {
     usage?: {
       realEstate?: {
         planType?: string;
@@ -141,7 +140,10 @@ export default async function ProfilePage() {
         updatedAt?: Date | null;
       };
     };
-  } | null = null;
+  };
+  const usersCollection = database.collection<RealEstateUsageDocument>("users");
+
+  let usageDoc: RealEstateUsageDocument | null = null;
 
   try {
     usageDoc = await usersCollection.findOne(
