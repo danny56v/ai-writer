@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     });
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://listologyai.com";
     const verificationUrl = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
 
     await sendVerificationEmail({ to: normalizedEmail, url: verificationUrl });

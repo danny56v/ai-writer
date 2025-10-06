@@ -185,7 +185,7 @@ export const SignUpAction = async (_prev: ActionState, formData: FormData): Prom
       });
 
       const baseUrl =
-        process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+        process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://listologyai.com";
       const verificationUrl = appendCallbackParam(
         `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`,
         callbackUrl
@@ -218,7 +218,7 @@ export const SignUpAction = async (_prev: ActionState, formData: FormData): Prom
     });
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://listologyai.com";
     const verificationUrl = appendCallbackParam(
       `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`,
       callbackUrl

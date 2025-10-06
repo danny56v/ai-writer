@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     });
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+      process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://listologyai.com";
     const resetUrl = `${baseUrl}/reset-password?token=${encodeURIComponent(token)}`;
 
     await sendPasswordResetEmail({ to: normalizedEmail, url: resetUrl });

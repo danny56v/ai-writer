@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const BASE_URL =
       process.env.NEXT_PUBLIC_APP_URL ||
       process.env.NEXTAUTH_URL ||
-      "http://localhost:3000";
+      "http://listologyai.com";
 
     const d = await db();
     const dbUser = await d.collection("users").findOne({ _id: new ObjectId(user.id) });
