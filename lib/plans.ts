@@ -19,6 +19,6 @@ export const PRICE_TO_PLAN = {
 
 // Type-safe helper when converting from price id to plan key
 export function planFromPrice(priceId: string): PlanKey {
-  // convertim mapping-ul în Record pentru indexare cu string
+  // convert mapping into a Record for string-based indexing
   return (PRICE_TO_PLAN as Record<string, PlanKey>)[priceId] ?? "free";
 }

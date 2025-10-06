@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Dialog, DialogPanel } from "@headlessui/react";
@@ -23,13 +23,9 @@ function classNames(...classes: Array<string | false | null | undefined>) {
 export default function Navbar() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [planType, setPlanType] = useState<string | null>(null);
   const [planChecked, setPlanChecked] = useState(false);
   const pathname = usePathname();
-  const lastScrollYRef = useRef(0);
-  const tickingRef = useRef(false);
-  const MAX_OFFSET = 72;
 
   useEffect(() => {
     if (!session?.user) {
@@ -66,42 +62,10 @@ export default function Navbar() {
     };
   }, [session?.user]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      const lastY = lastScrollYRef.current;
-      const delta = currentY - lastY;
-      lastScrollYRef.current = currentY;
-
-      if (!tickingRef.current) {
-        window.requestAnimationFrame(() => {
-          setOffset((prev) => {
-            if (currentY <= 16) {
-              return 0;
-            }
-            const next = Math.min(Math.max(prev + delta, 0), MAX_OFFSET);
-            return next;
-          });
-          tickingRef.current = false;
-        });
-        tickingRef.current = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const isFreePlan = (planType ?? "free") === "free";
 
   return (
-    <header
-      className="sticky top-0 z-50 transition-transform duration-300"
-      style={{
-        transform: `translateY(${-offset}px)`,
-        transition: "transform 0.08s ease-out",
-      }}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50">
       <nav aria-label="Global" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 rounded-full border border-white/40 bg-white/80 px-4 py-2.5 shadow-lg transition-colors supports-[backdrop-filter]:bg-white/40 supports-[backdrop-filter]:backdrop-blur-2xl">
           <div className="flex items-center gap-3 lg:flex-1">

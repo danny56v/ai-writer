@@ -1,19 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface CheckEmailSearchParams {
+type CheckEmailParams = {
   email?: string;
   resent?: string;
   callbackUrl?: string;
-}
-
-type Props = {
-  searchParams?: CheckEmailSearchParams | Promise<CheckEmailSearchParams>;
 };
 
-export default async function CheckEmailPage({ searchParams }: Props) {
-  const resolvedParams = (await searchParams) ?? {};
-  const { email, resent, callbackUrl } = resolvedParams;
+type CheckEmailPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function CheckEmailPage({ searchParams }: CheckEmailPageProps) {
+  const params = (await searchParams) as CheckEmailParams;
+
+  // If Next returns arrays, normalize the value:
+  const getStr = (v: string | string[] | undefined) =>
+    Array.isArray(v) ? v[0] : v;
+
+  const email = getStr(params.email);
+  const resent = getStr(params.resent);
+  const callbackUrl = getStr(params.callbackUrl);
 
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">

@@ -15,171 +15,171 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "introducing-homelisterai",
-    title: "Introducing HomeListerAi: Your AI Partner for Real Estate and Content",
+    slug: "how-to-write-compelling-real-estate-descriptions",
+    title: "How to Write Compelling Real Estate Descriptions",
     description:
-      "Discover why we built HomeListerAi and how it helps busy teams generate polished real estate listings and long-form articles in minutes.",
-    date: "Jul 12, 2024",
-    datetime: "2024-07-12",
-    readTime: "6 min read",
-    imageUrl:
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
-    author: {
-      name: "Elena Martinez",
-      imageUrl:
-        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
-    },
-    content: [
-      "HomeListerAi started with a simple premise: give real estate teams a creative copilot that understands their brand voice, compliance guardrails, and turnaround expectations.",
-      "The platform pairs structured briefs with adaptive AI prompts so agents provide the context that matters—neighbourhood highlights, tone preferences, and selling points—while the system assembles polished copy in minutes.",
-      "Since launch we have expanded beyond listings to long-form thought leadership, drip campaigns, and property newsletters, all grounded in reusable templates that keep messaging on-brand.",
-    ],
-  },
-  {
-    slug: "workflow-real-estate",
-    title: "From Inquiry to Listing: Automating Real Estate Copy",
-    description:
-      "We walk through the Real Estate Generator, explaining how form inputs, templates, and AI prompts combine to deliver ready-to-publish copy.",
-    date: "Jul 26, 2024",
-    datetime: "2024-07-26",
-    readTime: "5 min read",
-    imageUrl:
-      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1200&q=80",
-    author: {
-      name: "Marcus Lee",
-      imageUrl:
-        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
-    },
-    content: [
-      "Turning an initial inquiry into a compelling listing used to require juggling spreadsheets, shared drives, and late-night copy edits.",
-      "With HomeListerAi, agents capture property specs, unique selling points, and compliance notes in one guided workflow that generates a complete description instantly.",
-      "The result is consistent voice, faster approvals, and more time to nurture prospective buyers.",
-    ],
-  },
-  {
-    slug: "collaboration-features",
-    title: "Collaboration Features That Keep Your Team Aligned",
-    description:
-      "See how HomeListerAi keeps marketers, agents, and founders on the same page with shared histories, branded presets, and quota controls.",
-    date: "Aug 8, 2024",
-    datetime: "2024-08-08",
+      "Practical steps and field-tested tips that turn raw property data into persuasive copy buyers remember.",
+    date: "Oct 21, 2024",
+    datetime: "2024-10-21",
     readTime: "7 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1600&q=80",
     author: {
-      name: "Priya Patel",
+      name: "Andreea Popescu",
       imageUrl:
         "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Scaling content across listings, newsletters, and paid campaigns requires visibility into who changed what and when.",
-      "HomeListerAi centralises comments, version history, and brand-approved templates so teams can collaborate asynchronously without losing context.",
-      "In this article we share the rituals, notifications, and permissioning model that keep everyone aligned from draft to publish.",
+      "A memorable listing description starts with the basics: location, property type, and the audience you’re writing for. Before you draft a single line, clarify what makes the home stand out and what buyers truly value.",
+      "Keep the tone professional yet warm, and highlight tangible benefits—storage, natural light, school access, community perks. Avoid generic buzzwords that don’t tell a story.",
+      "Close with a clear call to action. The goal is more than sharing information; it’s to spark curiosity, create urgency, and leave prospects eager to schedule a tour."
     ],
   },
   {
-    slug: "ai-writing-ethics",
-    title: "Responsible AI Writing: Keeping Quality and Compliance High",
+    slug: "seo-strategies-for-real-estate-listings",
+    title: "SEO Strategies for Real Estate Listings",
     description:
-      "Learn about the guardrails we added for tone, fair-housing guidelines, and factual accuracy when generating property descriptions.",
-    date: "Aug 22, 2024",
-    datetime: "2024-08-22",
-    readTime: "6 min read",
+      "Keyword research, metadata, and on-page tactics that help your listings rank and stay visible in competitive markets.",
+    date: "Nov 11, 2024",
+    datetime: "2024-11-11",
+    readTime: "7 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1487611459768-bd414656ea10?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",
     author: {
-      name: "Nora Chen",
+      name: "Daniel Harper",
       imageUrl:
-        "https://images.unsplash.com/photo-1544723795-43253756d6f5?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Responsible AI means giving teams the controls to maintain trust with their customers and regulators.",
-      "HomeListerAi includes fair-housing reminders, language checks, and factuality prompts that surface before drafts are shared externally.",
-      "We also outline our review processes, data retention policies, and the human oversight that sits on top of every automated workflow.",
+      "Great copy deserves to be discovered. We outline how to select intent-driven keywords, craft metadata, and use structured data to help search engines surface your listings.",
+      "The post includes sample schema markup, URL structures, and title formats that balance search visibility with click-worthy messaging.",
+      "Pair these SEO tactics with AI-generated drafts to keep every property page consistent, compliant, and easy to find." 
     ],
   },
   {
-    slug: "power-tips",
-    title: "8 Power Tips for Getting More Out of HomeListerAi",
+    slug: "email-campaigns-that-convert-buyers",
+    title: "Email Campaigns That Convert Buyers",
     description:
-      "Advanced tips for tweaking prompts, saving templates, and pairing HomeListerAi outputs with your favorite marketing tools.",
-    date: "Sep 5, 2024",
-    datetime: "2024-09-05",
-    readTime: "8 min read",
+      "Build nurture sequences, property spotlights, and follow-up messages that keep leads warm without manual effort.",
+    date: "Nov 18, 2024",
+    datetime: "2024-11-18",
+    readTime: "6 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80",
+    author: {
+      name: "Sara Williams",
+      imageUrl:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
+    },
+    content: [
+      "Lead nurture emails no longer have to feel generic. We share frameworks for property spotlights, neighbourhood highlights, and drip campaigns that move prospects toward tours.",
+      "Templates show how to blend AI-generated copy with personalised touches like saved searches and agent insights.",
+      "You’ll also get benchmarks for open and reply rates so marketing and sales can align on what ‘good’ looks like." 
+    ],
+  },
+  {
+    slug: "social-media-ideas-for-property-launches",
+    title: "Social Media Ideas for Property Launches",
+    description:
+      "Storyboard short-form video, carousel posts, and live events that showcase new inventory with minimal prep time.",
+    date: "Nov 25, 2024",
+    datetime: "2024-11-25",
+    readTime: "5 min read",
+    imageUrl:
+      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
     author: {
       name: "Jason Clark",
       imageUrl:
         "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Whether you are writing your first listing or iterating on a 20-page buyer guide, there are repeatable techniques that squeeze more value from HomeListerAi.",
-      "We compiled the top configuration tweaks, prompt structures, and automation hooks power users rely on to deliver standout copy.",
-      "Use these best practices to personalise drafts, blend AI with human edits, and feed learnings back into your brand templates.",
+      "From teaser reels to behind-the-scenes tours, learn how to build social calendars that keep buyers engaged leading up to launch day.",
+      "We share caption formulas, visual hooks, and scheduling checklists so your team can execute repeatable playbooks.",
+      "Plus, see how to repurpose AI-generated listing copy across Instagram, TikTok, LinkedIn, and email without rewriting from scratch." 
     ],
   },
   {
-    slug: "customer-story-summit-realty",
-    title: "Customer Story: How Summit Realty Tripled Listing Turnaround",
+    slug: "collaboration-playbook-for-agents-and-marketers",
+    title: "Collaboration Playbook for Agents and Marketers",
     description:
-      "A behind-the-scenes look at how one brokerage adopted HomeListerAi across locations and saved 15 hours a week.",
-    date: "Sep 19, 2024",
-    datetime: "2024-09-19",
-    readTime: "5 min read",
+      "Roles, rituals, and shared dashboards that keep creative, sales, and compliance moving in the same direction.",
+    date: "Dec 2, 2024",
+    datetime: "2024-12-02",
+    readTime: "7 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80",
     author: {
-      name: "Sarah Johnson",
+      name: "Priya Patel",
       imageUrl:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
+        "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Summit Realty operates across three cities with distinct buyer personas and marketing teams.",
-      "Before HomeListerAi, coordinating messaging across those markets meant long feedback cycles and duplicated effort.",
-      "Now agents share a central workspace for briefs, AI drafts, and revisions—cutting 15 hours of manual writing each week while keeping tone consistent.",
+      "When teams centralise briefs, prompts, and approvals, launches ship faster and brand voice stays intact. We share weekly rituals and dashboards that make alignment effortless.",
+      "Discover how to configure HomeListerAi workspaces, comment threads, and usage alerts so everyone understands progress and bottlenecks.",
+      "Use the included meeting agendas and permission matrix to give leadership visibility without slowing down execution." 
     ],
   },
   {
-    slug: "roadmap-fall-2024",
-    title: "Fall 2024 Roadmap: What We Are Shipping Next",
+    slug: "ai-checklist-for-compliant-listings",
+    title: "AI Checklist for Compliant Listings",
     description:
-      "Get a preview of upcoming features like multilingual article outlines, team analytics, and instant MLS formatting.",
-    date: "Oct 3, 2024",
-    datetime: "2024-10-03",
-    readTime: "4 min read",
+      "A step-by-step guide to keeping fair-housing, disclosure, and brand guidelines intact when using AI-generated copy.",
+    date: "Dec 9, 2024",
+    datetime: "2024-12-09",
+    readTime: "6 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1600&q=80",
     author: {
-      name: "Ahmed Khan",
+      name: "Nora Chen",
       imageUrl:
-        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
+        "https://images.unsplash.com/photo-1544723795-43253756d6f5?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Our Fall 2024 roadmap is shaped by the feedback we hear daily from agencies and in-house teams.",
-      "Expect multilingual outline generation, workspace-level analytics, and instant MLS formatting to roll out over the coming quarters.",
-      "We also preview upgrades to security, team administration, and integrations that will make scaling even smoother.",
+      "Compliance is non-negotiable. This checklist covers tone reviews, equal-housing reminders, and factual accuracy prompts to run before publishing.",
+      "Learn how to embed legal checkpoints directly into your AI workflows so reviewers catch issues early without derailing timelines.",
+      "We also share a templated escalation process to follow when adjustments are needed, ensuring every listing stays audit-ready." 
     ],
   },
   {
-    slug: "why-upgrade-pro",
-    title: "Why Teams Upgrade to HomeListerAi Pro",
+    slug: "top-10-apartment-description-examples",
+    title: "Top 10 Apartment Description Examples",
     description:
-      "Breaking down the differences between Free, Pro, and Unlimited plans so you can choose the right fit for your workflow.",
-    date: "Oct 17, 2024",
-    datetime: "2024-10-17",
-    readTime: "5 min read",
+      "Hand-picked examples for studios, premium apartments, and luxury penthouses that you can adapt in minutes.",
+    date: "Oct 28, 2024",
+    datetime: "2024-10-28",
+    readTime: "6 min read",
     imageUrl:
-      "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
     author: {
-      name: "Laura Bennett",
+      name: "Mihai Ionescu",
       imageUrl:
         "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
     },
     content: [
-      "Free, Pro, and Unlimited plans each serve a different stage of your content operations journey.",
-      "We break down credit allowances, collaboration features, and usage controls so you can pick the tier that matches your goals.",
-      "The article also highlights how teams upgrade seamlessly through the billing portal without disrupting ongoing campaigns.",
+      "We analysed hundreds of listings to surface 10 apartment descriptions that consistently convert—covering efficient studios, family-friendly condos, and dramatic penthouses.",
+      "Each example breaks down structure, tone, and the details that make buyers pause so you can remix the approach for your own inventory.",
+      "Use these as swipe files for your team or drop them into HomeListerAi to spin up customised variants in minutes."
+    ],
+  },
+  {
+    slug: "why-ai-is-transforming-real-estate-marketing",
+    title: "Why AI Is Transforming Real Estate Marketing",
+    description:
+      "Trends, case studies, and hands-on ideas showing how AI accelerates campaigns for agencies and developers alike.",
+    date: "Nov 4, 2024",
+    datetime: "2024-11-04",
+    readTime: "8 min read",
+    imageUrl:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",
+    author: {
+      name: "Laura Bennett",
+      imageUrl:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=3&w=256&h=256&q=80",
+    },
+    content: [
+      "AI has moved from experiment to essential marketing tool. It automates drafting, personalises messaging, and surfaces clear performance data for every campaign.",
+      "Teams that adopt AI win back hours for strategy and creative work: repetitive tasks disappear while messaging stays consistent across every channel.",
+      "Integrating AI with your CRM and listing platforms delivers a seamless buyer experience, reducing acquisition costs and improving conversion rates."
     ],
   },
 ];

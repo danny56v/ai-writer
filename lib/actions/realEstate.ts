@@ -16,13 +16,50 @@ const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
   free: 3,
   pro_monthly: 50,
   pro_yearly: 50,
-  unlimited_monthly: null,
-  unlimited_yearly: null,
+  unlimited_monthly: 1500,
+  unlimited_yearly: 1500,
 };
+
+function daysInUtcMonth(year: number, month: number) {
+  return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+}
+
+function clampAnchorDay(anchorDay: number, year: number, month: number) {
+  const days = daysInUtcMonth(year, month);
+  return Math.min(Math.max(anchorDay, 1), days);
+}
+
+function computeMonthlyPeriodStart(anchorDay: number, reference: Date) {
+  const year = reference.getUTCFullYear();
+  const month = reference.getUTCMonth();
+  const dayInCurrent = clampAnchorDay(anchorDay, year, month);
+  let start = new Date(Date.UTC(year, month, dayInCurrent));
+
+  if (reference < start) {
+    const prevMonth = month - 1;
+    const prevYear = prevMonth < 0 ? year - 1 : year;
+    const normalizedPrevMonth = (prevMonth + 12) % 12;
+    const dayInPrev = clampAnchorDay(anchorDay, prevYear, normalizedPrevMonth);
+    start = new Date(Date.UTC(prevYear, normalizedPrevMonth, dayInPrev));
+  }
+
+  return start;
+}
+
+function computeMonthlyPeriodKey(planType: PlanKey, anchorDay: number, reference: Date) {
+  const periodStart = computeMonthlyPeriodStart(anchorDay, reference);
+  return `${planType}-${periodStart.toISOString().slice(0, 10)}`;
+}
 
 function getPlanPeriodKey(planType: PlanKey, currentPeriodEnd: Date | null) {
   if (REAL_ESTATE_LIMITS[planType] === null) {
     return `${planType}-unlimited`;
+  }
+
+  if (planType === "unlimited_monthly" || planType === "unlimited_yearly") {
+    const anchorSource = currentPeriodEnd ? new Date(currentPeriodEnd) : new Date();
+    const anchorDay = Number.isNaN(anchorSource.getTime()) ? 1 : anchorSource.getUTCDate();
+    return computeMonthlyPeriodKey(planType, anchorDay, new Date());
   }
 
   if (planType === "free") {
@@ -109,7 +146,7 @@ async function consumeRealEstateQuota(userId: string, planType: PlanKey, current
     if (usage.used >= limit) {
       return {
         ok: false as const,
-        error: `You have used all ${limit} generations included in your plan for this period.`,
+        error: `You have used all ${limit} generations included in your plan for this period. Update your plan to unlock more generations or wait for the next cycle.`,
       };
     }
 
@@ -220,7 +257,7 @@ export async function genererateRealEstateDescription(
   _prev: RealEstateDescriptionState,
   formData: FormData
 ): Promise<RealEstateDescriptionState> {
-  // Citește exact aceleași chei ca în <form>
+  // Read the exact same keys as defined in the form
   const propertyType = (formData.get("propertyType") as string) || "";
   const location     = (formData.get("location") as string) || "";
   const priceRaw     = formData.get("price");
@@ -241,21 +278,26 @@ export async function genererateRealEstateDescription(
   const agentContact = [name, email, phone].filter(Boolean).join(" • ") || "—";
 
   // Normalize numeric fields
-  const price = priceRaw ? Number(priceRaw) : 0;
-  const area  = areaRaw  ? Number(areaRaw)  : 0;
+  const price = priceRaw ? Number(priceRaw) : NaN;
+  const area  = areaRaw  ? Number(areaRaw)  : undefined;
   const lot   = lotRaw   ? Number(lotRaw)   : undefined;
   const year  = yearRaw  ? Number(yearRaw)  : undefined;
 
-  // Bedrooms/Bathrooms pot veni ca "Studio" sau stringuri numerice
+  // Bedrooms/bathrooms may come through as "Studio" or numeric strings
   const bedrooms = bedroomsStr.toLowerCase() === "studio" ? "Studio" : bedroomsStr || "-";
   const bathrooms = bathroomsStr || "-";
 
   // Minimal validation
-  if (!propertyType || !location || !price || !area) {
-    return { text: "", error: "Please fill in property type, location, price and living area." };
+  if (!propertyType || !location || !priceRaw) {
+    return { text: "", error: "Please fill in property type, location, and price." };
   }
-  if (price <= 0 || area <= 0) {
-    return { text: "", error: "Price and living area must be positive numbers." };
+  if (!Number.isFinite(price) || price <= 0) {
+    return { text: "", error: "Price must be a positive number." };
+  }
+  if (areaRaw) {
+    if (area === undefined || !Number.isFinite(area) || area <= 0) {
+      return { text: "", error: "Living area must be a positive number when provided." };
+    }
   }
 
   // System + User prompt
@@ -267,13 +309,15 @@ Length: 120–200 words, 2–3 short paragraphs.
 Tone: professional yet friendly.
 `;
 
+  const livingAreaText = area !== undefined ? `${area} m²` : "—";
+
   const user = `
 Property details:
 - Property type: ${propertyType}
 - Listing type: ${listingType === "sale" ? "for sale" : "for rent"}
 - Location: ${location}
 - Price: ${price} USD
-- Living area: ${area} m²
+- Living area: ${livingAreaText}
 - Lot size: ${lot ?? "—"} m²
 - Year built: ${year ?? "—"}
 - Bedrooms: ${bedrooms}

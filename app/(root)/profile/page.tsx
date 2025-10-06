@@ -8,6 +8,9 @@ import ChangeEmailModal from "@/components/ChangeEmailModal";
 import ChangeNameModal from "@/components/ChangeNameModal";
 import BillingHistory from "@/components/profile/BillingHistory";
 import { getUserPlan } from "@/lib/billing";
+import { db } from "@/lib/db";
+import type { PlanKey } from "@/lib/plans";
+import { ObjectId } from "mongodb";
 import {
   BellIcon,
   CreditCardIcon,
@@ -74,6 +77,31 @@ function formatDate(date: Date | null) {
   }
 }
 
+function daysInUtcMonth(year: number, month: number) {
+  return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+}
+
+function clampAnchorDay(anchorDay: number, year: number, month: number) {
+  return Math.min(Math.max(anchorDay, 1), daysInUtcMonth(year, month));
+}
+
+function computeMonthlyPeriodStart(anchorDay: number, reference: Date) {
+  const year = reference.getUTCFullYear();
+  const month = reference.getUTCMonth();
+  const dayThisMonth = clampAnchorDay(anchorDay, year, month);
+  let start = new Date(Date.UTC(year, month, dayThisMonth));
+
+  if (reference < start) {
+    const prevMonth = month - 1;
+    const prevYear = prevMonth < 0 ? year - 1 : year;
+    const normalizedPrevMonth = (prevMonth + 12) % 12;
+    const dayPrev = clampAnchorDay(anchorDay, prevYear, normalizedPrevMonth);
+    start = new Date(Date.UTC(prevYear, normalizedPrevMonth, dayPrev));
+  }
+
+  return start;
+}
+
 export default async function ProfilePage() {
   const session = await auth();
   const baseUser = session?.user;
@@ -92,6 +120,92 @@ export default async function ProfilePage() {
     stripeCustomerId?: string | null;
   };
   const { planType, status, currentPeriodEnd } = await getUserPlan(user.id);
+
+  const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
+    free: 3,
+    pro_monthly: 50,
+    pro_yearly: 50,
+    unlimited_monthly: 1500,
+    unlimited_yearly: 1500,
+  };
+
+  const database = await db();
+  const usersCollection = database.collection("users");
+  let usageDoc: {
+    usage?: {
+      realEstate?: {
+        planType?: string;
+        limit?: number | null;
+        used?: number | null;
+        periodKey?: string | null;
+        updatedAt?: Date | null;
+      };
+    };
+  } | null = null;
+
+  try {
+    usageDoc = await usersCollection.findOne(
+      { _id: new ObjectId(user.id) },
+      { projection: { "usage.realEstate": 1 } }
+    );
+  } catch (error) {
+    console.error("Failed to load usage for profile", error);
+  }
+
+  const realEstateUsage = usageDoc?.usage?.realEstate;
+  const usageMatchesPlan = realEstateUsage?.planType === planType;
+  const planLimit = REAL_ESTATE_LIMITS[planType as PlanKey] ?? null;
+  const usedGenerations = usageMatchesPlan && typeof realEstateUsage?.used === "number" ? realEstateUsage.used : 0;
+  const remainingGenerations = planLimit === null ? null : Math.max(planLimit - usedGenerations, 0);
+  const usageProgress = planLimit && planLimit > 0 ? Math.min((usedGenerations / planLimit) * 100, 100) : 0;
+
+  let anchorDay: number | null = null;
+  if (usageMatchesPlan && typeof realEstateUsage?.periodKey === "string") {
+    const prefix = `${planType}-`;
+    if (realEstateUsage.periodKey.startsWith(prefix)) {
+      const datePart = realEstateUsage.periodKey.slice(prefix.length);
+      const parsed = new Date(`${datePart}T00:00:00.000Z`);
+      if (!Number.isNaN(parsed.getTime())) {
+        anchorDay = parsed.getUTCDate();
+      }
+    }
+  }
+  if (anchorDay === null && currentPeriodEnd) {
+    const anchorSource = new Date(currentPeriodEnd);
+    if (!Number.isNaN(anchorSource.getTime())) {
+      anchorDay = anchorSource.getUTCDate();
+    }
+  }
+  if (anchorDay === null) {
+    anchorDay = new Date().getUTCDate();
+  }
+
+  let usageRenewsAt: Date | null = null;
+  if (planLimit === null) {
+    usageRenewsAt = currentPeriodEnd ?? null;
+  } else if (planType === "free") {
+    const now = new Date();
+    usageRenewsAt = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+  } else if (planType === "unlimited_monthly" || planType === "unlimited_yearly") {
+    const now = new Date();
+    const periodStart = computeMonthlyPeriodStart(anchorDay, now);
+    const nextMonth = periodStart.getUTCMonth() + 1;
+    const nextYear = periodStart.getUTCFullYear() + Math.floor(nextMonth / 12);
+    const normalizedMonth = (nextMonth + 12) % 12;
+    const nextDay = clampAnchorDay(anchorDay, nextYear, normalizedMonth);
+    usageRenewsAt = new Date(Date.UTC(nextYear, normalizedMonth, nextDay));
+  } else if (currentPeriodEnd) {
+    usageRenewsAt = currentPeriodEnd;
+  } else if (usageMatchesPlan && realEstateUsage?.periodKey) {
+    const prefix = `${planType}-`;
+    if (realEstateUsage.periodKey.startsWith(prefix)) {
+      const iso = realEstateUsage.periodKey.slice(prefix.length);
+      const parsed = new Date(iso);
+      if (!Number.isNaN(parsed.getTime())) {
+        usageRenewsAt = parsed;
+      }
+    }
+  }
 
   const planName = planLabels[planType] ?? "Free";
   const statusName = statusLabels[status] ?? status;
@@ -222,6 +336,49 @@ export default async function ProfilePage() {
                     </Link>
                   </div>
                 )}
+              </div>
+              <div className="rounded-lg border border-indigo-100 bg-indigo-50/60 p-5 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                      Real estate generations
+                    </p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {planLimit === null
+                        ? "Unlimited"
+                        : `${remainingGenerations ?? 0} remaining`}
+                    </p>
+                    <p className="text-xs text-indigo-500">
+                      {planLimit === null
+                        ? "Unlimited generations included in your plan"
+                        : `${usedGenerations} used out of ${planLimit}`}
+                    </p>
+                  </div>
+                  {planLimit !== null && (
+                    <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-indigo-600 shadow-sm">
+                      {usedGenerations}/{planLimit}
+                    </span>
+                  )}
+                </div>
+                {planLimit !== null && (
+                  <div className="mt-4 h-2 w-full rounded-full bg-indigo-100">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500"
+                      style={{ width: `${usageProgress}%` }}
+                      aria-hidden
+                    />
+                  </div>
+                )}
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-indigo-500">
+                  <span className="font-medium">
+                    {planLimit === null
+                      ? "No monthly cap"
+                      : `${remainingGenerations ?? 0} generation${remainingGenerations === 1 ? "" : "s"} left`}
+                  </span>
+                  {usageRenewsAt ? (
+                    <span>Resets on {formatDate(usageRenewsAt)}</span>
+                  ) : null}
+                </div>
               </div>
               <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-gray-500">

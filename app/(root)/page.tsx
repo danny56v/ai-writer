@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
+import { auth } from "@/auth";
 import LandingPage from "@/components/home/LandingPage";
+import { getUserPlan } from "@/lib/billing";
 
 export const metadata: Metadata = {
   title: "AI real estate listing generator & marketing workspace",
@@ -28,6 +30,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  return <LandingPage />;
+export default async function Home() {
+  const session = await auth();
+  const userId = session?.user?.id ?? null;
+  const plan = userId ? await getUserPlan(userId) : null;
+
+  return <LandingPage currentPriceId={plan?.priceId ?? null} />;
 }

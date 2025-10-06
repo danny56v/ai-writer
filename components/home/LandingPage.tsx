@@ -17,6 +17,10 @@ import { blogPosts } from "@/data/blogPosts";
 
 const homeFeaturedPosts = blogPosts.slice(0, 3);
 
+interface LandingPageProps {
+  currentPriceId: string | null;
+}
+
 const features = [
   {
     name: "Guided briefs that spark better drafts",
@@ -150,7 +154,7 @@ function HeroMockup() {
   );
 }
 
-export default function LandingPage() {
+export default function LandingPage({ currentPriceId }: LandingPageProps) {
   return (
     <div className="bg-white text-gray-900">
       <main className="isolate">
@@ -307,7 +311,7 @@ export default function LandingPage() {
               invoices are handled automatically via Stripe.
             </p> */}
             <div className="mt-16">
-              <Pricing currentPriceId={null} />
+              <Pricing currentPriceId={currentPriceId} />
             </div>
           </div>
         </section>

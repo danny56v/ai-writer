@@ -3,7 +3,7 @@
 // import { PLAN_LIMITS, PlanKey, planFromPrice } from "@/lib/plans";
 
 
-// /** Citește planul curent (sau "free") */
+// /** Read the current plan (or "free") */
 // export async function getUserPlan(userId: string): Promise<{ planType: PlanKey; currentPeriodEnd?: Date | null }> {
 //   const d = await db();
 //   const now = new Date();
@@ -16,7 +16,7 @@
 //   return { planType, currentPeriodEnd: sub?.currentPeriodEnd ?? null };
 // }
 
-// /** Cheia lunii curente */
+// /** Key for the current month */
 // function ym(d = new Date()) { return { year: d.getFullYear(), month: d.getMonth() }; }
 
 // /** Utility helpers for usage tracking */
@@ -35,7 +35,7 @@
 
 //   // If you also enforce per-article word limits, validate them here (e.g. limits.maxWordsPerArticle)
 //   if ("maxWordsPerArticle" in limits && limits.maxWordsPerArticle! < requestedWords) {
-//     return { ok: false as const, reason: `Limita de ${limits.maxWordsPerArticle} cuvinte/articol` };
+//     return { ok: false as const, reason: `Limit of ${limits.maxWordsPerArticle} words per article` };
 //   }
 //   if (usage.articles >= limits.articlesPerMonth) {
 //     return { ok: false as const, reason: `You reached ${limits.articlesPerMonth} articles per month` };
@@ -47,7 +47,7 @@
 //   };
 // }
 
-// /** Increment atomic la succes (NU incrementa pe failure) */
+// /** Atomic increment on success (do not increment on failure) */
 // export async function incUsage(userId: string, words: number) {
 //   const d = await db();
 //   const { year, month } = ym();
