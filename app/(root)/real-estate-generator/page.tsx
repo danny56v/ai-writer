@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import RealEstateClient from "@/components/realEstate/RealEstateClient";
@@ -33,6 +34,10 @@ export const metadata: Metadata = {
 const RealEstateGeneratorPage = async () => {
   const session = await auth();
   const userId = session?.user?.id ?? null;
+
+  if (!userId) {
+    redirect("/sign-in?callbackUrl=/real-estate-generator");
+  }
 
   const defaultPlan = { planType: "free", currentPeriodEnd: null, status: "free" } as const;
   const userPlan = userId ? await getUserPlan(userId) : defaultPlan;

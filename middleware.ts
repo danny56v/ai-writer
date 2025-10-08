@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/user-info", "/real-estate-generator"];
+const protectedRoutes = ["/user-info"];
 const authRoutes = ["/sign-in", "/sign-up", "/login", "/register"];
 
 const isAuthRoute = (pathname: string) =>
@@ -11,11 +11,8 @@ const isProtectedRoute = (pathname: string) =>
   protectedRoutes.some((route) => pathname.startsWith(route));
 
 export async function middleware(request: NextRequest) {
-  console.log('secret', !!process.env.NEXTAUTH_SECRET)
   const { pathname } = request.nextUrl;
   const secret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET;
-  console.log("NEXTAUTH_SECRET in middleware", process.env.NEXTAUTH_SECRET?.length);
-  console.log("AUTH_SECRET in middleware", process.env.AUTH_SECRET?.length);
   const token = await getToken({ req: request, secret });
   const isAuthenticated = Boolean(token);
 
