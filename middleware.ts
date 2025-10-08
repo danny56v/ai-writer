@@ -11,6 +11,7 @@ const isProtectedRoute = (pathname: string) =>
   protectedRoutes.some((route) => pathname.startsWith(route));
 
 export async function middleware(request: NextRequest) {
+  console.log('secret', !!process.env.NEXTAUTH_SECRET)
   const { pathname } = request.nextUrl;
   const secret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET;
   const token = await getToken({ req: request, secret });
