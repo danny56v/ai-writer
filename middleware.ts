@@ -14,6 +14,7 @@ export async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.AUTH_SECRET 
     });
+    console.log("Middleware token:", token);
 
     // Check if the user is authenticated
     const isAuthenticated = !!token;
