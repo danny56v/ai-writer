@@ -10,7 +10,8 @@ const isProtectedRoute = (pathname: string) =>
 
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+  const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req: request, secret });
   const isAuthenticated = Boolean(token);
 
   if (isAuthenticated && isAuthRoute(pathname)) {
