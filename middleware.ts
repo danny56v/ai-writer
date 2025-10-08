@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
     hasAuthSecret,
     hasSessionCookie: Boolean(sessionCookie),
     hasSecureSessionCookie: Boolean(secureSessionCookie),
+    
   });
 
   try {
