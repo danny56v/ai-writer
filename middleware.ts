@@ -7,6 +7,16 @@ const authRoutes = ["/sign-in", "/sign-up", "/login", "/register"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const hasAuthSecret = Boolean(process.env.AUTH_SECRET);
+  const sessionCookie = request.cookies.get("authjs.session-token")?.value;
+  const secureSessionCookie = request.cookies.get("__Secure-authjs.session-token")?.value;
+
+  console.log("[middleware] incoming", {
+    pathname,
+    hasAuthSecret,
+    hasSessionCookie: Boolean(sessionCookie),
+    hasSecureSessionCookie: Boolean(secureSessionCookie),
+  });
 
   try {
     // Use getToken, which works inside the Edge Runtime
@@ -14,7 +24,11 @@ export async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.AUTH_SECRET 
     });
-    console.log("Middleware token:", token);
+    console.log("[middleware] token lookup", {
+      pathname,
+      tokenPresent: Boolean(token),
+      tokenSub: token?.sub,
+    });
 
     // Check if the user is authenticated
     const isAuthenticated = !!token;
