@@ -1,59 +1,30 @@
 import { getToken } from "next-auth/jwt";
-
 import { NextRequest, NextResponse } from "next/server";
 
 const protectedRoutes = ["/user-info", "/real-estate-generator"];
 const authRoutes = ["/sign-in", "/sign-up", "/login", "/register"];
 
+const isAuthRoute = (pathname: string) => authRoutes.includes(pathname);
+const isProtectedRoute = (pathname: string) =>
+  protectedRoutes.some((route) => pathname.startsWith(route));
+
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const hasAuthSecret = Boolean(process.env.AUTH_SECRET);
-  const sessionCookie = request.cookies.get("authjs.session-token")?.value;
-  const secureSessionCookie = request.cookies.get("__Secure-authjs.session-token")?.value;
+  const { pathname, search } = request.nextUrl;
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+  const isAuthenticated = Boolean(token);
 
-  console.log("[middleware] incoming", {
-    pathname,
-    hasAuthSecret,
-    hasSessionCookie: Boolean(sessionCookie),
-    hasSecureSessionCookie: Boolean(secureSessionCookie),
-    
-  });
-
-  try {
-    // Use getToken, which works inside the Edge Runtime
-    const token = await getToken({ 
-      req: request,
-      secret: process.env.AUTH_SECRET 
-    });
-    console.log("[middleware] token lookup", {
-      pathname,
-      tokenPresent: Boolean(token),
-      tokenSub: token?.sub,
-    });
-
-    // Check if the user is authenticated
-    const isAuthenticated = !!token;
-
-    // If an authenticated user tries to reach auth pages, send them home
-    if (isAuthenticated && authRoutes.includes(pathname)) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    // Redirect unauthenticated users away from protected routes
-    if (!isAuthenticated && protectedRoutes.some((route) => pathname.startsWith(route))) {
-      const signInUrl = new URL("/sign-in", request.url);
-      const search = request.nextUrl.search.length > 0 ? request.nextUrl.search : "";
-      const callbackUrl = `${pathname}${search}`;
-      signInUrl.searchParams.set("callbackUrl", callbackUrl);
-      return NextResponse.redirect(signInUrl);
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.error("Middleware error:", error);
-    // In case of an unexpected error, allow the request (fallback)
-    return NextResponse.next();
+  if (isAuthenticated && isAuthRoute(pathname)) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
+
+  if (!isAuthenticated && isProtectedRoute(pathname)) {
+    const signInUrl = new URL("/sign-in", request.url);
+    const callbackUrl = `${pathname}${search ?? ""}`;
+    signInUrl.searchParams.set("callbackUrl", callbackUrl);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
