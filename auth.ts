@@ -7,7 +7,15 @@ import bcrypt from "bcryptjs";
 import { signInSchema } from "./lib/zod";
 import { ObjectId } from "mongodb";
 
+console.log("AUTH_SECRET in auth.ts", process.env.AUTH_SECRET?.length);
+console.log("NEXTAUTH_SECRET in auth.ts", process.env.NEXTAUTH_SECRET?.length);
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  logger: {
+    warn(message) {
+      console.warn('[next-auth warn]', message);
+    },
+  },
   adapter: MongoDBAdapter(client),
   providers: [
     Google({
