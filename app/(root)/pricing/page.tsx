@@ -8,17 +8,17 @@ import React from "react";
 export const metadata: Metadata = {
   title: "Pricing plans for every real estate team",
   description:
-    "Compare HomeListerAi plans, from free trials to unlimited production tiers, and choose the right mix of seats, credits, and compliance controls.",
+    "Compare ListologyAi plans, from free trials to unlimited production tiers, and choose the right mix of seats, credits, and compliance controls.",
   openGraph: {
     title: "Pricing plans for every real estate team",
     description:
-      "Transparent pricing that scales with your marketing workflow. Review plan limits, billing cadence, and upgrade paths for HomeListerAi.",
+      "Transparent pricing that scales with your marketing workflow. Review plan limits, billing cadence, and upgrade paths for ListologyAi.",
     images: [
       {
         url: "/Logo.png",
         width: 800,
         height: 800,
-        alt: "HomeListerAi pricing overview",
+        alt: "ListologyAi pricing overview",
       },
     ],
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pricing plans for every real estate team",
     description:
-      "Unlock collaboration, AI drafting, and analytics with the HomeListerAi plan that fits your brokerage or marketing crew.",
+      "Unlock collaboration, AI drafting, and analytics with the ListologyAi plan that fits your brokerage or marketing crew.",
     images: ["/Logo.png"],
   },
 };

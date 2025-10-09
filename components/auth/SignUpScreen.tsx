@@ -26,9 +26,9 @@ const SignUpScreen = () => {
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Image src="/Logo.png" alt="HomeListerAi" width={40} height={40} className="mx-auto h-10 w-10" />
+        <Image src="/Logo.png" alt="ListologyAi" width={40} height={40} className="mx-auto h-10 w-10" />
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Create your HomeListerAi account
+          Create your ListologyAi account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Generate your first three listings for free. Upgrade when you invite your team.

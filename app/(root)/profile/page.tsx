@@ -53,7 +53,7 @@ const statusLabels: Record<string, string> = {
 export const metadata: Metadata = {
   title: "Account settings",
   description:
-    "Manage your HomeListerAi profile, subscription plan, billing history, and security preferences from one dashboard.",
+    "Manage your ListologyAi profile, subscription plan, billing history, and security preferences from one dashboard.",
   robots: {
     index: false,
     follow: false,
@@ -247,7 +247,7 @@ export default async function ProfilePage() {
           <section id="profile">
             <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
             <p className="mt-1 text-sm leading-6 text-gray-500">
-              Basic details tied to your HomeListerAi account.
+              Basic details tied to your ListologyAi account.
             </p>
 
             <div className="mt-6 space-y-4 text-sm leading-6">
@@ -284,7 +284,7 @@ export default async function ProfilePage() {
           <section id="notifications">
             <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
             <p className="mt-1 text-sm leading-6 text-gray-500">
-              Control when HomeListerAi reaches out and what updates you receive.
+              Control when ListologyAi reaches out and what updates you receive.
             </p>
 
             <div className="mt-6 space-y-4 text-sm leading-6">

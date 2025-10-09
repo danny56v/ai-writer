@@ -25,7 +25,7 @@ export default async function CheckEmailPage({ searchParams }: CheckEmailPagePro
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Image src="/Logo.png" alt="HomeListerAi" width={40} height={40} className="mx-auto h-10 w-10" />
+        <Image src="/Logo.png" alt="ListologyAi" width={40} height={40} className="mx-auto h-10 w-10" />
         <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Check your email</h1>
         <p className="mt-4 text-sm leading-6 text-gray-600">
           {resent === "1"
@@ -37,7 +37,7 @@ export default async function CheckEmailPage({ searchParams }: CheckEmailPagePro
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
         <div className="rounded-3xl bg-white px-6 py-10 shadow sm:px-12">
           <p className="text-sm text-gray-600">
-            Check your inbox (and spam/promotions) for the HomeListerAi message. Click the button inside the email within 24
+            Check your inbox (and spam/promotions) for the ListologyAi message. Click the button inside the email within 24
             hours to activate your account.
           </p>
           <div className="mt-6 rounded-2xl border border-dashed border-indigo-200 bg-indigo-50/70 px-4 py-3 text-left text-sm text-indigo-700">

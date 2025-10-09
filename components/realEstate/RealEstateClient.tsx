@@ -25,6 +25,11 @@ import RealEstateForm from "./RealEstateForm";
 import RealEstateResponse from "./RealEstateResponse";
 
 type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
+type RealEstateUsageSummary = {
+  limit: number | null;
+  remaining: number | null;
+  used: number | null;
+};
 
 type HistoryEntry = {
   id: string;
@@ -44,6 +49,7 @@ type HistoryEntry = {
 
 interface Props {
   userPlan: Plan;
+  usageSummary: RealEstateUsageSummary;
   isAuthenticated: boolean;
   initialHistory: HistoryEntry[];
 }
@@ -90,7 +96,7 @@ const COLLAPSED_HISTORY_PREVIEW_COUNT_MOBILE = 1;
 const HISTORY_LOAD_INCREMENT_DESKTOP = 6;
 const HISTORY_LOAD_INCREMENT_MOBILE = 4;
 
-const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) => {
+const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHistory }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [regenerateSignal, setRegenerateSignal] = useState(0);
@@ -130,7 +136,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
       }
     } catch (error) {
       console.error("Failed to refresh history", error);
-      setHistoryError("Nu am putut încărca istoricul. Încearcă din nou.");
+      setHistoryError("We couldn't load your history. Please try again.");
     } finally {
       setHistoryLoading(false);
     }
@@ -260,6 +266,10 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
     });
   }, [history.length, isDesktopHistoryLayout]);
 
+  const handleHistoryShowAll = useCallback(() => {
+    setFullyVisibleHistoryCount(history.length);
+  }, [history.length]);
+
   return (
     <div className="mt-10">
     <div className="relative min-h-screen overflow-hidden">
@@ -332,6 +342,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
           >
             <RealEstateForm
               userPlan={userPlan}
+              usageSummary={usageSummary}
               isAuthenticated={isAuthenticated}
               onLoadingChange={setLoading}
               onResult={handleResult}
@@ -381,13 +392,13 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-purple-700">
-                Istoric
+                History
               </span>
               <h2 className="mt-3 text-2xl font-semibold text-gray-900 sm:text-3xl">
-                Ultimele descrieri generate
+                Latest generated descriptions
               </h2>
               <p className="mt-2 text-sm text-gray-500">
-                Revizuiește versiunile create recent și copiază textul fără să parcurgi din nou formularul.
+                Review your recent versions and copy the text without completing the form again.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -403,17 +414,17 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v3.5a4.5 4.5 0 0 0-4.5 4.5H4z" />
                     </svg>
-                    Actualizare…
+                    Refreshing...
                   </>
                 ) : (
                   <>
                     <ArrowPathIcon className="h-4 w-4" aria-hidden />
-                    Reîncarcă istoricul
+                    Refresh history
                   </>
                 )}
               </button>
               <span className="text-xs font-semibold text-indigo-500">
-                {history.length} {history.length === 1 ? "intrare" : "intrări"}
+                {history.length} {history.length === 1 ? "entry" : "entries"}
               </span>
             </div>
           </div>
@@ -450,9 +461,9 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                 <SparklesIcon className="h-6 w-6" aria-hidden />
               </span>
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-gray-900">Încă nu ai generații salvate</p>
+                <p className="text-sm font-semibold text-gray-900">You do not have any saved generations yet</p>
                 <p className="text-sm text-gray-500">
-                  Completează formularul din stânga pentru a vedea aici istoricul versiunilor generate.
+                  Complete the form on the left to start building and saving generated versions here.
                 </p>
               </div>
             </div>
@@ -472,7 +483,18 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                     const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
                     const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
                     const isExpanded = expandedHistoryId === entry.id;
-                    const listingLabel = entry.listingType === "rent" ? "Închiriere" : "Vânzare";
+                    const listingLabel = entry.listingType === "rent" ? "Rent" : "Sale";
+                    const bedroomLabel = entry.bedrooms
+                      ? entry.bedrooms.toLowerCase() === "studio"
+                        ? "Studio"
+                        : `${entry.bedrooms} ${entry.bedrooms === "1" ? "bedroom" : "bedrooms"}`
+                      : null;
+                    const bathroomsLabel = entry.bathrooms
+                      ? `${entry.bathrooms} ${entry.bathrooms === "1" ? "bathroom" : "bathrooms"}`
+                      : null;
+                    const amenitiesLabel = entry.amenities.length
+                      ? `${entry.amenities.length} ${entry.amenities.length === 1 ? "amenity" : "amenities"}`
+                      : null;
                     const isCollapsedPreview = index >= fullyVisibleHistoryCount;
                     const isSecondPreview = index >= fullyVisibleHistoryCount + 1;
                     const cardClasses = [
@@ -490,7 +512,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                         <div className="flex flex-wrap items-start justify-between gap-4">
                           <div>
                             <h3 className="text-base font-semibold text-indigo-700">
-                              {entry.title || "Listare fără titlu"}
+                              {entry.title || "Untitled listing"}
                             </h3>
                             <p className="mt-1 flex items-center gap-2 text-xs text-gray-500">
                               <ClockIcon className="h-4 w-4" aria-hidden />
@@ -507,7 +529,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                               ].join(" ")}
                               disabled={isCollapsedPreview}
                             >
-                              {copiedHistoryId === entry.id ? "Copiat" : "Copiază"}
+                              {copiedHistoryId === entry.id ? "Copied" : "Copy"}
                             </button>
                             <button
                               type="button"
@@ -518,7 +540,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                               ].join(" ")}
                               disabled={isCollapsedPreview}
                             >
-                              {isExpanded ? "Ascunde" : "Vezi detalii"}
+                              {isExpanded ? "Hide" : "View details"}
                             </button>
                           </div>
                         </div>
@@ -545,11 +567,9 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
 
                         <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
                           <span>{entry.language}</span>
-                          {entry.bedrooms ? <span>{entry.bedrooms} dormitoare</span> : null}
-                          {entry.bathrooms ? <span>{entry.bathrooms} băi</span> : null}
-                          {entry.amenities.length ? (
-                            <span>{entry.amenities.length} amenități</span>
-                          ) : null}
+                          {bedroomLabel ? <span>{bedroomLabel}</span> : null}
+                          {bathroomsLabel ? <span>{bathroomsLabel}</span> : null}
+                          {amenitiesLabel ? <span>{amenitiesLabel}</span> : null}
                         </div>
 
                         <div className="mt-5 rounded-2xl border border-indigo-50 bg-white/85 p-4 text-sm leading-6 text-gray-700 shadow-inner">
@@ -600,15 +620,22 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
                   <>
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute inset-x-0 bottom-14 z-10 h-24 bg-gradient-to-b from-transparent via-white/85 to-white"
+                      className="pointer-events-none absolute inset-x-0 bottom-20 z-10 h-24 bg-gradient-to-b from-transparent via-white/85 to-white"
                     />
-                    <div className="absolute inset-x-0 bottom-0 z-20 flex justify-center">
+                    <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                       <button
                         type="button"
                         onClick={handleHistoryLoadMore}
                         className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                       >
-                        Arată mai mult
+                        Show more
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleHistoryShowAll}
+                        className="text-sm font-semibold text-indigo-600 underline decoration-indigo-200 decoration-2 underline-offset-4 transition hover:text-indigo-500"
+                      >
+                        View full history
                       </button>
                     </div>
                   </>
@@ -626,7 +653,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
               Workflow
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How to use the HomeListerAi listing generator
+              How to use the ListologyAi listing generator
             </h2>
             <p className="mt-4 text-base leading-7 text-gray-600">
               Follow the steps below to move from brief to final description in minutes. Everything you enter is saved so you can quickly adjust tone, language, or audience without starting over.
@@ -645,9 +672,9 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
               <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
                 <SparklesIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
                 <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">2. Generezi descrierea</dt>
+                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">2. Generate the description</dt>
                   <dd className="text-sm leading-6 text-gray-700">
-                    After you submit the form, HomeListerAi blends your context with proven templates to deliver an MLS-ready description optimized for conversion and compliance.
+                    After you submit the form, ListologyAi blends your context with proven templates to deliver an MLS-ready description optimized for conversion and compliance.
                   </dd>
                 </div>
               </div>
@@ -665,7 +692,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
               <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
                 <PaperAirplaneIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
                 <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">4. Publici sau partajezi</dt>
+                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">4. Publish or share</dt>
                   <dd className="text-sm leading-6 text-gray-700">
                     After internal approval, send the copy straight to the MLS, your agency site, or a newsletter. Use the same session to create multiple versions and track credit usage.
                   </dd>
@@ -679,13 +706,13 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
             <div className="rounded-3xl border border-indigo-100 bg-white/80 p-4 shadow-xl shadow-indigo-100/40 backdrop-blur-sm">
               <Image
                 src="https://images.unsplash.com/photo-1604079628040-94301bb21b11?auto=format&fit=crop&w=1600&q=80"
-                alt="HomeListerAi listing generator interface"
+                alt="ListologyAi listing generator interface"
                 width={1200}
                 height={850}
                 className="w-full rounded-2xl border border-indigo-100 object-cover"
               />
               <p className="mt-4 text-center text-xs font-medium uppercase tracking-wide text-indigo-600">
-                Interface preview – HomeListerAi form and results panel
+                Interface preview – ListologyAi form and results panel
               </p>
             </div>
           </div>

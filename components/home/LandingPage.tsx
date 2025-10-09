@@ -25,7 +25,7 @@ const features = [
   {
     name: "Guided briefs that spark better drafts",
     description:
-      "Collect property specs, brand voice, and compliance notes in one structured form. HomeListerAi transforms context into polished copy instantly.",
+      "Collect property specs, brand voice, and compliance notes in one structured form. ListologyAi transforms context into polished copy instantly.",
     icon: AdjustmentsHorizontalIcon,
   },
   {
@@ -55,7 +55,7 @@ const faqs = [
       "Start with the basics: property type, address or neighbourhood, bed and bath count, standout features, and any compliance must-haves like HOA fees or license numbers. The more context you give, the sharper the AI draft becomes.",
   },
   {
-    question: "Can HomeListerAi pull data from our MLS or CRM?",
+    question: "Can ListologyAi pull data from our MLS or CRM?",
     answer:
       "Yes. Connect your MLS feed or CRM via our integrations and we will auto-populate briefs with photos, specs, and pricing. You can still edit every field before generating the description.",
   },
@@ -109,7 +109,7 @@ const partnerLogos = [
 
 const testimonials = {
   quote:
-    "HomeListerAi cut our listing turnaround time by 60%. Agents now focus on storytelling while AI keeps compliance in check.",
+    "ListologyAi cut our listing turnaround time by 60%. Agents now focus on storytelling while AI keeps compliance in check.",
   name: "Laura Mitrea",
   role: "Marketing Director, Skyline Homes",
 };
@@ -122,7 +122,7 @@ function HeroMockup() {
         <span className="h-3 w-3 rounded-full bg-rose-400" />
         <span className="h-3 w-3 rounded-full bg-amber-400" />
         <span className="h-3 w-3 rounded-full bg-emerald-400" />
-        <p className="ml-auto text-xs font-semibold text-indigo-500">HomeListerAi Workspace</p>
+        <p className="ml-auto text-xs font-semibold text-indigo-500">ListologyAi Workspace</p>
       </div>
       <div className="grid gap-6 px-6 py-6 sm:grid-cols-2">
         <div className="space-y-4">
@@ -179,7 +179,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                 Creative AI tooling for teams that craft premium listings.
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                HomeListerAi connects your briefs, brand voice, and AI assistants in one workspace. Produce consistent
+                ListologyAi connects your briefs, brand voice, and AI assistants in one workspace. Produce consistent
                 real estate copy, long-form articles, and client campaigns without the chaos.
               </p>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -239,7 +239,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               Automate the busywork, keep the craft.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              HomeListerAi gives marketers and agents a shared workspace for briefs, AI drafts, revisions, and
+              ListologyAi gives marketers and agents a shared workspace for briefs, AI drafts, revisions, and
               approvals. No more bouncing between docs, email, and chat threads.
             </p>
           </div>
@@ -358,7 +358,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           </div>
           <div className="mx-auto max-w-3xl rounded-3xl border border-indigo-100 bg-white p-10 text-center shadow-lg shadow-indigo-100/60">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Ready to see HomeListerAi inside your workflow?
+              Ready to see ListologyAi inside your workflow?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-gray-600">
               Create an account in minutes, invite your team, and generate three listings on us. Upgrade when you are

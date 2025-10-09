@@ -5,11 +5,11 @@ import Link from "next/link";
 import { blogPosts } from "@/data/blogPosts";
 
 export const metadata: Metadata = {
-  title: "HomeListerAi Blog",
+  title: "ListologyAi Blog",
   description:
-    "Read product deep dives, customer spotlights, and content strategy tips from the HomeListerAi team.",
+    "Read product deep dives, customer spotlights, and content strategy tips from the ListologyAi team.",
   openGraph: {
-    title: "HomeListerAi Blog",
+    title: "ListologyAi Blog",
     description:
       "Fresh insights on AI-assisted real estate marketing, customer success stories, and workflow best practices.",
     images: [
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
         url: "/Logo.png",
         width: 800,
         height: 800,
-        alt: "HomeListerAi blog logo",
+        alt: "ListologyAi blog logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HomeListerAi Blog",
+    title: "ListologyAi Blog",
     description:
       "Stay ahead with articles on AI workflows, listing optimization, and campaign strategy for real estate teams.",
     images: ["/Logo.png"],
@@ -46,11 +46,11 @@ const BlogPage = () => {
             Blog & Resources
           </span>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Stories, strategy, and product updates from the HomeListerAi team
+            Stories, strategy, and product updates from the ListologyAi team
           </h1>
           <p className="mt-6 text-lg leading-7 text-gray-600">
             Dive into our playbook for faster real estate marketing: launch recaps, customer spotlights, AI workflow tips, and
-            behind-the-scenes deep dives written by the people building HomeListerAi.
+            behind-the-scenes deep dives written by the people building ListologyAi.
           </p>
         </div>
 
@@ -92,7 +92,7 @@ const BlogPage = () => {
                     </span>
                     <div className="text-sm leading-tight">
                       <p className="font-semibold text-gray-900">{post.author.name}</p>
-                      <p className="text-xs text-gray-500">HomeListerAi Editorial</p>
+                      <p className="text-xs text-gray-500">ListologyAi Editorial</p>
                     </div>
                   </div>
                   <Link

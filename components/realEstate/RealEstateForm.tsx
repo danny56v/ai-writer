@@ -12,8 +12,15 @@ import { CheckIcon, ChevronUpDownIcon, ExclamationTriangleIcon } from "@heroicon
 
 type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 
+type RealEstateUsageSummary = {
+  limit: number | null;
+  remaining: number | null;
+  used: number | null;
+};
+
 interface RealEstateFormProps {
   userPlan: Plan;
+  usageSummary?: RealEstateUsageSummary;
   isAuthenticated: boolean;
   onOpen?: () => void;
   onResult: (t: string) => void;
@@ -83,7 +90,8 @@ type ErrorNotification = {
 };
 
 const RealEstateForm = ({
-  // userPlan,
+  userPlan,
+  usageSummary,
   isAuthenticated,
   onOpen,
   onResult,
@@ -92,7 +100,7 @@ const RealEstateForm = ({
   onSubmitStart,
   onError,
 }: RealEstateFormProps) => {
-  // const isFreePlan = userPlan.planType === "free";
+  const isFreePlan = userPlan.planType === "free";
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -383,19 +391,31 @@ const RealEstateForm = ({
                 <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">Property brief</p>
                 <h2 className="text-base font-semibold text-gray-900 sm:text-lg">Listing Description Generator</h2>
                 <p className="mt-1 text-xs text-gray-500">
-                  Fill in the property details, choose the right tone, and let HomeListerAi build the ideal description.
+                  Fill in the property details, choose the right tone, and let ListologyAi build the ideal description.
                 </p>
               </div>
             </div>
 
-            {/* <div className="flex flex-col items-end gap-2 text-right">
-              <span className="inline-flex items-center rounded-full bg-indigo-100/70 px-3 py-1 text-xs font-semibold text-indigo-600 ring-1 ring-inset ring-indigo-200">
-                {isFreePlan ? "Free plan · 1 listing/month" : "Premium plan · 1,500 generations/month"}
+            <div className="flex flex-col items-end text-right">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-indigo-400">Generations left</span>
+              <span className="mt-1 text-lg font-semibold text-indigo-600">
+                {usageSummary?.limit === null
+                  ? "Unlimited"
+                  : Math.max(usageSummary?.remaining ?? 0, 0)}
               </span>
-              <span className="text-[11px] font-medium uppercase tracking-wider text-indigo-400">
+              {/* {usageSummary?.limit !== null ? (
+                <span className="mt-1 inline-flex items-center rounded-full bg-indigo-100/70 px-3 py-1 text-[11px] font-semibold text-indigo-600">
+                  {`${Math.max(usageSummary?.used ?? 0, 0)} used / ${usageSummary.limit ?? 0}`}
+                </span>
+              ) : (
+                <span className="mt-1 inline-flex items-center rounded-full bg-indigo-100/70 px-3 py-1 text-[11px] font-semibold text-indigo-600">
+                  {isFreePlan ? "Free plan" : "Premium plan"}
+                </span>
+              )}
+              <span className="mt-1 text-[11px] font-medium uppercase tracking-wider text-indigo-300">
                 Status: {pending ? "Processing" : "Ready"}
-              </span>
-            </div> */}
+              </span> */}
+            </div>
           </div>
         </header>
 

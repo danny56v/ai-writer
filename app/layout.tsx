@@ -14,37 +14,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.homelisterai.com"),
+  metadataBase: new URL("https://www.listologyai.com"),
   title: {
-    default: "HomeListerAi | Responsible AI copy for real estate teams",
-    template: "%s | HomeListerAi",
+    default: "ListologyAi | Responsible AI copy for real estate teams",
+    template: "%s | ListologyAi",
   },
   description:
-    "HomeListerAi centralizes briefs, brand voice, and AI assistants so real estate teams launch listings and campaigns faster with compliance built in.",
+    "ListologyAi centralizes briefs, brand voice, and AI assistants so real estate teams launch listings and campaigns faster with compliance built in.",
   keywords: [
     "real estate ai",
     "listing generator",
     "ai copywriting",
     "property marketing platform",
-    "HomeListerAi",
+    "ListologyAi",
   ],
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "HomeListerAi",
-    url: "https://www.homelisterai.com",
-    title: "HomeListerAi | Responsible AI copy for real estate teams",
+    siteName: "ListologyAi",
+    url: "https://www.listologyai.com",
+    title: "ListologyAi | Responsible AI copy for real estate teams",
     description:
-      "Launch MLS-ready listings, newsletters, and campaigns in minutes. HomeListerAi unites briefs, workflows, and compliance-friendly AI drafting in one workspace.",
+      "Launch MLS-ready listings, newsletters, and campaigns in minutes. ListologyAi unites briefs, workflows, and compliance-friendly AI drafting in one workspace.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HomeListerAi | Responsible AI copy for real estate teams",
+    title: "ListologyAi | Responsible AI copy for real estate teams",
     description:
       "Accelerate real estate marketing with guided briefs, AI-assisted drafts, and analytics that prove ROI.",
   },
   alternates: {
-    canonical: "https://www.homelisterai.com",
+    canonical: "https://www.listologyai.com",
+  },
+  icons: {
+    icon: "/favicon.png",
   },
 };
 

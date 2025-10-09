@@ -12,7 +12,7 @@ interface FeaturedPostsProps {
   description?: string;
 }
 
-const DEFAULT_TITLE = "From the HomeListerAi blog";
+const DEFAULT_TITLE = "From the ListologyAi blog";
 const DEFAULT_DESCRIPTION = "Stories, releases, and best practices for shipping standout real estate content.";
 
 export function FeaturedPosts({

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const featuredTestimonial = {
-  body: "HomeListerAi is the first platform that treats our listing pipeline like a real content workflow. Drafts land in minutes, our tone stays on-brand, and compliance checks happen before an agent ever hits publish.",
+  body: "ListologyAi is the first platform that treats our listing pipeline like a real content workflow. Drafts land in minutes, our tone stays on-brand, and compliance checks happen before an agent ever hits publish.",
   author: {
     name: "Maya Thompson",
     handle: "maya.thompson",
@@ -15,7 +15,7 @@ const testimonials = [
   [
     [
       {
-        body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. HomeListerAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
+        body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. ListologyAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
         author: {
           name: "Elena Rossi",
           handle: "elena.rossi",
@@ -24,7 +24,7 @@ const testimonials = [
         },
       },
       {
-        body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. HomeListerAi finally got sales, ops, and creative on the same page.",
+        body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. ListologyAi finally got sales, ops, and creative on the same page.",
         author: {
           name: "Jordan Wells",
           handle: "jordanwells",
@@ -35,7 +35,7 @@ const testimonials = [
     ],
     [
       {
-        body: "We tested five AI tools and kept coming back to HomeListerAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
+        body: "We tested five AI tools and kept coming back to ListologyAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
         author: {
           name: "Sofia Martinez",
           handle: "sofia.martinez",
@@ -57,7 +57,7 @@ const testimonials = [
   [
     [
       {
-        body: "Our franchise network writes in four languages. HomeListerAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
+        body: "Our franchise network writes in four languages. ListologyAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
         author: {
           name: "Aiko Tanaka",
           handle: "aikotanaka",
@@ -77,7 +77,7 @@ const testimonials = [
     ],
     [
       {
-        body: "We produce weekly investor memos and property spotlights. HomeListerAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
+        body: "We produce weekly investor memos and property spotlights. ListologyAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
         author: {
           name: "Malik Thompson",
           handle: "malik.thompson",
@@ -86,7 +86,7 @@ const testimonials = [
         },
       },
       {
-        body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. HomeListerAi turned approvals into a shared workflow instead of an email chain.",
+        body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. ListologyAi turned approvals into a shared workflow instead of an email chain.",
         author: {
           name: "Gabrielle Monroe",
           handle: "gabriellemonroe",
@@ -133,7 +133,7 @@ export default function Testimonials() {
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonials</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Teams trust HomeListerAi to keep every launch on message
+            Teams trust ListologyAi to keep every launch on message
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">

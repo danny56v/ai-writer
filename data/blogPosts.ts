@@ -115,7 +115,7 @@ export const blogPosts: BlogPost[] = [
     },
     content: [
       "When teams centralise briefs, prompts, and approvals, launches ship faster and brand voice stays intact. We share weekly rituals and dashboards that make alignment effortless.",
-      "Discover how to configure HomeListerAi workspaces, comment threads, and usage alerts so everyone understands progress and bottlenecks.",
+      "Discover how to configure ListologyAi workspaces, comment threads, and usage alerts so everyone understands progress and bottlenecks.",
       "Use the included meeting agendas and permission matrix to give leadership visibility without slowing down execution." 
     ],
   },
@@ -158,7 +158,7 @@ export const blogPosts: BlogPost[] = [
     content: [
       "We analysed hundreds of listings to surface 10 apartment descriptions that consistently convert—covering efficient studios, family-friendly condos, and dramatic penthouses.",
       "Each example breaks down structure, tone, and the details that make buyers pause so you can remix the approach for your own inventory.",
-      "Use these as swipe files for your team or drop them into HomeListerAi to spin up customised variants in minutes."
+      "Use these as swipe files for your team or drop them into ListologyAi to spin up customised variants in minutes."
     ],
   },
   {

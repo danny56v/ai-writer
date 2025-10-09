@@ -16,12 +16,12 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret });
   const isAuthenticated = Boolean(token);
 
-  // Dacă e logat și încearcă să intre pe pagini de auth -> du-l acasă
+  // If the user is already authenticated and opens an auth page, redirect them home.
   if (isAuthenticated && isAuthRoute(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Dacă NU e logat și încearcă rute protejate -> redirect la sign-in cu callbackUrl
+  // If the user is unauthenticated and hits a protected route, redirect to sign-in with a callback URL.
   if (!isAuthenticated && isProtectedRoute(pathname)) {
     const signInUrl = new URL("/sign-in", request.url);
     const callbackUrl = `${request.nextUrl.pathname}${request.nextUrl.search || ""}`;
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // exclude API, assets Next, favicon, sitemap, robots, și _next/data
+    // Exclude API routes, Next assets, favicon, sitemap, robots, and _next/data.
     "/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

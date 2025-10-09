@@ -40,14 +40,14 @@ const values = [
   {
     name: "Celebrate wins together",
     description:
-      "We highlight customer launches in every all-hands. When your campaign lands, the whole HomeListerAi Crew is cheering with you.",
+      "We highlight customer launches in every all-hands. When your campaign lands, the whole ListologyAi Crew is cheering with you.",
   },
 ];
 
 const milestones = [
   {
     year: "2023",
-    title: "HomeListerAi is born",
+    title: "ListologyAi is born",
     description:
       "We started as a weekend project for a brokerage drowning in listing descriptions. Within a month, their agents cut copywriting time in half.",
   },
@@ -130,25 +130,25 @@ function GradientCard({ className }: { className?: string }) {
 }
 
 export const metadata: Metadata = {
-  title: "About HomeListerAi",
+  title: "About ListologyAi",
   description:
-    "Learn how HomeListerAi helps real estate teams and marketers pair human storytelling with responsible AI, from our product values to the crew building it.",
+    "Learn how ListologyAi helps real estate teams and marketers pair human storytelling with responsible AI, from our product values to the crew building it.",
   openGraph: {
-    title: "About HomeListerAi",
+    title: "About ListologyAi",
     description:
-      "Discover the mission, team, and milestones behind HomeListerAi—the platform powering high-converting real estate content.",
+      "Discover the mission, team, and milestones behind ListologyAi—the platform powering high-converting real estate content.",
     images: [
       {
         url: "/Logo.png",
         width: 800,
         height: 800,
-        alt: "HomeListerAi brand mark",
+        alt: "ListologyAi brand mark",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About HomeListerAi",
+    title: "About ListologyAi",
     description:
       "Explore our product principles, customer impact, and the people shaping smarter real estate marketing.",
     images: ["/Logo.png"],
@@ -182,12 +182,12 @@ export default async function AboutPage() {
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-24 sm:pt-36 lg:px-8 lg:pt-28">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About HomeListerAi</p>
+                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About ListologyAi</p>
                   <h1 className="mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                     We help teams tell richer stories with responsible AI.
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                    HomeListerAi brings real estate agents, marketers, and founders into a shared workspace where briefs,
+                    ListologyAi brings real estate agents, marketers, and founders into a shared workspace where briefs,
                     AI suggestions, and final copy live side by side. From property listings to long-form thought
                     leadership, we turn scattered workflows into a single source of truth.
                   </p>
@@ -239,7 +239,7 @@ export default async function AboutPage() {
             <div className="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
               <div className="lg:w-full lg:max-w-2xl lg:flex-auto space-y-6 text-gray-600">
                 <p className="text-xl leading-8 text-gray-700">
-                  HomeListerAi exists to remove the blank-page anxiety so teams can focus on client relationships and
+                  ListologyAi exists to remove the blank-page anxiety so teams can focus on client relationships and
                   creative strategy. We blend structured data, reusable prompts, and team-wide guardrails to keep every
                   piece of copy consistent with your brand.
                 </p>
@@ -274,7 +274,7 @@ export default async function AboutPage() {
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How we got here</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              From a single listing generator to a full AI content workspace, here are the moments that shaped HomeListerAi.
+              From a single listing generator to a full AI content workspace, here are the moments that shaped ListologyAi.
             </p>
           </div>
           <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -330,7 +330,7 @@ export default async function AboutPage() {
         <FeaturedPosts
           posts={blogPosts.slice(3, 6)}
           eyebrow="Latest from the blog"
-          title="How teams are scaling content with HomeListerAi"
+          title="How teams are scaling content with ListologyAi"
           description="Dive into customer stories, roadmap updates, and practical playbooks from our crew."
         />
 
@@ -364,7 +364,7 @@ export default async function AboutPage() {
 
       {/* <footer className="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-16 sm:mt-56 sm:pb-24 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 border-t border-gray-100 pt-10 sm:flex-row">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} HomeListerAi. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} ListologyAi. All rights reserved.</p>
           <div className="flex gap-6 text-sm font-semibold text-gray-600">
             <Link href="/pricing">Pricing</Link>
             <Link href="/real-estate-generator">Real Estate AI</Link>

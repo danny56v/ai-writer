@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI real estate listing generator & marketing workspace",
     description:
-      "HomeListerAi helps agents and marketers create MLS-ready listings, long-form content, and campaigns in minutes.",
+      "ListologyAi helps agents and marketers create MLS-ready listings, long-form content, and campaigns in minutes.",
     images: [
       {
         url: "/Logo.png",
         width: 800,
         height: 800,
-        alt: "HomeListerAi brand mark",
+        alt: "ListologyAi brand mark",
       },
     ],
   },

@@ -26,14 +26,14 @@ export async function generateMetadata({
   const post = blogPosts.find((item) => item.slug === slug);
 
   if (!post) {
-    return { title: "HomeListerAi Blog" };
+    return { title: "ListologyAi Blog" };
   }
 
   return {
-    title: `${post.title} | HomeListerAi Blog`,
+    title: `${post.title} | ListologyAi Blog`,
     description: post.description,
     openGraph: {
-      title: `${post.title} | HomeListerAi Blog`,
+      title: `${post.title} | ListologyAi Blog`,
       description: post.description,
       type: "article",
       publishedTime: post.datetime,
@@ -95,7 +95,7 @@ export default async function BlogPostPage({
             />
             <div>
               <p className="font-semibold">{post.author.name}</p>
-              <p className="text-indigo-200/80">HomeListerAi Team</p>
+              <p className="text-indigo-200/80">ListologyAi Team</p>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default async function BlogPostPage({
         <section className="mt-16 rounded-2xl bg-indigo-50 p-8">
           <h2 className="text-lg font-semibold text-indigo-900">Keep reading</h2>
           <p className="mt-2 text-sm text-indigo-700">
-            More stories from the HomeListerAi blog to power your next launch.
+            More stories from the ListologyAi blog to power your next launch.
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             {relatedPosts.map((related) => (
@@ -158,15 +158,15 @@ export default async function BlogPostPage({
 
 //   if (!post) {
 //     return {
-//       title: "HomeListerAi Blog",
+//       title: "ListologyAi Blog",
 //     };
 //   }
 
 //   return {
-//     title: `${post.title} | HomeListerAi Blog`,
+//     title: `${post.title} | ListologyAi Blog`,
 //     description: post.description,
 //     openGraph: {
-//       title: `${post.title} | HomeListerAi Blog`,
+//       title: `${post.title} | ListologyAi Blog`,
 //       description: post.description,
 //       type: "article",
 //       publishedTime: post.datetime,
@@ -225,7 +225,7 @@ export default async function BlogPostPage({
 //             />
 //             <div>
 //               <p className="font-semibold">{post.author.name}</p>
-//               <p className="text-indigo-200/80">HomeListerAi Team</p>
+//               <p className="text-indigo-200/80">ListologyAi Team</p>
 //             </div>
 //           </div>
 //         </div>
@@ -241,7 +241,7 @@ export default async function BlogPostPage({
 //         <section className="mt-16 rounded-2xl bg-indigo-50 p-8">
 //           <h2 className="text-lg font-semibold text-indigo-900">Keep reading</h2>
 //           <p className="mt-2 text-sm text-indigo-700">
-//             More stories from the HomeListerAi blog to power your next launch.
+//             More stories from the ListologyAi blog to power your next launch.
 //           </p>
 //           <div className="mt-8 grid gap-6 lg:grid-cols-3">
 //             {relatedPosts.map((related) => (
