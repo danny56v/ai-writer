@@ -83,7 +83,7 @@ type ErrorNotification = {
 };
 
 const RealEstateForm = ({
-  userPlan,
+  // userPlan,
   isAuthenticated,
   onOpen,
   onResult,
@@ -92,7 +92,7 @@ const RealEstateForm = ({
   onSubmitStart,
   onError,
 }: RealEstateFormProps) => {
-  const isFreePlan = userPlan.planType === "free";
+  // const isFreePlan = userPlan.planType === "free";
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -388,14 +388,14 @@ const RealEstateForm = ({
               </div>
             </div>
 
-            <div className="flex flex-col items-end gap-2 text-right">
+            {/* <div className="flex flex-col items-end gap-2 text-right">
               <span className="inline-flex items-center rounded-full bg-indigo-100/70 px-3 py-1 text-xs font-semibold text-indigo-600 ring-1 ring-inset ring-indigo-200">
-                {isFreePlan ? "Free plan · 3 listings/month" : "Premium plan · 1,500 generations/month"}
+                {isFreePlan ? "Free plan · 1 listing/month" : "Premium plan · 1,500 generations/month"}
               </span>
               <span className="text-[11px] font-medium uppercase tracking-wider text-indigo-400">
                 Status: {pending ? "Processing" : "Ready"}
               </span>
-            </div>
+            </div> */}
           </div>
         </header>
 

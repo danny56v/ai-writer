@@ -116,6 +116,7 @@ const testimonials = {
 
 function HeroMockup() {
   return (
+   
     <div className="rounded-3xl border border-indigo-100 bg-white shadow-2xl shadow-indigo-200/40">
       <div className="flex items-center gap-2 border-b border-indigo-100 px-6 py-4">
         <span className="h-3 w-3 rounded-full bg-rose-400" />
@@ -156,7 +157,7 @@ function HeroMockup() {
 
 export default function LandingPage({ currentPriceId }: LandingPageProps) {
   return (
-    <div className="bg-white text-gray-900">
+    <div className="bg-white text-gray-900 mt-16">
       <main className="isolate">
         {/* Hero */}
         <section id="platform" className="relative pt-28 sm:pt-36">
@@ -378,5 +379,6 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
         </section>
       </main>
     </div>
+    
   );
 }

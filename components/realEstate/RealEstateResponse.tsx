@@ -243,17 +243,46 @@ const RealEstateResponse = ({
               <article className="relative space-y-4 text-sm leading-6 text-gray-700">
                 {text
                   .split(/\n{2,}/)
-                  .filter((paragraph) => paragraph.trim().length > 0)
-                  .map((paragraph, idx) => (
-                    <p key={idx} className="rounded-xl bg-white/70 p-4 shadow-sm ring-1 ring-indigo-50">
-                      {paragraph.split("\n").map((line, lineIdx) => (
-                        <React.Fragment key={lineIdx}>
-                          {lineIdx > 0 ? <br /> : null}
-                          {line}
-                        </React.Fragment>
-                      ))}
-                    </p>
-                  ))}
+                  .map((paragraph) => paragraph.trim())
+                  .filter(Boolean)
+                  .map((paragraph, idx, arr) => {
+                    const isTitle = idx === 0 && /^\*\*(.+)\*\*$/.test(paragraph);
+                    const isHashtags = idx === arr.length - 1 && /(^|\s)#/.test(paragraph) && paragraph.replace(/#\w+/g, "").trim().length < paragraph.length;
+
+                    if (isTitle) {
+                      const titleText = paragraph.replace(/^\*\*(.+)\*\*$/, "$1").trim();
+                      return (
+                        <h3
+                          key={`title-${idx}`}
+                          className="rounded-xl bg-white/80 px-4 py-3 text-base font-semibold text-indigo-700 shadow-sm ring-1 ring-indigo-100"
+                        >
+                          {titleText}
+                        </h3>
+                      );
+                    }
+
+                    if (isHashtags) {
+                      return (
+                        <p
+                          key={`hashtags-${idx}`}
+                          className="rounded-xl bg-indigo-50/70 px-4 py-3 text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-indigo-100"
+                        >
+                          {paragraph}
+                        </p>
+                      );
+                    }
+
+                    return (
+                      <p key={`paragraph-${idx}`} className="rounded-xl bg-white/70 p-4 shadow-sm ring-1 ring-indigo-50">
+                        {paragraph.split("\n").map((line, lineIdx) => (
+                          <React.Fragment key={lineIdx}>
+                            {lineIdx > 0 ? <br /> : null}
+                            {line}
+                          </React.Fragment>
+                        ))}
+                      </p>
+                    );
+                  })}
               </article>
             ) : (
               <div className="flex min-h-[160px] flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">

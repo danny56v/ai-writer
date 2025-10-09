@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
@@ -20,22 +21,41 @@ function classNames(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
-  const { data: session } = useSession();
+type NavbarClientProps = {
+  initialSession: Session | null;
+  initialPlanType?: string | null;
+};
+
+export default function NavbarClient({ initialSession, initialPlanType }: NavbarClientProps) {
+  const { data: liveSession, status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [planType, setPlanType] = useState<string | null>(null);
-  const [planChecked, setPlanChecked] = useState(false);
+  const [planType, setPlanType] = useState<string | null>(initialPlanType ?? null);
+  const [planChecked, setPlanChecked] = useState(initialPlanType !== undefined);
   const pathname = usePathname();
 
+  const session = useMemo(() => liveSession ?? initialSession ?? null, [initialSession, liveSession]);
+  const user = session?.user ?? null;
+
   useEffect(() => {
-    if (!session?.user) {
+    if (initialPlanType !== undefined) {
+      setPlanType(initialPlanType ?? null);
+      setPlanChecked(true);
+    }
+  }, [initialPlanType]);
+
+  useEffect(() => {
+    if (!user) {
       setPlanType(null);
       setPlanChecked(false);
       return;
     }
 
     let cancelled = false;
-    setPlanChecked(false);
+    const shouldShowLoading = initialPlanType === undefined;
+
+    if (shouldShowLoading) {
+      setPlanChecked(false);
+    }
 
     fetch("/api/account/plan")
       .then(async (response) => {
@@ -48,21 +68,28 @@ export default function Navbar() {
       .then((data: { planType?: string }) => {
         if (cancelled) return;
         setPlanType(data.planType ?? null);
+        setPlanChecked(true);
       })
       .catch(() => {
         if (cancelled) return;
         setPlanType(null);
+        if (shouldShowLoading) {
+          setPlanChecked(true);
+        }
       })
       .finally(() => {
-        if (!cancelled) setPlanChecked(true);
+        if (!cancelled && shouldShowLoading) {
+          setPlanChecked(true);
+        }
       });
 
     return () => {
       cancelled = true;
     };
-  }, [session?.user]);
+  }, [user, initialPlanType]);
 
   const isFreePlan = (planType ?? "free") === "free";
+  const isLoadingSession = status === "loading" && !session;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -102,13 +129,13 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center justify-end gap-3 text-sm font-medium text-gray-700 lg:flex-1">
-            {session?.user ? (
+            {user ? (
               <>
                 <Link
                   href="/profile"
                   className="rounded-full bg-white px-3 py-2 text-gray-900 shadow-md ring-1 ring-indigo-50 transition hover:bg-white/90 hover:ring-indigo-300"
                 >
-                  {session.user.name ?? session.user.email ?? "Profile"}
+                  {user.name ?? user.email ?? "Profile"}
                 </Link>
                 {planChecked && isFreePlan ? (
                   <Link
@@ -119,7 +146,7 @@ export default function Navbar() {
                   </Link>
                 ) : null}
               </>
-            ) : (
+            ) : isLoadingSession ? null : (
               <Link
                 href="/sign-in"
                 className="rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-4 py-2 text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500"
@@ -173,7 +200,7 @@ export default function Navbar() {
                 ))}
               </div>
               <div className="py-6 flex flex-col gap-3">
-                {session?.user ? (
+                {user ? (
                   <>
                     <Link
                       href="/profile"
@@ -192,7 +219,7 @@ export default function Navbar() {
                       </Link>
                     ) : null}
                   </>
-                ) : (
+                ) : isLoadingSession ? null : (
                   <Link
                     href="/sign-in"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-indigo-600 hover:bg-gray-50"

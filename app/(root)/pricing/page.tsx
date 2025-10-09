@@ -38,7 +38,9 @@ const PricingPage = async () => {
 
   return (
     <>
+    <div className="mt-28">
       <Pricing currentPriceId={plan?.priceId ?? null} />
+      </div>
     </>
   );
 };

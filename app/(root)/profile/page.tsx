@@ -122,7 +122,7 @@ export default async function ProfilePage() {
   const { planType, status, currentPeriodEnd } = await getUserPlan(user.id);
 
   const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
-    free: 3,
+    free: 1,
     pro_monthly: 50,
     pro_yearly: 50,
     unlimited_monthly: 1500,

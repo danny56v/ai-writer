@@ -7,13 +7,20 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { getUserPlan } from "@/lib/billing";
 import type { PlanKey } from "@/lib/plans";
+import { extractStructuredOutput, saveRealEstateGeneration } from "@/lib/realEstateHistory";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export type RealEstateDescriptionState = { text: string; error?: string };
+export type RealEstateDescriptionState = {
+  text: string;
+  title?: string | null;
+  hashtags?: string[];
+  historyId?: string;
+  error?: string;
+};
 
 const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
-  free: 3,
+  free: 1,
   pro_monthly: 50,
   pro_yearly: 50,
   unlimited_monthly: 1500,
@@ -273,7 +280,7 @@ export async function genererateRealEstateDescription(
   const phone        = (formData.get("phone") as string) || "";
   const languageRaw  = (formData.get("language") as string) || "English";
   const language     = languageRaw.trim() || "English";
-  const features   = formData.getAll("features").map(String); // ["pool","garage",...]
+  const amenitiesSelected = formData.getAll("amenities").map(String);
 
   const agentContact = [name, email, phone].filter(Boolean).join(" • ") || "—";
 
@@ -301,12 +308,13 @@ export async function genererateRealEstateDescription(
   }
 
   // System + User prompt
-  const system = `
+const system = `
 You are a professional real estate copywriter.
 Write clear, market-ready property listings that are attractive, realistic, and persuasive.
 Avoid clichés and keep the text aligned with current real estate market practices.
 Length: 120–200 words, 2–3 short paragraphs.
 Tone: professional yet friendly.
+Return Markdown with a bold title on the first line, descriptive paragraphs, and a final line of 3–5 relevant hashtags.
 `;
 
   const livingAreaText = area !== undefined ? `${area} m²` : "—";
@@ -322,7 +330,7 @@ Property details:
 - Year built: ${year ?? "—"}
 - Bedrooms: ${bedrooms}
 - Bathrooms: ${bathrooms}
-- Features: ${features.length ? features.join(", ") : "—"}
+- Features: ${amenitiesSelected.length ? amenitiesSelected.join(", ") : "—"}
 - Additional notes: ${description || "—"}
 - Agent contact: ${agentContact}
 - Preferred language: ${language}
@@ -334,6 +342,10 @@ Instructions:
 4) Avoid clichés like “unique opportunity” or “ultimate luxury”.
 5) 120–200 words in 2–3 short paragraphs.
 6) Write the entire listing in ${language}.
+7) Output format:
+   - First line: **Concise listing title** (max 12 words).
+   - Then the body paragraphs separated by blank lines.
+   - Final line: three to five hashtags with localized keywords (e.g., #ModernLoft).
 `;
 
   const session = await auth();
@@ -365,7 +377,31 @@ Instructions:
     const text = resp.output_text?.trim() || "";
 
     if (!text) return { text: "", error: "Empty response from model." };
-    return { text };
+
+    const structured = extractStructuredOutput(text);
+
+    let historyId: string | undefined;
+    try {
+      historyId = await saveRealEstateGeneration({
+        userId,
+        planType,
+        title: structured.title,
+        text,
+        hashtags: structured.hashtags,
+        propertyType,
+        listingType,
+        location,
+        price: Number.isFinite(price) ? price : null,
+        bedrooms,
+        bathrooms,
+        language,
+        amenities: amenitiesSelected,
+      });
+    } catch (saveError) {
+      console.error("Failed to save real estate generation history", saveError);
+    }
+
+    return { text, title: structured.title, hashtags: structured.hashtags, historyId };
   } catch (err) {
     console.error("Error generating description:", err);
     await restoreRealEstateQuota(userId, planType, userPlan.currentPeriodEnd ?? null);

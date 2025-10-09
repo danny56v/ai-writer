@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import RealEstateClient from "@/components/realEstate/RealEstateClient";
 import { getUserPlan } from "@/lib/billing";
+import { getRealEstateHistory } from "@/lib/realEstateHistory";
 
 export const metadata: Metadata = {
   title: "Real estate listing generator powered by guided AI",
@@ -41,8 +42,15 @@ const RealEstateGeneratorPage = async () => {
 
   const defaultPlan = { planType: "free", currentPeriodEnd: null, status: "free" } as const;
   const userPlan = userId ? await getUserPlan(userId) : defaultPlan;
+  const history = userId ? await getRealEstateHistory(userId, 20) : [];
 
-  return <RealEstateClient userPlan={userPlan} isAuthenticated={Boolean(userId)} />;
+  return (
+    <RealEstateClient
+      userPlan={userPlan}
+      isAuthenticated={Boolean(userId)}
+      initialHistory={history}
+    />
+  );
 };
 
 export default RealEstateGeneratorPage;

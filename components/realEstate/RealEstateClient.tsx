@@ -6,10 +6,16 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   CheckCircleIcon,
+  ClockIcon,
+  CurrencyDollarIcon,
   DocumentTextIcon,
+  HashtagIcon,
+  HomeModernIcon,
+  MapPinIcon,
   PencilSquareIcon,
   PaperAirplaneIcon,
   SparklesIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Transition } from "@headlessui/react";
@@ -20,12 +26,65 @@ import RealEstateResponse from "./RealEstateResponse";
 
 type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 
+type HistoryEntry = {
+  id: string;
+  title: string;
+  text: string;
+  hashtags: string[];
+  propertyType: string;
+  listingType: string;
+  location: string;
+  price: number | null;
+  bedrooms: string | null;
+  bathrooms: string | null;
+  language: string;
+  amenities: string[];
+  createdAt: string;
+};
+
 interface Props {
   userPlan: Plan;
   isAuthenticated: boolean;
+  initialHistory: HistoryEntry[];
 }
 
-const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
+const historyDateFormatter = new Intl.DateTimeFormat("ro-RO", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+
+const extractBodyParagraphs = (entry: HistoryEntry) => {
+  const segments = entry.text
+    .trim()
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  if (segments.length) {
+    const potentialTitle = segments[0].replace(/^\*\*(.+)\*\*$/, "$1").trim();
+    if (entry.title && potentialTitle && potentialTitle.toLowerCase() === entry.title.toLowerCase()) {
+      segments.shift();
+    }
+  }
+
+  if (segments.length && entry.hashtags.length) {
+    const last = segments[segments.length - 1];
+    const containsHashtag = /(^|\s)#/.test(last);
+    if (containsHashtag) {
+      segments.pop();
+    }
+  }
+
+  return segments;
+};
+
+const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [regenerateSignal, setRegenerateSignal] = useState(0);
@@ -39,6 +98,32 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [history, setHistory] = useState<HistoryEntry[]>(initialHistory);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+  const [copiedHistoryId, setCopiedHistoryId] = useState<string | null>(null);
+  const historyCopyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const refreshHistory = useCallback(async () => {
+    try {
+      setHistoryLoading(true);
+      setHistoryError(null);
+      const response = await fetch("/api/real-estate/history");
+      if (!response.ok) {
+        throw new Error(`Failed to load history: ${response.status}`);
+      }
+      const data: { history?: HistoryEntry[] } = await response.json();
+      if (Array.isArray(data.history)) {
+        setHistory(data.history);
+      }
+    } catch (error) {
+      console.error("Failed to refresh history", error);
+      setHistoryError("Nu am putut încărca istoricul. Încearcă din nou.");
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, []);
 
   const handleResult = useCallback((value: string) => {
     setResults((prev) => {
@@ -48,6 +133,29 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
     });
     setLoading(false);
     setResultSeq((s) => s + 1);
+    setExpandedHistoryId(null);
+    void refreshHistory();
+  }, [refreshHistory]);
+
+  const toggleHistoryEntry = useCallback((id: string) => {
+    setExpandedHistoryId((prev) => (prev === id ? null : id));
+  }, []);
+
+  const handleHistoryCopy = useCallback(async (entry: HistoryEntry) => {
+    if (!entry.text) return;
+    try {
+      await navigator.clipboard.writeText(entry.text);
+      setCopiedHistoryId(entry.id);
+      if (historyCopyTimer.current) {
+        clearTimeout(historyCopyTimer.current);
+      }
+      historyCopyTimer.current = setTimeout(() => {
+        setCopiedHistoryId((current) => (current === entry.id ? null : current));
+        historyCopyTimer.current = null;
+      }, 2000);
+    } catch (error) {
+      console.error("Copy failed", error);
+    }
   }, []);
 
   const handleError = useCallback(() => {
@@ -69,7 +177,14 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
 
     if (typeof window !== "undefined") {
       window.requestAnimationFrame(() => {
-        responseContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        const target = responseContainerRef.current;
+        if (!target) return;
+
+        const rect = target.getBoundingClientRect();
+        const viewportOffset = window.scrollY || window.pageYOffset;
+        const desiredOffset = rect.top + viewportOffset - 200;
+
+        window.scrollTo({ top: desiredOffset > 0 ? desiredOffset : 0, behavior: "smooth" });
       });
     }
   }, []);
@@ -87,7 +202,16 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
     return () => clearTimeout(timeout);
   }, [showSuccessToast]);
 
+  useEffect(() => {
+    return () => {
+      if (historyCopyTimer.current) {
+        clearTimeout(historyCopyTimer.current);
+      }
+    };
+  }, []);
+
   return (
+    <div className="mt-10">
     <div className="relative min-h-screen overflow-hidden">
       <div
         aria-live="assertive"
@@ -202,6 +326,199 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
         </div>
       </div>
 
+      <section className="relative mt-12">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-purple-700">
+                Istoric
+              </span>
+              <h2 className="mt-3 text-2xl font-semibold text-gray-900 sm:text-3xl">
+                Ultimele descrieri generate
+              </h2>
+              <p className="mt-2 text-sm text-gray-500">
+                Revizuiește versiunile create recent și copiază textul fără să parcurgi din nou formularul.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => void refreshHistory()}
+                disabled={historyLoading}
+                className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {historyLoading ? (
+                  <>
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v3.5a4.5 4.5 0 0 0-4.5 4.5H4z" />
+                    </svg>
+                    Actualizare…
+                  </>
+                ) : (
+                  <>
+                    <ArrowPathIcon className="h-4 w-4" aria-hidden />
+                    Reîncarcă istoricul
+                  </>
+                )}
+              </button>
+              <span className="text-xs font-semibold text-indigo-500">
+                {history.length} {history.length === 1 ? "intrare" : "intrări"}
+              </span>
+            </div>
+          </div>
+
+          {historyError ? (
+            <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              {historyError}
+            </div>
+          ) : null}
+
+          {historyLoading && history.length === 0 ? (
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {[0, 1].map((idx) => (
+                <div
+                  key={idx}
+                  className="animate-pulse rounded-3xl border border-indigo-100/70 bg-white/70 p-6 shadow-inner"
+                >
+                  <div className="h-4 w-1/2 rounded-full bg-indigo-100" />
+                  <div className="mt-4 h-3 w-5/6 rounded-full bg-indigo-50" />
+                  <div className="mt-2 h-3 w-3/4 rounded-full bg-indigo-50" />
+                  <div className="mt-6 space-y-2">
+                    <div className="h-2.5 w-full rounded-full bg-indigo-100/70" />
+                    <div className="h-2.5 w-5/6 rounded-full bg-indigo-100/70" />
+                    <div className="h-2.5 w-4/6 rounded-full bg-indigo-100/70" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {!historyLoading && history.length === 0 ? (
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-indigo-200 bg-white/70 p-12 text-center">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                <SparklesIcon className="h-6 w-6" aria-hidden />
+              </span>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-gray-900">Încă nu ai generații salvate</p>
+                <p className="text-sm text-gray-500">
+                  Completează formularul din stânga pentru a vedea aici istoricul versiunilor generate.
+                </p>
+              </div>
+            </div>
+          ) : null}
+
+          {history.length > 0 ? (
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {history.map((entry) => {
+                const paragraphs = extractBodyParagraphs(entry);
+                const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
+                const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
+                const isExpanded = expandedHistoryId === entry.id;
+                const listingLabel = entry.listingType === "rent" ? "Închiriere" : "Vânzare";
+
+                return (
+                  <article
+                    key={entry.id}
+                    className="group relative overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 p-5 shadow-xl shadow-indigo-100/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl"
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-base font-semibold text-indigo-700">
+                          {entry.title || "Listare fără titlu"}
+                        </h3>
+                        <p className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+                          <ClockIcon className="h-4 w-4" aria-hidden />
+                          {historyDateFormatter.format(new Date(entry.createdAt))}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleHistoryCopy(entry)}
+                          className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50"
+                        >
+                          {copiedHistoryId === entry.id ? "Copiat" : "Copiază"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => toggleHistoryEntry(entry.id)}
+                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500"
+                        >
+                          {isExpanded ? "Ascunde" : "Vezi detalii"}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                        <HomeModernIcon className="h-4 w-4" aria-hidden />
+                        {entry.propertyType}
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                        <MapPinIcon className="h-4 w-4" aria-hidden />
+                        {entry.location}
+                      </span>
+                      {entry.price !== null ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                          <CurrencyDollarIcon className="h-4 w-4" aria-hidden />
+                          {priceFormatter.format(entry.price)}
+                        </span>
+                      ) : null}
+                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                        {listingLabel}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
+                      <span>{entry.language}</span>
+                      {entry.bedrooms ? <span>{entry.bedrooms} dormitoare</span> : null}
+                      {entry.bathrooms ? <span>{entry.bathrooms} băi</span> : null}
+                      {entry.amenities.length ? (
+                        <span>{entry.amenities.length} amenități</span>
+                      ) : null}
+                    </div>
+
+                    <div className="mt-5 rounded-2xl border border-indigo-50 bg-white/85 p-4 text-sm leading-6 text-gray-700 shadow-inner">
+                      {isExpanded ? (
+                        <div className="space-y-3">
+                          {paragraphs.map((paragraph, paragraphIndex) => (
+                            <p key={paragraphIndex}>
+                              {paragraph.split("\n").map((line, lineIdx) => (
+                                <React.Fragment key={lineIdx}>
+                                  {lineIdx > 0 ? <br /> : null}
+                                  {line}
+                                </React.Fragment>
+                              ))}
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>{preview}</p>
+                      )}
+                    </div>
+
+                    {entry.hashtags.length ? (
+                      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
+                        <HashtagIcon className="h-4 w-4 text-indigo-500" aria-hidden />
+                        {entry.hashtags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-indigo-700"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+      </section>
+
       <section className="relative py-16 sm:py-24">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 lg:grid-cols-5 lg:items-start lg:px-8">
           <div className="lg:col-span-2 lg:sticky lg:top-6">
@@ -303,6 +620,7 @@ const RealEstateClient = ({ userPlan, isAuthenticated }: Props) => {
         </div>
       </section> */}
 
+    </div>
     </div>
   );
 };

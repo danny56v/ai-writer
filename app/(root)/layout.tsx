@@ -1,20 +1,22 @@
-import Navbar from "@/components/Navbar";
+import { auth } from "@/auth";
+import NavbarClient from "@/components/NavbarClient";
+import { getUserPlan } from "@/lib/billing";
 import { SessionProvider } from "next-auth/react";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
-const layout = ({ children }: { children: ReactNode }) => {
+const Layout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
+  const userId = session?.user?.id;
+  const plan = userId ? await getUserPlan(userId) : null;
+
   return (
     <div>
-      <SessionProvider>
-        {/* <div className="mb-32"> */}
-        <Navbar />
-
-        {/* </div> */}
-
+      <SessionProvider session={session}>
+        <NavbarClient initialSession={session} initialPlanType={plan?.planType} />
         {children}
       </SessionProvider>
     </div>
   );
 };
 
-export default layout;
+export default Layout;
