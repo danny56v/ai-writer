@@ -84,6 +84,12 @@ const extractBodyParagraphs = (entry: HistoryEntry) => {
   return segments;
 };
 
+const COLLAPSED_HISTORY_FULL_COUNT = 2;
+const COLLAPSED_HISTORY_PREVIEW_COUNT_DESKTOP = 2;
+const COLLAPSED_HISTORY_PREVIEW_COUNT_MOBILE = 1;
+const HISTORY_LOAD_INCREMENT_DESKTOP = 6;
+const HISTORY_LOAD_INCREMENT_MOBILE = 4;
+
 const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -103,6 +109,11 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
   const [historyError, setHistoryError] = useState<string | null>(null);
   const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
   const [copiedHistoryId, setCopiedHistoryId] = useState<string | null>(null);
+  const [fullyVisibleHistoryCount, setFullyVisibleHistoryCount] = useState(COLLAPSED_HISTORY_FULL_COUNT);
+  const [isDesktopHistoryLayout, setIsDesktopHistoryLayout] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    return window.innerWidth >= 1024;
+  });
   const historyCopyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const refreshHistory = useCallback(async () => {
@@ -209,6 +220,45 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsDesktopHistoryLayout(event.matches);
+    };
+    setIsDesktopHistoryLayout(mediaQuery.matches);
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, []);
+
+  useEffect(() => {
+    setFullyVisibleHistoryCount((current) => {
+      if (history.length <= COLLAPSED_HISTORY_FULL_COUNT) {
+        return history.length;
+      }
+      return Math.min(Math.max(current, COLLAPSED_HISTORY_FULL_COUNT), history.length);
+    });
+  }, [history]);
+
+  const previewCount = history.length > fullyVisibleHistoryCount
+    ? (isDesktopHistoryLayout ? COLLAPSED_HISTORY_PREVIEW_COUNT_DESKTOP : COLLAPSED_HISTORY_PREVIEW_COUNT_MOBILE)
+    : 0;
+  const historyRenderLimit = Math.min(history.length, fullyVisibleHistoryCount + previewCount);
+  const historyToDisplay = history.slice(0, historyRenderLimit);
+  const historyHasMoreToReveal = fullyVisibleHistoryCount < history.length;
+
+  const handleHistoryLoadMore = useCallback(() => {
+    setFullyVisibleHistoryCount((current) => {
+      const increment = isDesktopHistoryLayout ? HISTORY_LOAD_INCREMENT_DESKTOP : HISTORY_LOAD_INCREMENT_MOBILE;
+      const next = Math.min(history.length, current + increment);
+      return next;
+    });
+  }, [history.length, isDesktopHistoryLayout]);
 
   return (
     <div className="mt-10">
@@ -409,111 +459,161 @@ const RealEstateClient = ({ userPlan, isAuthenticated, initialHistory }: Props) 
           ) : null}
 
           {history.length > 0 ? (
-            <div className="mt-8 grid gap-6 lg:grid-cols-2">
-              {history.map((entry) => {
-                const paragraphs = extractBodyParagraphs(entry);
-                const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
-                const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
-                const isExpanded = expandedHistoryId === entry.id;
-                const listingLabel = entry.listingType === "rent" ? "Închiriere" : "Vânzare";
+            <div className="mt-8">
+              <div
+                className={[
+                  "relative",
+                  historyHasMoreToReveal ? "pb-24" : "",
+                ].join(" ")}
+              >
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {historyToDisplay.map((entry, index) => {
+                    const paragraphs = extractBodyParagraphs(entry);
+                    const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
+                    const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
+                    const isExpanded = expandedHistoryId === entry.id;
+                    const listingLabel = entry.listingType === "rent" ? "Închiriere" : "Vânzare";
+                    const isCollapsedPreview = index >= fullyVisibleHistoryCount;
+                    const isSecondPreview = index >= fullyVisibleHistoryCount + 1;
+                    const cardClasses = [
+                      "group relative overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 p-5 shadow-xl shadow-indigo-100/40 backdrop-blur transition",
+                      isCollapsedPreview
+                        ? "pointer-events-none max-h-56 opacity-80 saturate-75 ring-1 ring-inset ring-indigo-100/70"
+                        : "hover:-translate-y-1 hover:shadow-2xl",
+                      isCollapsedPreview && isSecondPreview ? "hidden lg:block" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ");
 
-                return (
-                  <article
-                    key={entry.id}
-                    className="group relative overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 p-5 shadow-xl shadow-indigo-100/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-4">
-                      <div>
-                        <h3 className="text-base font-semibold text-indigo-700">
-                          {entry.title || "Listare fără titlu"}
-                        </h3>
-                        <p className="mt-1 flex items-center gap-2 text-xs text-gray-500">
-                          <ClockIcon className="h-4 w-4" aria-hidden />
-                          {historyDateFormatter.format(new Date(entry.createdAt))}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleHistoryCopy(entry)}
-                          className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50"
-                        >
-                          {copiedHistoryId === entry.id ? "Copiat" : "Copiază"}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => toggleHistoryEntry(entry.id)}
-                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500"
-                        >
-                          {isExpanded ? "Ascunde" : "Vezi detalii"}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                        <HomeModernIcon className="h-4 w-4" aria-hidden />
-                        {entry.propertyType}
-                      </span>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                        <MapPinIcon className="h-4 w-4" aria-hidden />
-                        {entry.location}
-                      </span>
-                      {entry.price !== null ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                          <CurrencyDollarIcon className="h-4 w-4" aria-hidden />
-                          {priceFormatter.format(entry.price)}
-                        </span>
-                      ) : null}
-                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                        {listingLabel}
-                      </span>
-                    </div>
-
-                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
-                      <span>{entry.language}</span>
-                      {entry.bedrooms ? <span>{entry.bedrooms} dormitoare</span> : null}
-                      {entry.bathrooms ? <span>{entry.bathrooms} băi</span> : null}
-                      {entry.amenities.length ? (
-                        <span>{entry.amenities.length} amenități</span>
-                      ) : null}
-                    </div>
-
-                    <div className="mt-5 rounded-2xl border border-indigo-50 bg-white/85 p-4 text-sm leading-6 text-gray-700 shadow-inner">
-                      {isExpanded ? (
-                        <div className="space-y-3">
-                          {paragraphs.map((paragraph, paragraphIndex) => (
-                            <p key={paragraphIndex}>
-                              {paragraph.split("\n").map((line, lineIdx) => (
-                                <React.Fragment key={lineIdx}>
-                                  {lineIdx > 0 ? <br /> : null}
-                                  {line}
-                                </React.Fragment>
-                              ))}
+                    return (
+                      <article key={entry.id} className={cardClasses} aria-hidden={isCollapsedPreview}>
+                        <div className="flex flex-wrap items-start justify-between gap-4">
+                          <div>
+                            <h3 className="text-base font-semibold text-indigo-700">
+                              {entry.title || "Listare fără titlu"}
+                            </h3>
+                            <p className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+                              <ClockIcon className="h-4 w-4" aria-hidden />
+                              {historyDateFormatter.format(new Date(entry.createdAt))}
                             </p>
-                          ))}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleHistoryCopy(entry)}
+                              className={[
+                                "inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50",
+                                isCollapsedPreview ? "opacity-60" : "",
+                              ].join(" ")}
+                              disabled={isCollapsedPreview}
+                            >
+                              {copiedHistoryId === entry.id ? "Copiat" : "Copiază"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => toggleHistoryEntry(entry.id)}
+                              className={[
+                                "inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500",
+                                isCollapsedPreview ? "opacity-70" : "",
+                              ].join(" ")}
+                              disabled={isCollapsedPreview}
+                            >
+                              {isExpanded ? "Ascunde" : "Vezi detalii"}
+                            </button>
+                          </div>
                         </div>
-                      ) : (
-                        <p>{preview}</p>
-                      )}
-                    </div>
 
-                    {entry.hashtags.length ? (
-                      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
-                        <HashtagIcon className="h-4 w-4 text-indigo-500" aria-hidden />
-                        {entry.hashtags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-indigo-700"
-                          >
-                            {tag}
+                        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                            <HomeModernIcon className="h-4 w-4" aria-hidden />
+                            {entry.propertyType}
                           </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </article>
-                );
-              })}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                            <MapPinIcon className="h-4 w-4" aria-hidden />
+                            {entry.location}
+                          </span>
+                          {entry.price !== null ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                              <CurrencyDollarIcon className="h-4 w-4" aria-hidden />
+                              {priceFormatter.format(entry.price)}
+                            </span>
+                          ) : null}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
+                            {listingLabel}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
+                          <span>{entry.language}</span>
+                          {entry.bedrooms ? <span>{entry.bedrooms} dormitoare</span> : null}
+                          {entry.bathrooms ? <span>{entry.bathrooms} băi</span> : null}
+                          {entry.amenities.length ? (
+                            <span>{entry.amenities.length} amenități</span>
+                          ) : null}
+                        </div>
+
+                        <div className="mt-5 rounded-2xl border border-indigo-50 bg-white/85 p-4 text-sm leading-6 text-gray-700 shadow-inner">
+                          {isExpanded ? (
+                            <div className="space-y-3">
+                              {paragraphs.map((paragraph, paragraphIndex) => (
+                                <p key={paragraphIndex}>
+                                  {paragraph.split("\n").map((line, lineIdx) => (
+                                    <React.Fragment key={lineIdx}>
+                                      {lineIdx > 0 ? <br /> : null}
+                                      {line}
+                                    </React.Fragment>
+                                  ))}
+                                </p>
+                              ))}
+                            </div>
+                          ) : (
+                            <p>{preview}</p>
+                          )}
+                        </div>
+
+                        {entry.hashtags.length ? (
+                          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
+                            <HashtagIcon className="h-4 w-4 text-indigo-500" aria-hidden />
+                            {entry.hashtags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-indigo-700"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
+
+                        {isCollapsedPreview ? (
+                          <div
+                            aria-hidden
+                            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent via-white/75 to-white"
+                          />
+                        ) : null}
+                      </article>
+                    );
+                  })}
+                </div>
+
+                {historyHasMoreToReveal ? (
+                  <>
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-14 z-10 h-24 bg-gradient-to-b from-transparent via-white/85 to-white"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 z-20 flex justify-center">
+                      <button
+                        type="button"
+                        onClick={handleHistoryLoadMore}
+                        className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      >
+                        Arată mai mult
+                      </button>
+                    </div>
+                  </>
+                ) : null}
+              </div>
             </div>
           ) : null}
         </div>
