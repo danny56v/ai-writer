@@ -38,8 +38,8 @@ const pricing = {
       features: ["No limit articles", "Up to 50,000 words", "Advanced options"],
       mostPopular: true,
       priceId: {
-        monthly: "price_1RtQX7RsRyFq7mSBngUAWcHC",
-        annually: "price_1RtQX7RsRyFq7mSBLWuC9ddx",
+        monthly: "price_1SHjjTRzvydSZxMcbOyOM2w3",
+        annually: "price_1SHjjTRzvydSZxMcJ9Rql01O",
       },
     },
     {
@@ -51,8 +51,8 @@ const pricing = {
       features: ["No limit articles", "No limit words", "Advanced options", "24-hour support response time"],
       mostPopular: false,
       priceId: {
-        monthly: "price_1RtRzkRsRyFq7mSBXQBHBd5G",
-        annually: "price_1RtS0RRsRyFq7mSB1Orea73q",
+        monthly: "price_1SHjlFRzvydSZxMcO9jzuT1a",
+        annually: "price_1SHjlFRzvydSZxMc1AWszvBW",
       },
     },
   ],
