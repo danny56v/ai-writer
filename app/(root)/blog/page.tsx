@@ -77,7 +77,14 @@ const BlogPage = () => {
                     {post.readTime}
                   </span>
                 </div>
-                <h2 className="text-xl font-semibold leading-7 text-gray-900 group-hover:text-indigo-600">{post.title}</h2>
+                <h2 className="text-xl font-semibold leading-7 text-gray-900">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="transition hover:text-indigo-600 focus-visible:outline-none focus-visible:text-indigo-600 group-hover:text-indigo-600"
+                  >
+                    {post.title}
+                  </Link>
+                </h2>
                 <p className="text-sm leading-6 text-gray-600">{post.description}</p>
                 <div className="mt-auto flex items-center justify-between pt-4">
                   <div className="flex items-center gap-3">

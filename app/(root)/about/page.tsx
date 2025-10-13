@@ -233,34 +233,58 @@ export default async function AboutPage() {
         </section>
 
         {/* Mission section */}
-        <section className="mx-auto -mt-12 max-w-7xl px-6 sm:mt-0 lg:px-8 xl:-mt-8">
+        <section className="relative mx-auto -mt-12 max-w-7xl px-6 sm:mt-0 lg:px-8 xl:-mt-8">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-40 right-0 hidden h-80 w-80 rounded-full bg-indigo-200/50 blur-3xl sm:block"
+          />
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our mission</h2>
-            <div className="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
-              <div className="lg:w-full lg:max-w-2xl lg:flex-auto space-y-6 text-gray-600">
+            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start">
+              <div className="space-y-6 text-gray-600">
                 <p className="text-xl leading-8 text-gray-700">
-                  ListologyAi exists to remove the blank-page anxiety so teams can focus on client relationships and
-                  creative strategy. We blend structured data, reusable prompts, and team-wide guardrails to keep every
-                  piece of copy consistent with your brand.
+                  ListologyAi was built to eliminate the bottleneck of writing property descriptions from scratch. Our
+                  unique generation model pairs property data with market-tested storytelling patterns so each listing
+                  sounds fresh, on-brand, and ready to convert.
                 </p>
+                <div className="rounded-3xl border border-indigo-100 bg-white/80 p-6 shadow-lg shadow-indigo-100/50 backdrop-blur">
+                  <h3 className="text-lg font-semibold text-indigo-700">From manual drafts to a repeatable system</h3>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">
+                    Instead of juggling docs and email threads, ListologyAi centralises research, compliance cues, and
+                    brand voice so your team can spin up descriptions in minutes. The result: more listings go live, and they
+                    stay consistent across every channel.
+                  </p>
+                </div>
                 <p>
-                  Whether you are launching a development, nurturing leads, or publishing weekly blogs, we bring
-                  research, compliance, and feedback into a single surface. What started with real estate now serves
-                  agencies, proptech startups, and internal marketing squads.
-                </p>
-                <p>
-                  We believe AI should feel like a trusted colleague: quick, responsible, and deeply aligned with your
-                  voice. That is why every workflow gives you final cut and visibility into how drafts are created.
+                  Because our generation model was trained specifically on high-converting real estate copy, it does more
+                  than automate. It recommends angles and calls-to-action proven to boost enquiries, while still giving your
+                  team the controls they need to approve every sentence.
                 </p>
               </div>
-              <div className="lg:flex lg:flex-auto lg:justify-center">
-                <dl className="w-64 space-y-8 xl:w-80">
+              <div className="space-y-4">
+                <div className="rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 p-[1px] shadow-2xl shadow-indigo-200/40">
+                  <div className="flex h-full flex-col gap-6 rounded-[calc(theme(borderRadius.3xl)-1px)] bg-slate-950/90 px-8 py-10 text-white">
+                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Pulse</span>
+                    <p className="text-lg leading-7 text-white/90">
+                      &ldquo;ListologyAi helped us launch marketing cycles without the content bottleneck. It&rsquo;s the only AI
+                      platform that truly mirrors agency workflow.&rdquo;
+                    </p>
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-xs font-semibold">
+                        CF
+                      </span>
+                      <div>
+                        <p className="font-semibold">Claudia Flores</p>
+                        <p className="text-xs text-white/60">Director of Content, PropPulse</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <dl className="grid gap-4 rounded-3xl border border-indigo-100 bg-white/80 p-6 shadow-xl shadow-indigo-100/60 backdrop-blur">
                   {stats.map((stat) => (
-                    <div key={stat.label} className="flex flex-col-reverse gap-y-2">
-                      <dt className="text-base leading-7 text-gray-600">{stat.label}</dt>
-                      <dd className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        {stat.value}
-                      </dd>
+                    <div key={stat.label} className="flex flex-col gap-1 rounded-2xl border border-indigo-50 bg-white px-4 py-3 shadow-sm">
+                      <dt className="text-xs font-semibold uppercase tracking-wide text-indigo-500">{stat.label}</dt>
+                      <dd className="text-3xl font-semibold text-gray-900">{stat.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -270,37 +294,79 @@ export default async function AboutPage() {
         </section>
 
         {/* Milestones */}
-        <section className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
+        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How we got here</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               From a single listing generator to a full AI content workspace, here are the moments that shaped ListologyAi.
             </p>
           </div>
-          <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {milestones.map((item) => (
-              <div key={item.year} className="flex flex-col gap-y-2">
-                <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-500">{item.year}</dt>
-                <dd className="text-xl font-semibold text-gray-900">{item.title}</dd>
-                <dd className="text-gray-600">{item.description}</dd>
+          <div className="relative mx-auto mt-16 grid max-w-4xl gap-12 lg:max-w-none lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="relative rounded-3xl border border-indigo-100 bg-white/70 p-8 shadow-xl shadow-indigo-100/40 backdrop-blur">
+              <h3 className="text-lg font-semibold text-indigo-700">Momentum highlights</h3>
+              <p className="mt-3 text-sm leading-6 text-gray-600">
+                We constantly iterate with our customers. Instead of chasing hype cycles, every quarter focuses on
+                one metric: how many hours teams reclaim for strategy, client relationships, and creative polish.
+              </p>
+              <div className="mt-6 space-y-4">
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                    1
+                  </span>
+                  <p>Guided briefs launch with compliance reminders baked in.</p>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                    2
+                  </span>
+                  <p>Collaboration spaces connect marketing, ops, and sales feedback.</p>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                    3
+                  </span>
+                  <p>Usage intelligence gives leaders clear ROI snapshots across brands.</p>
+                </div>
               </div>
-            ))}
-          </dl>
+            </div>
+            <dl className="relative flex flex-col gap-12">
+              <div className="absolute left-5 top-0 bottom-0 hidden w-px bg-gradient-to-b from-indigo-200 via-indigo-100 to-transparent lg:block" />
+              {milestones.map((item, index) => (
+                <div key={item.year} className="relative pl-12">
+                  <span className="absolute left-0 top-1 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white shadow-lg">
+                    {index + 1}
+                  </span>
+                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-500">{item.year}</dt>
+                  <dd className="mt-1 text-xl font-semibold text-gray-900">{item.title}</dd>
+                  <dd className="mt-3 text-sm leading-6 text-gray-600">{item.description}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </section>
 
         {/* Values */}
-        <section className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
+        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our values</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               These principles steer every roadmap decision, client call, and line of copy we ship.
             </p>
           </div>
-          <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {values.map((value) => (
-              <div key={value.name}>
-                <dt className="font-semibold text-gray-900">{value.name}</dt>
-                <dd className="mt-1 text-gray-600">{value.description}</dd>
+          <dl className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-8 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            {values.map((value, idx) => (
+              <div
+                key={value.name}
+                className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 p-6 shadow-lg shadow-indigo-100/40 transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-sm font-semibold text-white shadow-md">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <dt className="text-lg font-semibold text-gray-900">{value.name}</dt>
+                <dd className="text-sm leading-6 text-gray-600">{value.description}</dd>
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-fuchsia-500/5" />
+                </div>
               </div>
             ))}
           </dl>
@@ -335,21 +401,29 @@ export default async function AboutPage() {
         />
 
           {/* Team */}
-        <section className="mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0">
+        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(55%_55%_at_50%_50%,white,transparent)]"
+          >
+            <div className="h-[28rem] w-[60rem] bg-gradient-to-r from-indigo-100 via-white to-purple-100" />
+          </div>
+          <div className="mx-auto max-w-2xl text-center lg:max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet the team</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              We are builders, writers, and analysts obsessed with crafting friendly tooling for human storytellers.
+              We are builders, writers, and analysts obsessed with helping teams publish faster. Our custom generation
+              stack blends market data and brand tone so listing descriptions not only read beautifully—they consistently
+              drive tours and sales.
             </p>
           </div>
           <ul
             role="list"
-            className="mx-auto mt-20 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-12 text-center sm:grid-cols-3 md:grid-cols-4 lg:mx-0 lg:max-w-none lg:grid-cols-6"
+            className="mx-auto mt-20 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-12 text-center sm:grid-cols-3 md:grid-cols-4 lg:mx-0 lg:max-w-none lg:grid-cols-6"
           >
             {team.map((person) => (
               <li key={person.name} className="flex flex-col items-center gap-y-3">
                 <span
-                  className={`flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br ${person.palette} text-lg font-semibold text-white shadow-lg`}
+                  className={`flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br ${person.palette} text-lg font-semibold text-white shadow-lg shadow-indigo-200/40`}
                 >
                   {person.initials}
                 </span>
@@ -359,6 +433,14 @@ export default async function AboutPage() {
               </li>
             ))}
           </ul>
+          <div className="mt-16 flex justify-center">
+            <Link
+              href="/careers"
+              className="inline-flex items-center gap-2 rounded-full border border-indigo-200 px-5 py-2 text-sm font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50"
+            >
+              Join the crew <span aria-hidden>→</span>
+            </Link>
+          </div>
         </section>
       </main>
 

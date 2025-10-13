@@ -108,26 +108,98 @@ export default async function BlogPostPage({
           ))}
         </div>
 
-        <section className="mt-16 rounded-2xl bg-indigo-50 p-8">
-          <h2 className="text-lg font-semibold text-indigo-900">Keep reading</h2>
-          <p className="mt-2 text-sm text-indigo-700">
-            More stories from the ListologyAi blog to power your next launch.
-          </p>
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      </div>
+
+      <section className="relative isolate mt-20 w-full overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-100 px-6 py-16 sm:px-8 lg:px-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white via-white/80 to-transparent"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent"
+        />
+
+        <div className="relative mx-auto max-w-6xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-indigo-900 sm:text-2xl">Keep reading</h2>
+              <p className="mt-2 max-w-2xl text-sm text-indigo-700">
+                More stories from the ListologyAi blog to power your next launch and sharpen your marketing playbook.
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500"
+            >
+              View all articles <span aria-hidden>→</span>
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((related) => (
-              <article key={related.slug} className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-indigo-100">
-                <time className="text-xs font-semibold uppercase tracking-wide text-indigo-500" dateTime={related.datetime}>
-                  {formatDate(related.datetime)}
-                </time>
-                <h3 className="mt-3 text-base font-semibold text-gray-900">
-                  <Link href={`/blog/${related.slug}`}>{related.title}</Link>
-                </h3>
-                <p className="mt-2 line-clamp-3 text-sm text-gray-600">{related.description}</p>
+              <article
+                key={related.slug}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-indigo-100/70 bg-white shadow-lg shadow-indigo-100/40 transition hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  <Image
+                    src={related.imageUrl}
+                    alt={related.title}
+                    fill
+                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <time
+                    className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-indigo-600 shadow-sm"
+                    dateTime={related.datetime}
+                  >
+                    {formatDate(related.datetime)}
+                  </time>
+                </div>
+
+                <div className="flex flex-1 flex-col gap-4 p-6">
+                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                    <span>{related.readTime}</span>
+                  </div>
+
+                  <Link href={`/blog/${related.slug}`} className="group/title block focus-visible:outline-none">
+                    <h3 className="text-lg font-semibold leading-7 text-gray-900 transition group-hover/title:text-indigo-600 group-focus-visible/title:text-indigo-600">
+                      {related.title}
+                    </h3>
+                  </Link>
+
+                  <p className="line-clamp-3 text-sm text-gray-600">{related.description}</p>
+
+                  <div className="mt-auto flex items-center justify-between pt-4">
+                    <div className="flex items-center gap-3">
+                      <span className="relative inline-flex h-10 w-10 overflow-hidden rounded-full ring-2 ring-indigo-100">
+                        <Image
+                          src={related.author.imageUrl}
+                          alt={related.author.name}
+                          fill
+                          sizes="40px"
+                          className="object-cover"
+                        />
+                      </span>
+                      <div className="text-xs font-semibold text-gray-600">
+                        <p className="text-gray-900">{related.author.name}</p>
+                        <p className="text-gray-500">ListologyAi Team</p>
+                      </div>
+                    </div>
+                    <Link
+                      href={`/blog/${related.slug}`}
+                      className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                    >
+                      Read more <span aria-hidden>→</span>
+                    </Link>
+                  </div>
+                </div>
               </article>
             ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </article>
   );
 }
