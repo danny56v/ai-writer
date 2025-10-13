@@ -357,13 +357,13 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
         <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-white/80 to-white" />
       </div>
 
-      <div className="mx-auto max-w-full px-4 pb-10 pt-8 sm:pt-10">
+      <div className="mx-auto max-w-full px-3 pb-10 pt-8 sm:px-6 sm:pt-10">
         <div className="flex flex-col lg:flex-row gap-4">
           <div
             className={[
               // "min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm",
               "transition-all duration-500 ease-out",
-              "w-full p-4",
+              "w-full p-0 sm:p-4",
               isOpen ? "lg:w-7/12" : "lg:w-5xl lg:mx-auto",
             ].join(" ")}
           >

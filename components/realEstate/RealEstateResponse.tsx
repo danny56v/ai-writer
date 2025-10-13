@@ -72,12 +72,18 @@ const RealEstateResponse = ({
   };
 
   return (
-    <div className="relative w-full overflow-hidden rounded-3xl border border-indigo-100/60 bg-gradient-to-br from-white via-indigo-50/50 to-white shadow-xl">
-      <div aria-hidden className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-indigo-200/50 blur-3xl" />
-      <div aria-hidden className="pointer-events-none absolute -bottom-16 left-16 h-64 w-64 rounded-full bg-purple-200/40 blur-3xl" />
+    <div className="relative w-full overflow-hidden bg-white sm:rounded-3xl sm:border sm:border-indigo-100/60 sm:bg-gradient-to-br sm:from-white sm:via-indigo-50/50 sm:to-white sm:shadow-xl">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 right-0 hidden h-72 w-72 rounded-full bg-indigo-200/50 blur-3xl sm:block"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-16 left-16 hidden h-64 w-64 rounded-full bg-purple-200/40 blur-3xl sm:block"
+      />
 
-      <div className="relative flex flex-col gap-5 p-4 sm:p-6">
-        <header className="flex flex-col gap-4 rounded-2xl border border-white/50 bg-white/80 p-4 shadow-sm backdrop-blur">
+      <div className="relative flex flex-col gap-5 p-3 sm:p-6">
+        <header className="flex flex-col gap-4 rounded-xl border border-white/60 bg-white/90 p-3 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-4 sm:backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 text-white shadow-lg">
@@ -208,9 +214,12 @@ const RealEstateResponse = ({
           </div>
         </header>
 
-        <section className="mt-5 rounded-2xl border border-indigo-100/70 bg-white/75 shadow-inner backdrop-blur">
-          <div className="relative px-4 py-6 sm:px-6">
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/70 to-transparent" />
+        <section className="mt-5 rounded-xl bg-white shadow-inner sm:rounded-2xl sm:border sm:border-indigo-100/70 sm:bg-white/75 sm:backdrop-blur">
+          <div className="relative px-3 py-6 sm:px-6">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 right-0 hidden w-32 bg-gradient-to-l from-white via-white/70 to-transparent sm:block"
+            />
             {loading ? (
               <div className="relative flex min-h-[220px] flex-col justify-center gap-8">
                 <div className="flex items-center gap-3 text-sm font-medium text-indigo-600">

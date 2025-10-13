@@ -386,18 +386,18 @@ const RealEstateForm = ({
         </div>
       ) : null}
 
-      <div className="relative overflow-hidden rounded-3xl border border-indigo-100/70 bg-gradient-to-br from-white via-indigo-50/60 to-white shadow-xl">
+      <div className="relative overflow-hidden bg-white sm:rounded-3xl sm:border sm:border-indigo-100/70 sm:bg-gradient-to-br sm:from-white sm:via-indigo-50/60 sm:to-white sm:shadow-xl">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-24 right-12 h-72 w-72 rounded-full bg-purple-200/40 blur-3xl"
+          className="pointer-events-none absolute -top-24 right-12 hidden h-72 w-72 rounded-full bg-purple-200/40 blur-3xl sm:block"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-16 left-0 h-64 w-64 rounded-full bg-indigo-200/50 blur-3xl"
+          className="pointer-events-none absolute -bottom-16 left-0 hidden h-64 w-64 rounded-full bg-indigo-200/50 blur-3xl sm:block"
         />
 
-        <div className="relative flex flex-col gap-6 p-4 sm:p-6">
-          <header className="flex flex-col gap-3 rounded-2xl border border-white/60 bg-white/80 p-4 shadow-sm backdrop-blur">
+        <div className="relative flex flex-col gap-6 p-3 sm:p-6">
+          <header className="flex flex-col gap-3 rounded-xl border border-white/60 bg-white/90 p-3 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-4 sm:backdrop-blur">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 text-xl text-white shadow-lg">
@@ -443,16 +443,16 @@ const RealEstateForm = ({
             </div>
           </header>
 
-          <div className="rounded-2xl border border-indigo-50 bg-white/80 shadow-sm backdrop-blur-sm">
+          <div className="rounded-xl bg-white shadow-sm sm:rounded-2xl sm:border sm:border-indigo-50 sm:bg-white/80 sm:backdrop-blur-sm">
             <form
               id="real-estate-form"
-              className="space-y-8 p-4 sm:p-6"
+              className="space-y-8 p-3 sm:p-6"
               action={formAction}
               onSubmit={handleSubmit}
               noValidate
             >
               <section className="space-y-6">
-                <div className="rounded-2xl border border-indigo-50 bg-white/70 p-4 shadow-sm">
+                <div className="rounded-xl bg-white p-3 shadow-sm sm:rounded-2xl sm:border sm:border-indigo-50 sm:bg-white/70 sm:p-4">
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-indigo-500">Key details</h3>
                   <p className="mt-1 text-xs text-gray-500">Start with the essentials that ground the description.</p>
   
@@ -493,7 +493,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
   
-                <div className="rounded-2xl border border-indigo-50 bg-white/70 p-4 shadow-sm">
+              <div className="rounded-xl bg-white p-3 shadow-sm sm:rounded-2xl sm:border sm:border-indigo-50 sm:bg-white/70 sm:p-4">
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-indigo-500">Layout & dimensions</h3>
                   <p className="mt-1 text-xs text-gray-500">Provide the room configuration and property size.</p>
   
@@ -620,7 +620,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
   
-                <div className="rounded-2xl border border-indigo-50 bg-white/70 p-4 shadow-sm">
+              <div className="rounded-xl bg-white p-3 shadow-sm sm:rounded-2xl sm:border sm:border-indigo-50 sm:bg-white/70 sm:p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-indigo-500">
@@ -649,7 +649,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
   
-                <div className="rounded-2xl border border-indigo-50 bg-white/70 p-4 shadow-sm">
+                <div className="rounded-xl bg-white p-3 shadow-sm sm:rounded-2xl sm:border sm:border-indigo-50 sm:bg-white/70 sm:p-4">
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-indigo-500">Description & context</h3>
                   <p className="mt-1 text-xs text-gray-500">
                     Add special notes, your preferred tone, or narrative details to personalize the result.
