@@ -11,10 +11,10 @@ export const PLAN_LIMITS = {
 
 // Map Stripe price IDs to internal plan keys
 export const PRICE_TO_PLAN = {
-  price_1RtQX7RsRyFq7mSBngUAWcHC: "pro_monthly",
-  price_1RtQX7RsRyFq7mSBLWuC9ddx: "pro_yearly",
-  price_1RtRzkRsRyFq7mSBXQBHBd5G: "unlimited_monthly",
-  price_1RtS0RRsRyFq7mSB1Orea73q: "unlimited_yearly",
+  price_1SHjjTRzvydSZxMcbOyOM2w3: "pro_monthly",
+  price_1SHjjTRzvydSZxMcJ9Rql01O: "pro_yearly",
+  price_1SHjlFRzvydSZxMcO9jzuT1a: "unlimited_monthly",
+  price_1SHjlFRzvydSZxMc1AWszvBW: "unlimited_yearly",
 } as const satisfies Record<string, Exclude<PlanKey, "free">>;
 
 // Type-safe helper when converting from price id to plan key
