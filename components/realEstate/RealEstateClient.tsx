@@ -105,6 +105,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   const [results, setResults] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [currentUsageSummary, setCurrentUsageSummary] = useState<RealEstateUsageSummary>(usageSummary);
   const lastSigRef = useRef<string | null>(null);
   const responseContainerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -121,6 +122,32 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
     return window.innerWidth >= 1024;
   });
   const historyCopyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setCurrentUsageSummary((prev) => {
+      if (
+        prev.limit === usageSummary.limit &&
+        prev.remaining === usageSummary.remaining &&
+        prev.used === usageSummary.used
+      ) {
+        return prev;
+      }
+      return usageSummary;
+    });
+  }, [usageSummary]);
+
+  const handleUsageUpdate = useCallback((summary: RealEstateUsageSummary) => {
+    setCurrentUsageSummary((prev) => {
+      if (
+        prev.limit === summary.limit &&
+        prev.remaining === summary.remaining &&
+        prev.used === summary.used
+      ) {
+        return prev;
+      }
+      return summary;
+    });
+  }, []);
 
   const refreshHistory = useCallback(async () => {
     try {
@@ -342,13 +369,14 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           >
             <RealEstateForm
               userPlan={userPlan}
-              usageSummary={usageSummary}
+              usageSummary={currentUsageSummary}
               isAuthenticated={isAuthenticated}
               onLoadingChange={setLoading}
               onResult={handleResult}
               regenerateSignal={regenerateSignal}
               onSubmitStart={handleSubmitStart}
               onError={handleError}
+              onUsageUpdate={handleUsageUpdate}
             />
           </div>
           <div

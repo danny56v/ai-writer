@@ -17,6 +17,11 @@ export type RealEstateDescriptionState = {
   hashtags?: string[];
   historyId?: string;
   error?: string;
+  usage?: {
+    limit: number | null;
+    remaining: number | null;
+    used: number | null;
+  };
 };
 
 const REAL_ESTATE_LIMITS: Record<PlanKey, number | null> = {
@@ -356,10 +361,20 @@ Instructions:
 
   const userPlan = await getUserPlan(userId);
   const planType = userPlan.planType;
+  const planLimit = (REAL_ESTATE_LIMITS as Record<string, number | null>)[planType] ?? null;
 
   const quota = await consumeRealEstateQuota(userId, planType, userPlan.currentPeriodEnd ?? null);
   if (!quota.ok) {
-    return { text: "", error: quota.error };
+    const usagePayload =
+      planLimit === null
+        ? { limit: null, remaining: null, used: null }
+        : {
+            limit: planLimit,
+            remaining: 0,
+            used: planLimit,
+          };
+
+    return { text: "", error: quota.error, usage: usagePayload };
   }
 
   try {
@@ -401,11 +416,43 @@ Instructions:
       console.error("Failed to save real estate generation history", saveError);
     }
 
-    return { text, title: structured.title, hashtags: structured.hashtags, historyId };
+    const remainingAfterUsage = quota.limit === null ? null : Math.max(quota.remaining ?? 0, 0);
+    const usagePayload =
+      quota.limit === null
+        ? { limit: null, remaining: null, used: null }
+        : {
+            limit: quota.limit,
+            remaining: remainingAfterUsage,
+            used:
+              remainingAfterUsage === null
+                ? null
+                : Math.min(quota.limit, quota.limit - remainingAfterUsage),
+          };
+
+    return {
+      text,
+      title: structured.title,
+      hashtags: structured.hashtags,
+      historyId,
+      usage: usagePayload,
+    };
   } catch (err) {
     console.error("Error generating description:", err);
     await restoreRealEstateQuota(userId, planType, userPlan.currentPeriodEnd ?? null);
-    return { text: "", error: "An unexpected error occurred. Please try again later." };
+    const restoredUsage =
+      quota.limit === null
+        ? { limit: null, remaining: null, used: null }
+        : {
+            limit: quota.limit,
+            remaining: Math.min((quota.remaining ?? 0) + 1, quota.limit),
+            used: Math.max(quota.limit - Math.min((quota.remaining ?? 0) + 1, quota.limit), 0),
+          };
+
+    return {
+      text: "",
+      error: "An unexpected error occurred. Please try again later.",
+      usage: restoredUsage,
+    };
   }
 }
 

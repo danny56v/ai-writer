@@ -54,11 +54,11 @@ const faqs = [
     answer:
       "Start with the basics: property type, address or neighbourhood, bed and bath count, standout features, and any compliance must-haves like HOA fees or license numbers. The more context you give, the sharper the AI draft becomes.",
   },
-  {
-    question: "Can ListologyAi pull data from our MLS or CRM?",
-    answer:
-      "Yes. Connect your MLS feed or CRM via our integrations and we will auto-populate briefs with photos, specs, and pricing. You can still edit every field before generating the description.",
-  },
+  // {
+  //   question: "Can ListologyAi pull data from our MLS or CRM?",
+  //   answer:
+  //     "Yes. Connect your MLS feed or CRM via our integrations and we will auto-populate briefs with photos, specs, and pricing. You can still edit every field before generating the description.",
+  // },
   {
     question: "How many listings can my team generate on the free plan?",
     answer:
@@ -69,11 +69,11 @@ const faqs = [
     answer:
       "Our templates include built-in reminders for fair housing language, local disclosure requirements, and automated checks against risky phrasing. You can add custom compliance rules for your market.",
   },
-  {
-    question: "Can I collaborate with agents who work under different brands?",
-    answer:
-      "Absolutely. Workspaces support multiple brands with separate tone presets, logo assets, and approval flows so teams and partner agencies stay on-brand without extra juggling.",
-  },
+  // {
+  //   question: "Can I collaborate with agents who work under different brands?",
+  //   answer:
+  //     "Absolutely. Workspaces support multiple brands with separate tone presets, logo assets, and approval flows so teams and partner agencies stay on-brand without extra juggling.",
+  // },
   {
     question: "What happens after we publish a listing draft?",
     answer:
@@ -215,14 +215,14 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
         </section>
         {/* Logo cloud */}
         <section className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto mt-12 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+          <div className="mx-auto mt-20 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             {partnerLogos.map((logo) => (
               <div key={logo.alt} className="flex items-center justify-center">
                 <Image src={logo.src} alt={logo.alt} width={158} height={48} className="max-h-12" />
               </div>
             ))}
           </div>
-          <div className="mt-16 flex justify-center">
+          <div className="mt-20 flex justify-center">
             <div className="relative rounded-full bg-indigo-50 px-4 py-1.5 text-sm leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-100">
               <span className="hidden md:inline">See how agents turn AI copy into showings.</span>
               <Link href="/blog" className="ml-1 font-semibold">
@@ -232,7 +232,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           </div>
         </section>
         {/* Feature section */}
-        <section id="features" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
+        <section id="features" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">Workflows that flow</p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -299,7 +299,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           </div>
         </section>
         {/* Pricing */}
-        <section id="pricing" className="py-24 sm:pt-48">
+        <section id="pricing" className=" sm:pt-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             {/* <div className="mx-auto max-w-4xl text-center">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-indigo-600">Pricing</h2>
@@ -348,7 +348,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </div>
           </div>
         </section>
-        z{/* CTA */}
+        {/* CTA */}
         <section className="relative mt-32 px-6 pb-32 lg:px-8">
           <div
             aria-hidden="true"
@@ -364,15 +364,15 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               Create an account in minutes, invite your team, and generate three listings on us. Upgrade when you are
               ready to scale production.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
-                href="/sign-up"
+                href="/real-estate-generator"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
               >
-                Start for free
+                Try the listing writer
               </Link>
-              <Link href="/real-estate-generator" className="text-sm font-semibold leading-6 text-gray-900">
-                Generate a listing <span aria-hidden="true">→</span>
+              <Link href="/pricing" className="text-sm font-semibold leading-6 text-gray-900">
+                View pricing <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
