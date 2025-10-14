@@ -14,15 +14,12 @@ interface RealEstateFormProps {
 
 const PROPERTY_TYPES = [
   "House",
-  "Apartment",
-  "Condominium",
-  "Land",
-  "Commercial",
-  "Townhouse",
-  "Vacant Land",
-  "Multi-Family",
-  "HDB",
-  "Other",
+  "Townhome",
+  "Multi-family",
+  "Condos/Co-ops",
+  "Lot/Land",
+  "Apartament",
+  "Manufactured",
 ] as const;
 
 const BEDROOMS = ["Studio", "1", "2", "3", "4", "5", "6+"] as const;

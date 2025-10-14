@@ -33,15 +33,12 @@ interface RealEstateFormProps {
 
 const PROPERTY_TYPES = [
   "House",
-  "Apartment",
-  "Condominium",
-  "Land",
-  "Commercial",
-  "Townhouse",
-  "Vacant Land",
-  "Multi-Family",
-  "HDB",
-  "Other",
+  "Townhome",
+  "Multi-family",
+  "Condos/Co-ops",
+  "Lot/Land",
+  "Apartament",
+  "Manufactured",
 ] as const;
 const BEDROOMS = ["Studio", "1", "2", "3", "4", "5", "6+"] as const;
 const BATHROOMS = ["1", "2", "3", "4", "5", "6+"] as const;
@@ -732,7 +729,7 @@ const RealEstateForm = ({
                   disabled={pending}
                   className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-indigo-500 hover:to-purple-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {pending ? "Generating..." : "Preview / Publish"}
+                  {pending ? "Generating..." : "Generate"}
                 </button>
               </div>
             </form>
