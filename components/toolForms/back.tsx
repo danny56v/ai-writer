@@ -167,7 +167,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
               {/* Living area */}
               <div>
                 <label htmlFor="area" className="block text-sm font-medium text-gray-800">
-                  Living area (m²)
+                  Living area (sq ft)
                 </label>
                 <div className="relative">
                   <input
@@ -175,15 +175,16 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     name="area"
                     type="number"
                     min={0}
-                    placeholder="e.g., 75"
+                    placeholder="e.g., 1800"
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-                      "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                      "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
+                      "no-spinner"
                     )}
                   />
                   <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-gray-500">
-                    m²
+                    sq ft
                   </span>
                 </div>
               </div>
@@ -191,7 +192,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
               {/* Lot size */}
               <div>
                 <label htmlFor="lot" className="mb-1 block text-sm font-medium text-gray-800">
-                  Lot size (m²)
+                  Lot size (sq ft)
                 </label>
                 <div className="relative">
                   <input
@@ -199,15 +200,16 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     name="lot"
                     type="number"
                     min={0}
-                    placeholder="e.g., 300"
+                    placeholder="e.g., 7500"
                     className={cx(
                       "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
                       "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-                      "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                      "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
+                      "no-spinner"
                     )}
                   />
                   <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-gray-500">
-                    m²
+                    sq ft
                   </span>
                 </div>
               </div>

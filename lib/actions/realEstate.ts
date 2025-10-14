@@ -322,7 +322,7 @@ Tone: professional yet friendly.
 Return Markdown with a bold title on the first line, descriptive paragraphs, and a final line of 3–5 relevant hashtags.
 `;
 
-  const livingAreaText = area !== undefined ? `${area} m²` : "—";
+  const livingAreaText = area !== undefined ? `${area} sq ft` : "—";
 
   const user = `
 Property details:
@@ -331,7 +331,7 @@ Property details:
 - Location: ${location}
 - Price: ${price} USD
 - Living area: ${livingAreaText}
-- Lot size: ${lot ?? "—"} m²
+- Lot size: ${lot ?? "—"} sq ft
 - Year built: ${year ?? "—"}
 - Bedrooms: ${bedrooms}
 - Bathrooms: ${bathrooms}
@@ -529,8 +529,8 @@ Instructions:
 // - Listing type: ${data.listingType}
 // - Location: ${data.location}
 // - Price: ${data.price} USD
-// - Living area: ${data.livingArea} m²
-// - Lot size: ${data.lotSize} m²
+// - Living area: ${data.livingArea} sq ft
+// - Lot size: ${data.lotSize} sq ft
 // - Year built: ${data.yearBuilt}
 // - Bedrooms: ${data.bedrooms}
 // - Bathrooms: ${data.bathrooms}
