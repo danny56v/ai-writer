@@ -109,9 +109,9 @@ const partnerLogos = [
 
 const testimonials = {
   quote:
-    "ListologyAi cut our listing turnaround time by 60%. Agents now focus on storytelling while AI keeps compliance in check.",
+    "Since using ListologyAi, my listings get more attention and my properties sell faster than ever.",
   name: "Laura Mitrea",
-  role: "Marketing Director, Skyline Homes",
+  role: "Top Agent, Dream Homes Realty",
 };
 
 function HeroMockup() {
@@ -176,11 +176,10 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Creative AI tooling for teams that craft premium listings.
+               Sell properties faster with AI-powered descriptions
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                ListologyAi connects your briefs, brand voice, and AI assistants in one workspace. Produce consistent
-                real estate copy, long-form articles, and client campaigns without the chaos.
+                Create persuasive real estate listings in seconds. Attract more buyers, stand out from competitors, and close deals faster.
               </p>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link

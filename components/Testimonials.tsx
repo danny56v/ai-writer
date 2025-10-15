@@ -6,8 +6,8 @@ const featuredTestimonial = {
     name: "Maya Thompson",
     handle: "maya.thompson",
     imageUrl:
-      "https://images.unsplash.com/photo-1544723795-43253756d6f5?auto=format&fit=facearea&facepad=2.5&w=1024&h=1024&q=80",
-    logoUrl: "https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+
   },
 };
 
@@ -15,16 +15,16 @@ const testimonials = [
   [
     [
       {
-        body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. ListologyAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
+        body: "Since using ListologyAi, my listings stand out instantly — I’m closing deals faster and getting more buyer inquiries than ever before.",
         author: {
           name: "Elena Rossi",
           handle: "elena.rossi",
           imageUrl:
-            "https://images.unsplash.com/photo-1536520002442-39764a41e067?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            "https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         },
       },
       {
-        body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. ListologyAi finally got sales, ops, and creative on the same page.",
+        body: "I used to spend hours writing descriptions. Now with ListologyAi, I generate polished listings in minutes and see properties sell much quicker.",
         author: {
           name: "Jordan Wells",
           handle: "jordanwells",
@@ -35,7 +35,7 @@ const testimonials = [
     ],
     [
       {
-        body: "We tested five AI tools and kept coming back to ListologyAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
+        body: "ListologyAi helped me increase engagement across all my listings. More clicks, more calls, and more sales — all from better copy.",
         author: {
           name: "Sofia Martinez",
           handle: "sofia.martinez",
@@ -44,7 +44,7 @@ const testimonials = [
         },
       },
       {
-        body: "Listing volume doubled after launch because our agents stopped rewriting paragraphs from scratch. Templates, comments, and analytics live together so we can prove the ROI every month.",
+        body: "After switching to ListologyAi, I doubled my monthly property sales. The AI copy feels personal, clear, and convincing every single time.",
         author: {
           name: "Connor Blake",
           handle: "connorblake",
@@ -57,7 +57,7 @@ const testimonials = [
   [
     [
       {
-        body: "Our franchise network writes in four languages. ListologyAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
+        body: "I manage listings in multiple languages — ListologyAi makes it effortless. My team now publishes faster while keeping every message on-brand.",
         author: {
           name: "Aiko Tanaka",
           handle: "aikotanaka",
@@ -66,7 +66,7 @@ const testimonials = [
         },
       },
       {
-        body: "The billing portal plus usage dashboards have been a gift for our operations team. We can experiment with new campaigns, see results, and scale credits without surprise invoices.",
+        body: "Thanks to ListologyAi, my marketing costs dropped while conversions increased. Each listing now attracts serious buyers within days.",
         author: {
           name: "Priya Chandrasekar",
           handle: "priyac",
@@ -77,7 +77,7 @@ const testimonials = [
     ],
     [
       {
-        body: "We produce weekly investor memos and property spotlights. ListologyAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
+        body: "ListologyAi saves me hours each week and helps me sell properties faster. The AI suggestions sound natural and match my tone perfectly.",
         author: {
           name: "Malik Thompson",
           handle: "malik.thompson",
@@ -86,7 +86,7 @@ const testimonials = [
         },
       },
       {
-        body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. ListologyAi turned approvals into a shared workflow instead of an email chain.",
+        body: "Before ListologyAi, I rewrote every listing from scratch. Now I publish twice as fast — and my properties move off the market quicker than ever.",
         author: {
           name: "Gabrielle Monroe",
           handle: "gabriellemonroe",
@@ -97,6 +97,94 @@ const testimonials = [
     ],
   ],
 ];
+
+
+// const testimonials = [
+//   [
+//     [
+//       {
+//         body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. ListologyAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
+//         author: {
+//           name: "Elena Rossi",
+//           handle: "elena.rossi",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1536520002442-39764a41e067?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//       {
+//         body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. ListologyAi finally got sales, ops, and creative on the same page.",
+//         author: {
+//           name: "Jordan Wells",
+//           handle: "jordanwells",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//     ],
+//     [
+//       {
+//         body: "We tested five AI tools and kept coming back to ListologyAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
+//         author: {
+//           name: "Sofia Martinez",
+//           handle: "sofia.martinez",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80",
+//         },
+//       },
+//       {
+//         body: "Listing volume doubled after launch because our agents stopped rewriting paragraphs from scratch. Templates, comments, and analytics live together so we can prove the ROI every month.",
+//         author: {
+//           name: "Connor Blake",
+//           handle: "connorblake",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//     ],
+//   ],
+//   [
+//     [
+//       {
+//         body: "Our franchise network writes in four languages. ListologyAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
+//         author: {
+//           name: "Aiko Tanaka",
+//           handle: "aikotanaka",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//       {
+//         body: "The billing portal plus usage dashboards have been a gift for our operations team. We can experiment with new campaigns, see results, and scale credits without surprise invoices.",
+//         author: {
+//           name: "Priya Chandrasekar",
+//           handle: "priyac",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//     ],
+//     [
+//       {
+//         body: "We produce weekly investor memos and property spotlights. ListologyAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
+//         author: {
+//           name: "Malik Thompson",
+//           handle: "malik.thompson",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//       {
+//         body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. ListologyAi turned approvals into a shared workflow instead of an email chain.",
+//         author: {
+//           name: "Gabrielle Monroe",
+//           handle: "gabriellemonroe",
+//           imageUrl:
+//             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//         },
+//       },
+//     ],
+//   ],
+// ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -153,13 +241,13 @@ export default function Testimonials() {
                 <div className="font-semibold">{featuredTestimonial.author.name}</div>
                 <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
               </div>
-              <Image
+              {/* <Image
                 alt=""
                 src={featuredTestimonial.author.logoUrl}
                 className="h-10 w-auto flex-none"
                 width={100}
                 height={100}
-              />
+              /> */}
             </figcaption>
           </figure>
           {testimonials.map((columnGroup, columnGroupIdx) => (
