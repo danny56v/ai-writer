@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -115,41 +116,99 @@ const testimonials = {
 };
 
 function HeroMockup() {
+  const mainVideoRef = useRef<HTMLVideoElement>(null);
+  const glowVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const videos = [mainVideoRef.current, glowVideoRef.current].filter(
+      (video): video is HTMLVideoElement => Boolean(video),
+    );
+
+    const ensureAutoplay = (video: HTMLVideoElement) => {
+      const playSilently = () => {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Safari might still block autoplay; retry on next interaction.
+          });
+        }
+      };
+
+      video.defaultMuted = true;
+      video.muted = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+
+      if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+        playSilently();
+        return () => {};
+      }
+
+      const handleCanPlay = () => {
+        playSilently();
+        video.removeEventListener("canplay", handleCanPlay);
+      };
+
+      video.addEventListener("canplay", handleCanPlay);
+      return () => video.removeEventListener("canplay", handleCanPlay);
+    };
+
+    const cleanups = videos.map(ensureAutoplay);
+
+    const handleUserInteraction = () => {
+      videos.forEach((video) => {
+        if (video.paused) {
+          video.play().catch(() => {});
+        }
+      });
+    };
+
+    window.addEventListener("touchstart", handleUserInteraction, { once: true });
+    window.addEventListener("click", handleUserInteraction, { once: true });
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+      window.removeEventListener("touchstart", handleUserInteraction);
+      window.removeEventListener("click", handleUserInteraction);
+    };
+  }, []);
+
   return (
-   
-    <div className="rounded-3xl border border-indigo-100 bg-white shadow-2xl shadow-indigo-200/40">
-      <div className="flex items-center gap-2 border-b border-indigo-100 px-6 py-4">
-        <span className="h-3 w-3 rounded-full bg-rose-400" />
-        <span className="h-3 w-3 rounded-full bg-amber-400" />
-        <span className="h-3 w-3 rounded-full bg-emerald-400" />
-        <p className="ml-auto text-xs font-semibold text-indigo-500">ListologyAi Workspace</p>
-      </div>
-      <div className="grid gap-6 px-6 py-6 sm:grid-cols-2">
-        <div className="space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">Brief summary</p>
-          <div className="rounded-2xl bg-indigo-50/60 p-4 text-sm text-gray-700">
-            <p className="font-semibold text-indigo-700">Downtown loft • 2BR • Skyline views</p>
-            <p className="mt-2">
-              Highlight open-concept living, floor-to-ceiling windows, and proximity to transit. Focus on young
-              professionals moving into the city.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-dashed border-indigo-200 p-4 text-xs text-gray-500">
-            tone: modern, confident · call-to-action: schedule tour · compliance reminder: mention HOA fees
-          </div>
-        </div>
-        <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/70 to-white p-6 text-sm text-gray-700">
-          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">AI generated draft</p>
-          <p className="mt-3 leading-6">
-            Welcome home to skyline living in the heart of the city. This sun-soaked loft pairs soaring 12-foot ceilings
-            with industrial touches and a chef-ready kitchen. Step onto your private balcony for sunset views, or head
-            downstairs to cafés, boutique gyms, and the light-rail just one block away.
-          </p>
-          <p className="mt-3 leading-6">
-            Two spacious bedrooms, custom closets, and an ensuite retreat give you room to recharge. HOA covers water,
-            trash, and concierge—schedule your tour today and experience downtown without compromise.
-          </p>
-        </div>
+    <div className="relative mx-auto w-full overflow-hidden rounded-[3rem]">
+      <div className="relative aspect-[1804/826] w-full">
+        <video
+          ref={mainVideoRef}
+          src="/ListologyAix1.5.mp4"
+          className="absolute inset-0 z-10 h-full w-full object-cover"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="auto"
+          style={{
+            WebkitMaskImage:
+              "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
+            maskImage:
+              "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
+          }}
+        />
+        <video
+          ref={glowVideoRef}
+          src="/ListologyAix1.5.mp4"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full scale-125 blur-[95px] object-cover"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          style={{
+            WebkitMaskImage:
+              "radial-gradient(130% 130% at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.75) 72%, rgba(0,0,0,1) 100%)",
+            maskImage:
+              "radial-gradient(130% 130% at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.75) 72%, rgba(0,0,0,1) 100%)",
+          }}
+        />
       </div>
     </div>
   );
@@ -194,7 +253,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               </div>
             </div>
             <div className="mt-16 sm:mt-24">
-              <div className="-m-2 rounded-[2.5rem] bg-gradient-to-b from-white to-indigo-50/40 p-2 ring-1 ring-inset ring-indigo-100 lg:-m-4 lg:rounded-[3rem] lg:p-4">
+              <div className="-m-2 rounded-[2.5rem] bg-gradient-to-b from-white to-indigo-50/40 p-2  lg:-m-4 lg:rounded-[3rem] lg:p-4">
                 <HeroMockup />
               </div>
             </div>
