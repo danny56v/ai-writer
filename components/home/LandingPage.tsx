@@ -24,61 +24,87 @@ interface LandingPageProps {
 
 const features = [
   {
-    name: "Guided briefs that spark better drafts",
+    name: "AI descriptions that convert",
     description:
-      "Collect property specs, brand voice, and compliance notes in one structured form. ListologyAi transforms context into polished copy instantly.",
-    icon: AdjustmentsHorizontalIcon,
-  },
-  {
-    name: "Usage guardrails & credits",
-    description:
-      "Plan-level limits, monthly resets, and real-time dashboards keep finance and ops confident about AI adoption across teams.",
-    icon: ShieldCheckIcon,
-  },
-  {
-    name: "Collaboration that feels human",
-    description:
-      "Invite writers, marketers, and agents. Leave comments, stage revisions, and approve final copy without jumping between tools.",
+      "Turn basic property details into compelling, human-like listings that capture attention and drive more inquiries.",
     icon: SparklesIcon,
   },
   {
-    name: "Insights that show ROI",
+    name: "Faster workflows, fewer revisions",
     description:
-      "Track which templates convert, how much time you save, and where to double down with content automation.",
+      "Generate multiple listing drafts in seconds, refine tone or length instantly, and publish without writer’s block.",
+    icon: AdjustmentsHorizontalIcon,
+  },
+  {
+    name: "Consistency across every listing",
+    description:
+      "Keep your brand voice, tone, and structure aligned across all your listings — even with multiple agents involved.",
+    icon: ShieldCheckIcon,
+  },
+  {
+    name: "Track what performs best",
+    description:
+      "See which types of descriptions attract more views, clicks, and offers so you can double down on what works.",
     icon: ChartBarIcon,
   },
 ];
 
+// const features = [
+//   {
+//     name: "Guided briefs that spark better drafts",
+//     description:
+//       "Collect property specs, brand voice, and compliance notes in one structured form. ListologyAi transforms context into polished copy instantly.",
+//     icon: AdjustmentsHorizontalIcon,
+//   },
+//   {
+//     name: "Usage guardrails & credits",
+//     description:
+//       "Plan-level limits, monthly resets, and real-time dashboards keep finance and ops confident about AI adoption across teams.",
+//     icon: ShieldCheckIcon,
+//   },
+//   {
+//     name: "Collaboration that feels human",
+//     description:
+//       "Invite writers, marketers, and agents. Leave comments, stage revisions, and approve final copy without jumping between tools.",
+//     icon: SparklesIcon,
+//   },
+//   {
+//     name: "Insights that show ROI",
+//     description:
+//       "Track which templates convert, how much time you save, and where to double down with content automation.",
+//     icon: ChartBarIcon,
+//   },
+// ];
 const faqs = [
   {
-    question: "What information do I need to generate my first property listing?",
+    question: "What do I need to generate my first property description?",
     answer:
-      "Start with the basics: property type, address or neighbourhood, bed and bath count, standout features, and any compliance must-haves like HOA fees or license numbers. The more context you give, the sharper the AI draft becomes.",
+      "Just enter the basics — property type, location, number of rooms, and key selling points. The AI turns your details into a complete, engaging description ready to post in seconds.",
+  },
+  {
+    question: "How many listings can I create with the free plan?",
+    answer:
+      "You can generate one listing per month for free to test the process. When you’re ready to scale, paid plans unlock unlimited listings and advanced customization.",
+  },
+  {
+    question: "Will the AI write in my style or tone?",
+    answer:
+      "Yes. You can select or customize tone presets — friendly, professional, luxury, or casual — so every listing sounds like it came from you, not a robot.",
+  },
+  {
+    question: "Is the copy compliant with real estate advertising laws?",
+    answer:
+      "Absolutely. ListologyAi includes built-in checks for fair housing compliance and avoids biased or restricted phrasing. You stay creative while staying compliant.",
   },
   // {
-  //   question: "Can ListologyAi pull data from our MLS or CRM?",
+  //   question: "Can I edit the text after AI generates it?",
   //   answer:
-  //     "Yes. Connect your MLS feed or CRM via our integrations and we will auto-populate briefs with photos, specs, and pricing. You can still edit every field before generating the description.",
+  //     "Of course. Every description is fully editable. Use the AI draft as a strong base, then tweak words, add details, or rephrase sections with one click.",
   // },
   {
-    question: "How many listings can my team generate on the free plan?",
+    question: "What happens after I finish a listing?",
     answer:
-      "The free tier includes three full listings each month so you can trial the workflow. Upgrading unlocks unlimited drafts, collaboration tools, and brand libraries for your whole brokerage.",
-  },
-  {
-    question: "Is the copy compliant with fair housing guidelines?",
-    answer:
-      "Our templates include built-in reminders for fair housing language, local disclosure requirements, and automated checks against risky phrasing. You can add custom compliance rules for your market.",
-  },
-  // {
-  //   question: "Can I collaborate with agents who work under different brands?",
-  //   answer:
-  //     "Absolutely. Workspaces support multiple brands with separate tone presets, logo assets, and approval flows so teams and partner agencies stay on-brand without extra juggling.",
-  // },
-  {
-    question: "What happens after we publish a listing draft?",
-    answer:
-      "You can export directly to your MLS template, share a review link with sellers, or send the copy to your marketing automation tools. Analytics track which drafts get the most engagement so you can refine future briefs.",
+      "You can copy and paste it directly into your MLS, upload it to property sites, or save it for future use. AI analytics will show which style brings more engagement.",
   },
 ];
 
@@ -109,8 +135,7 @@ const partnerLogos = [
 // ];
 
 const testimonials = {
-  quote:
-    "Since using ListologyAi, my listings get more attention and my properties sell faster than ever.",
+  quote: "Since using ListologyAi, my listings get more attention and my properties sell faster than ever.",
   name: "Laura Mitrea",
   role: "Top Agent, Dream Homes Realty",
 };
@@ -120,8 +145,8 @@ function HeroMockup() {
   const glowVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const videos = [mainVideoRef.current, glowVideoRef.current].filter(
-      (video): video is HTMLVideoElement => Boolean(video),
+    const videos = [mainVideoRef.current, glowVideoRef.current].filter((video): video is HTMLVideoElement =>
+      Boolean(video)
     );
 
     const ensureAutoplay = (video: HTMLVideoElement) => {
@@ -186,10 +211,8 @@ function HeroMockup() {
           playsInline
           preload="auto"
           style={{
-            WebkitMaskImage:
-              "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
-            maskImage:
-              "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
+            WebkitMaskImage: "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
+            maskImage: "radial-gradient(circle at center, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 100%)",
           }}
         />
         <video
@@ -235,10 +258,11 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-               Sell properties faster with AI-powered descriptions
+                Sell properties faster with AI-powered descriptions
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Create persuasive real estate listings in seconds. Attract more buyers, stand out from competitors, and close deals faster.
+                Create persuasive real estate listings in seconds. Attract more buyers, stand out from competitors, and
+                close deals faster.
               </p>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link
@@ -272,7 +296,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           </div>
         </section>
         {/* Logo cloud */}
-        <section className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* <section className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto mt-20 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             {partnerLogos.map((logo) => (
               <div key={logo.alt} className="flex items-center justify-center">
@@ -288,19 +312,20 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               </Link>
             </div>
           </div>
-        </section>
+        </section> */}
         {/* Feature section */}
         <section id="features" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">Workflows that flow</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">Built for real estate pros</p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Automate the busywork, keep the craft.
+              Write listings that sell faster and effortlessly.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              ListologyAi gives marketers and agents a shared workspace for briefs, AI drafts, revisions, and
-              approvals. No more bouncing between docs, email, and chat threads.
+              ListologyAi helps real estate agents and marketers create persuasive, on-brand property descriptions in
+              seconds. Save hours of writing and focus on what really matters — closing deals.
             </p>
           </div>
+
           <div className="mx-auto mt-16 max-w-3xl sm:mt-20 lg:mt-24 lg:max-w-5xl">
             <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-12 lg:max-w-none lg:grid-cols-2">
               {features.map((feature) => (
@@ -317,6 +342,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </dl>
           </div>
         </section>
+
         {/* Unique selling section */}
         {/* <section className="mx-auto mt-32 max-w-6xl px-6 sm:mt-48 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-3">
@@ -419,8 +445,8 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               Ready to see ListologyAi inside your workflow?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-gray-600">
-              Create an account in minutes, invite your team, and generate three listings on us. Upgrade when you are
-              ready to scale production.
+              Create an account in minutes, invite your team, and generate a listing on us. Upgrade when you are ready
+              to scale production.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
@@ -437,6 +463,5 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
         </section>
       </main>
     </div>
-    
   );
 }

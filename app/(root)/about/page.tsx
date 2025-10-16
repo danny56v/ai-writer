@@ -10,60 +10,80 @@ const stats = [
   { label: "Words written for clients", value: "420M" },
   { label: "Average time saved per brief", value: "18 min" },
 ];
-
 const values = [
   {
-    name: "Ship with empathy",
+    name: "Clarity over fluff",
     description:
-      "Every feature starts with real customer stories. We prototype alongside agents, marketers, and founders so the workflows feel native from day one.",
+      "Every word should help a buyer picture the property. We prioritize clear, concrete language over buzzwords.",
   },
   {
-    name: "Stay human-in-the-loop",
+    name: "Speed that respects your time",
     description:
-      "AI serves as a creative copilot, not a replacement. Our guardrails and review tooling keep teams confident in every deliverable.",
+      "From brief to publish-ready copy in seconds. Agents shouldn’t lose hours writing when they could be closing.",
   },
   {
-    name: "Make data trustworthy",
+    name: "On-brand, every time",
     description:
-      "From property specs to brand voice, data is encrypted, versioned, and auditable. Transparency is the backbone of our platform.",
+      "Tone presets keep your voice consistent—whether you’re selling luxury, family homes, or new developments.",
   },
   {
-    name: "Learn relentlessly",
+    name: "Compliance by default",
     description:
-      "We run weekly teardown sessions on the best and the broken. Insight from support tickets goes straight into the roadmap.",
+      "We avoid biased or restricted phrasing and surface fair-housing reminders so you can publish with confidence.",
   },
   {
-    name: "Build responsibly",
+    name: "Human in the loop",
     description:
-      "Usage caps, billing clarity, and fine-grained controls help teams scale output without surprises for finance or compliance.",
+      "AI drafts fast; you make the final call. Edit freely, regenerate sections, and keep your professional judgment in charge.",
   },
   {
-    name: "Celebrate wins together",
+    name: "Privacy & trust",
     description:
-      "We highlight customer launches in every all-hands. When your campaign lands, the whole ListologyAi Crew is cheering with you.",
+      "Your inputs stay yours. We protect sensitive details and never share listing data with third parties.",
   },
 ];
 
 const milestones = [
   {
     year: "2023",
-    title: "ListologyAi is born",
+    title: "The first version launches",
     description:
-      "We started as a weekend project for a brokerage drowning in listing descriptions. Within a month, their agents cut copywriting time in half.",
+      "ListologyAi debuts as a lightweight tool for instantly generating real estate descriptions based on property details.",
   },
   {
     year: "2024",
-    title: "Beyond real estate",
+    title: "Personalization and tone controls",
     description:
-      "Marketing teams asked for long-form articles, newsletters, and onboarding flows. We expanded templates and added collaboration spaces.",
+      "We introduced tone presets and smarter phrasing to let agents match each description to their market and audience.",
   },
   {
     year: "2025",
-    title: "Usage intelligence",
+    title: "Smarter AI, better conversions",
     description:
-      "Usage analytics, plan limits, and Stripe billing landed. Teams now understand ROI at a glance and scale AI access responsibly.",
+      "Our generation model learned from thousands of listings to suggest more engaging, compliant, and conversion-ready copy.",
   },
 ];
+
+// const milestones = [
+//   {
+//     year: "2023",
+//     title: "ListologyAi is born",
+//     description:
+//       "We started as a weekend project for a brokerage drowning in listing descriptions. Within a month, their agents cut copywriting time in half.",
+//   },
+//   {
+//     year: "2024",
+//     title: "Beyond real estate",
+//     description:
+//       "Marketing teams asked for long-form articles, newsletters, and onboarding flows. We expanded templates and added collaboration spaces.",
+//   },
+//   {
+//     year: "2025",
+//     title: "Usage intelligence",
+//     description:
+//       "Usage analytics, plan limits, and Stripe billing landed. Teams now understand ROI at a glance and scale AI access responsibly.",
+//   },
+// ];
 
 const team = [
   {
@@ -121,7 +141,9 @@ const partnerLogos = [
 function GradientCard({ className }: { className?: string }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500/80 via-purple-500/70 to-fuchsia-500/80 shadow-lg ring-1 ring-white/20 ${className ?? ""}`}
+      className={`relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500/80 via-purple-500/70 to-fuchsia-500/80 shadow-lg ring-1 ring-white/20 ${
+        className ?? ""
+      }`}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_60%)]" />
       <div className="relative h-full" />
@@ -184,12 +206,11 @@ export default async function AboutPage() {
                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <p className="text-sm font-semibold uppercase tracking-wide text-indigo-500">About ListologyAi</p>
                   <h1 className="mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                    We help teams tell richer stories with responsible AI.
+                    We help agents tell richer stories with responsible AI.
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                    ListologyAi brings real estate agents, marketers, and founders into a shared workspace where briefs,
-                    AI suggestions, and final copy live side by side. From property listings to long-form thought
-                    leadership, we turn scattered workflows into a single source of truth.
+                    Create powerful real estate descriptions with AI. Simple, fast, and designed to help you close deals
+                    quicker.
                   </p>
                   <div className="mt-10 flex flex-wrap gap-3">
                     <Link
@@ -221,9 +242,7 @@ export default async function AboutPage() {
                     <GradientCard className="aspect-[2/3]" />
                     <div className="relative rounded-xl border border-indigo-100 bg-white/80 p-4 shadow-sm">
                       <p className="text-sm font-semibold text-indigo-600">Global coverage</p>
-                      <p className="mt-2 text-sm text-gray-600">
-                        Copy frameworks tuned for 18 markets and counting.
-                      </p>
+                      <p className="mt-2 text-sm text-gray-600">Copy frameworks tuned for 18 markets and counting.</p>
                     </div>
                   </div>
                 </div>
@@ -243,46 +262,57 @@ export default async function AboutPage() {
             <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start">
               <div className="space-y-6 text-gray-600">
                 <p className="text-xl leading-8 text-gray-700">
-                  ListologyAi was built to eliminate the bottleneck of writing property descriptions from scratch. Our
-                  unique generation model pairs property data with market-tested storytelling patterns so each listing
-                  sounds fresh, on-brand, and ready to convert.
+                  ListologyAi was created to help real estate agents write property descriptions that sell — faster and
+                  easier. Our AI model transforms simple details like size, location, and features into natural,
+                  persuasive copy that attracts more buyers.
                 </p>
+
                 <div className="rounded-3xl border border-indigo-100 bg-white/80 p-6 shadow-lg shadow-indigo-100/50 backdrop-blur">
-                  <h3 className="text-lg font-semibold text-indigo-700">From manual drafts to a repeatable system</h3>
+                  <h3 className="text-lg font-semibold text-indigo-700">
+                    From blank page to polished listing in seconds
+                  </h3>
                   <p className="mt-3 text-sm leading-6 text-gray-600">
-                    Instead of juggling docs and email threads, ListologyAi centralises research, compliance cues, and
-                    brand voice so your team can spin up descriptions in minutes. The result: more listings go live, and they
-                    stay consistent across every channel.
+                    No more staring at a blank screen or rewriting old templates. With ListologyAi, agents generate
+                    complete, well-structured descriptions in one click — saving hours every week while keeping quality
+                    consistent across every listing.
                   </p>
                 </div>
+
                 <p>
-                  Because our generation model was trained specifically on high-converting real estate copy, it does more
-                  than automate. It recommends angles and calls-to-action proven to boost enquiries, while still giving your
-                  team the controls they need to approve every sentence.
+                  Trained specifically on real estate copy that converts, our AI doesn’t just write — it understands
+                  what makes a property stand out. Each description comes with tone, flow, and calls-to-action that make
+                  listings more engaging and ready to publish anywhere.
                 </p>
               </div>
+
               <div className="space-y-4">
                 <div className="rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 p-[1px] shadow-2xl shadow-indigo-200/40">
                   <div className="flex h-full flex-col gap-6 rounded-[calc(theme(borderRadius.3xl)-1px)] bg-slate-950/90 px-8 py-10 text-white">
-                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Pulse</span>
+                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">
+                      Agent Feedback
+                    </span>
                     <p className="text-lg leading-7 text-white/90">
-                      &ldquo;ListologyAi helped us launch marketing cycles without the content bottleneck. It&rsquo;s the only AI
-                      platform that truly mirrors agency workflow.&rdquo;
+                      “With ListologyAi, I write better listings in minutes. The descriptions sound professional, save
+                      me time, and help my properties get more attention.”
                     </p>
                     <div className="flex items-center gap-3 text-sm">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-xs font-semibold">
-                        CF
+                        AR
                       </span>
                       <div>
-                        <p className="font-semibold">Claudia Flores</p>
-                        <p className="text-xs text-white/60">Director of Content, PropPulse</p>
+                        <p className="font-semibold">Alex Rivera</p>
+                        <p className="text-xs text-white/60">Real Estate Agent</p>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <dl className="grid gap-4 rounded-3xl border border-indigo-100 bg-white/80 p-6 shadow-xl shadow-indigo-100/60 backdrop-blur">
                   {stats.map((stat) => (
-                    <div key={stat.label} className="flex flex-col gap-1 rounded-2xl border border-indigo-50 bg-white px-4 py-3 shadow-sm">
+                    <div
+                      key={stat.label}
+                      className="flex flex-col gap-1 rounded-2xl border border-indigo-50 bg-white px-4 py-3 shadow-sm"
+                    >
                       <dt className="text-xs font-semibold uppercase tracking-wide text-indigo-500">{stat.label}</dt>
                       <dd className="text-3xl font-semibold text-gray-900">{stat.value}</dd>
                     </div>
@@ -298,37 +328,40 @@ export default async function AboutPage() {
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How we got here</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              From a single listing generator to a full AI content workspace, here are the moments that shaped ListologyAi.
+              What started as a simple AI tool for writing property descriptions quickly became the go-to assistant for
+              real estate agents who want to sell faster and write smarter.
             </p>
           </div>
+
           <div className="relative mx-auto mt-16 grid max-w-4xl gap-12 lg:max-w-none lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <div className="relative rounded-3xl border border-indigo-100 bg-white/70 p-8 shadow-xl shadow-indigo-100/40 backdrop-blur">
-              <h3 className="text-lg font-semibold text-indigo-700">Momentum highlights</h3>
+              <h3 className="text-lg font-semibold text-indigo-700">Milestones that shaped ListologyAi</h3>
               <p className="mt-3 text-sm leading-6 text-gray-600">
-                We constantly iterate with our customers. Instead of chasing hype cycles, every quarter focuses on
-                one metric: how many hours teams reclaim for strategy, client relationships, and creative polish.
+                We’ve focused on one goal since day one: helping real estate professionals save time while creating
+                listings that convert. Each update brought us closer to making property marketing effortless.
               </p>
               <div className="mt-6 space-y-4">
                 <div className="flex items-center gap-3 text-sm text-gray-600">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
                     1
                   </span>
-                  <p>Guided briefs launch with compliance reminders baked in.</p>
+                  <p>Launched instant AI description generation for agents worldwide.</p>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
                     2
                   </span>
-                  <p>Collaboration spaces connect marketing, ops, and sales feedback.</p>
+                  <p>Introduced tone presets — from luxury to friendly — to match every brand voice.</p>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
                     3
                   </span>
-                  <p>Usage intelligence gives leaders clear ROI snapshots across brands.</p>
+                  <p>Added smart optimization tips to highlight property features and calls-to-action that sell.</p>
                 </div>
               </div>
             </div>
+
             <dl className="relative flex flex-col gap-12">
               <div className="absolute left-5 top-0 bottom-0 hidden w-px bg-gradient-to-b from-indigo-200 via-indigo-100 to-transparent lg:block" />
               {milestones.map((item, index) => (
@@ -346,7 +379,7 @@ export default async function AboutPage() {
         </section>
 
         {/* Values */}
-        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
+        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8 sm:mb-32">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our values</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -373,7 +406,7 @@ export default async function AboutPage() {
         </section>
 
         {/* Logo cloud */}
-        <section className="relative isolate -z-10 mt-32 sm:mt-48">
+        {/* <section className="relative isolate -z-10 mt-32 sm:mt-48">
           <div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(50%_45%_at_50%_55%,white,transparent)]">
             <div className="h-[30rem] w-[60rem] bg-gradient-to-r from-indigo-100 via-white to-purple-100" />
           </div>
@@ -389,9 +422,7 @@ export default async function AboutPage() {
               ))}
             </div>
           </div>
-        </section>
-
-      
+        </section> */}
 
         <FeaturedPosts
           posts={blogPosts.slice(3, 6)}
@@ -400,20 +431,18 @@ export default async function AboutPage() {
           description="Dive into customer stories, roadmap updates, and practical playbooks from our crew."
         />
 
-          {/* Team */}
-        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
+        {/* Team */}
+        <section className="relative mx-auto mt-32 max-w-7xl px-6 sm:mt-32 lg:px-8 sm:mb-32">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(55%_55%_at_50%_50%,white,transparent)]"
-          >
-            <div className="h-[28rem] w-[60rem] bg-gradient-to-r from-indigo-100 via-white to-purple-100" />
-          </div>
+          ></div>
           <div className="mx-auto max-w-2xl text-center lg:max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet the team</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               We are builders, writers, and analysts obsessed with helping teams publish faster. Our custom generation
-              stack blends market data and brand tone so listing descriptions not only read beautifully—they consistently
-              drive tours and sales.
+              stack blends market data and brand tone so listing descriptions not only read beautifully—they
+              consistently drive tours and sales.
             </p>
           </div>
           <ul
@@ -433,14 +462,6 @@ export default async function AboutPage() {
               </li>
             ))}
           </ul>
-          <div className="mt-16 flex justify-center">
-            <Link
-              href="/careers"
-              className="inline-flex items-center gap-2 rounded-full border border-indigo-200 px-5 py-2 text-sm font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50"
-            >
-              Join the crew <span aria-hidden>→</span>
-            </Link>
-          </div>
         </section>
       </main>
 
