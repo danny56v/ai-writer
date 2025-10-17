@@ -2,6 +2,14 @@
 User-agent: *
 Allow: /
 
+# *
+User-agent: *
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /forgot-password
+Disallow: /dashboard
+Disallow: /api
+
 # Host
 Host: https://listologyai.com
 
