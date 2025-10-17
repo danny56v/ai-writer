@@ -138,15 +138,39 @@ const partnerLogos = [
   { alt: "Uber", src: "/uber.svg" },
 ];
 
-function GradientCard({ className }: { className?: string }) {
+function HeroPhoto({
+  src,
+  alt,
+  badge,
+  className,
+  priority,
+}: {
+  src: string;
+  alt: string;
+  badge?: string;
+  className?: string;
+  priority?: boolean;
+}) {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500/80 via-purple-500/70 to-fuchsia-500/80 shadow-lg ring-1 ring-white/20 ${
+      className={`group relative overflow-hidden rounded-3xl border border-indigo-100/80 bg-white/50 shadow-xl shadow-indigo-100/40 backdrop-blur ${
         className ?? ""
       }`}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent_60%)]" />
-      <div className="relative h-full" />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="(min-width: 1280px) 220px, (min-width: 1024px) 20vw, (min-width: 640px) 40vw, 80vw"
+        className="object-cover transition duration-700 group-hover:scale-105"
+      />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-indigo-950/30 via-transparent to-transparent" />
+      {badge ? (
+        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-600 shadow-sm">
+          {badge}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -212,38 +236,56 @@ export default async function AboutPage() {
                     Create powerful real estate descriptions with AI. Simple, fast, and designed to help you close deals
                     quicker.
                   </p>
-                  <div className="mt-10 flex flex-wrap gap-3">
+                  <div className="mt-10 flex flex-wrap items-center gap-3">
                     <Link
-                      href="/pricing"
-                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      href="/real-estate-generator"
+                      className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Explore plans
+                      Try now
                     </Link>
-                    <Link href="/real-estate-generator" className="text-sm font-semibold leading-6 text-gray-900">
-                      Try the real estate writer <span aria-hidden="true">→</span>
+                    <Link href="/pricing" className="inline-flex items-center text-sm font-semibold text-gray-900 hover:text-indigo-500">
+                      Explore plans <span aria-hidden="true">→</span>
                     </Link>
                   </div>
                 </div>
 
-                <div className="mt-14 flex justify-end gap-8 sm:-mt-32 sm:justify-start sm:pl-10 lg:mt-0 lg:pl-0">
-                  <div className="ml-auto w-44 flex-none space-y-6 pt-16 sm:ml-0 sm:pt-32 lg:order-last lg:pt-16 xl:order-none xl:pt-32">
-                    <GradientCard className="aspect-[2/3]" />
-                  </div>
-                  <div className="mr-auto w-44 flex-none space-y-6 sm:mr-0 sm:pt-20 lg:pt-12">
-                    <GradientCard className="aspect-[2/3]" />
-                    <div className="relative rounded-xl border border-indigo-100 bg-white/80 p-4 shadow-sm">
-                      <p className="text-sm font-semibold text-indigo-600">98% CSAT</p>
-                      <p className="mt-2 text-sm text-gray-600">
-                        Teams love the balance between automation and hands-on control.
+                <div className="mt-14 flex flex-wrap justify-end gap-6 sm:-mt-32 sm:justify-start sm:pl-10 lg:mt-0 lg:flex-nowrap lg:pl-0">
+                  <div className="ml-auto flex w-40 flex-none flex-col space-y-6 pt-12 sm:ml-0 sm:w-48 sm:pt-24 lg:pt-16">
+                    <HeroPhoto
+                      src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
+                      alt="ListologyAi team planning a new release"
+                      badge="Product strategy"
+                      className="aspect-[3/4]"
+                      priority
+                    />
+                    <div className="relative rounded-2xl border border-indigo-100 bg-white/85 p-5 shadow-lg shadow-indigo-100/40">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">Customer love</p>
+                      <p className="mt-2 text-sm font-semibold text-gray-900">98% CSAT</p>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Teams highlight the balance between automation and hands-on control.
                       </p>
                     </div>
                   </div>
-                  <div className="w-44 flex-none space-y-6 pt-12 sm:pt-0">
-                    <GradientCard className="aspect-[2/3]" />
-                    <div className="relative rounded-xl border border-indigo-100 bg-white/80 p-4 shadow-sm">
-                      <p className="text-sm font-semibold text-indigo-600">Global coverage</p>
-                      <p className="mt-2 text-sm text-gray-600">Copy frameworks tuned for 18 markets and counting.</p>
+                  <div className="flex w-40 flex-none flex-col space-y-6 sm:w-48 sm:pt-16 lg:pt-10">
+                    <HeroPhoto
+                      src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+                      alt="Customer success workshop with real estate agents"
+                      badge="Customer success"
+                      className="aspect-[4/5]"
+                    />
+                    <div className="relative rounded-2xl border border-indigo-100 bg-white/85 p-5 shadow-lg shadow-indigo-100/40">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">Markets served</p>
+                      <p className="mt-2 text-sm font-semibold text-gray-900">18 regions</p>
+                      <p className="mt-1 text-sm text-gray-600">Localized frameworks and tone presets tuned to each market.</p>
                     </div>
+                  </div>
+                  <div className="flex w-full flex-none flex-col space-y-6 sm:w-48 sm:pt-10 lg:w-52 lg:pt-6">
+                    <HeroPhoto
+                      src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80"
+                      alt="Engineers refining AI listings on laptops"
+                      badge="AI lab"
+                      className="aspect-[5/7] sm:aspect-[3/4]"
+                    />
                   </div>
                 </div>
               </div>
