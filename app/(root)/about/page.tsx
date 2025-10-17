@@ -130,14 +130,6 @@ const team = [
   },
 ];
 
-const partnerLogos = [
-  { alt: "Transistor", src: "/transistor-horizontal-logo.svg" },
-  { alt: "Primer", src: "/primer.svg" },
-  { alt: "Stripe", src: "/stripe-3.svg" },
-  { alt: "Statamic", src: "/statamic.svg" },
-  { alt: "Uber", src: "/uber.svg" },
-];
-
 function HeroPhoto({
   src,
   alt,
@@ -165,7 +157,10 @@ function HeroPhoto({
         sizes="(min-width: 1280px) 220px, (min-width: 1024px) 20vw, (min-width: 640px) 40vw, 80vw"
         className="object-cover transition duration-700 group-hover:scale-105"
       />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-indigo-950/30 via-transparent to-transparent" />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-indigo-950/30 via-transparent to-transparent"
+      />
       {badge ? (
         <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-600 shadow-sm">
           {badge}
@@ -239,11 +234,14 @@ export default async function AboutPage() {
                   <div className="mt-10 flex flex-wrap items-center gap-3">
                     <Link
                       href="/real-estate-generator"
-                      className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Try now
                     </Link>
-                    <Link href="/pricing" className="inline-flex items-center text-sm font-semibold text-gray-900 hover:text-indigo-500">
+                    <Link
+                      href="/pricing"
+                      className="inline-flex items-center text-sm font-semibold text-gray-900 hover:text-indigo-500"
+                    >
                       Explore plans <span aria-hidden="true">→</span>
                     </Link>
                   </div>
@@ -276,7 +274,9 @@ export default async function AboutPage() {
                     <div className="relative rounded-2xl border border-indigo-100 bg-white/85 p-5 shadow-lg shadow-indigo-100/40">
                       <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">Markets served</p>
                       <p className="mt-2 text-sm font-semibold text-gray-900">18 regions</p>
-                      <p className="mt-1 text-sm text-gray-600">Localized frameworks and tone presets tuned to each market.</p>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Localized frameworks and tone presets tuned to each market.
+                      </p>
                     </div>
                   </div>
                   <div className="flex w-full flex-none flex-col space-y-6 sm:w-48 sm:pt-10 lg:w-52 lg:pt-6">
@@ -446,26 +446,6 @@ export default async function AboutPage() {
             ))}
           </dl>
         </section>
-
-        {/* Logo cloud */}
-        {/* <section className="relative isolate -z-10 mt-32 sm:mt-48">
-          <div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(50%_45%_at_50%_55%,white,transparent)]">
-            <div className="h-[30rem] w-[60rem] bg-gradient-to-r from-indigo-100 via-white to-purple-100" />
-          </div>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">
-              Trusted by content teams shipping thousands of assets every month
-            </h2>
-            <div className="mx-auto mt-10 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-              {partnerLogos.map((logo) => (
-                <div key={logo.alt} className="flex items-center justify-center">
-                  <Image alt={logo.alt} src={logo.src} width={158} height={48} className="max-h-12" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
         <FeaturedPosts
           posts={blogPosts.slice(3, 6)}
           eyebrow="Latest from the blog"
@@ -506,17 +486,6 @@ export default async function AboutPage() {
           </ul>
         </section>
       </main>
-
-      {/* <footer className="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-16 sm:mt-56 sm:pb-24 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-6 border-t border-gray-100 pt-10 sm:flex-row">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} ListologyAi. All rights reserved.</p>
-          <div className="flex gap-6 text-sm font-semibold text-gray-600">
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/real-estate-generator">Real Estate AI</Link>
-            <Link href="/blog">Blog</Link>
-          </div>
-        </div>
-      </footer> */}
     </div>
   );
 }

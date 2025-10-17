@@ -22,16 +22,17 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
 
   const flushList = () => {
     if (!listBuffer || listBuffer.items.length === 0) return;
+    const currentList = listBuffer;
     const marginTop = elements.length === 0 ? "mt-0" : "mt-6";
 
-    if (listBuffer.ordered) {
+    if (currentList.ordered) {
       elements.push(
         <ol
-          key={listBuffer.key}
+          key={currentList.key}
           className={`${marginTop} space-y-3 pl-6 text-base leading-7 text-gray-800 marker:text-indigo-500`}
         >
-          {listBuffer.items.map((item, itemIndex) => (
-            <li key={`${listBuffer.key}-item-${itemIndex}`} className="font-medium">
+          {currentList.items.map((item, itemIndex) => (
+            <li key={`${currentList.key}-item-${itemIndex}`} className="font-medium">
               {item}
             </li>
           ))}
@@ -39,10 +40,10 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
       );
     } else {
       elements.push(
-        <ul key={listBuffer.key} className={`${marginTop} flex flex-col gap-3`}>
-          {listBuffer.items.map((item, itemIndex) => (
+        <ul key={currentList.key} className={`${marginTop} flex flex-col gap-3`}>
+          {currentList.items.map((item, itemIndex) => (
             <li
-              key={`${listBuffer.key}-item-${itemIndex}`}
+              key={`${currentList.key}-item-${itemIndex}`}
               className="flex items-start gap-3 rounded-2xl border border-indigo-100/80 bg-white/90 p-4 shadow-sm shadow-indigo-100/60"
             >
               <span className="mt-2 h-2 w-2 flex-none rounded-full bg-indigo-500" />

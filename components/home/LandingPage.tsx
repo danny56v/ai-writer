@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   AdjustmentsHorizontalIcon,
   ChartBarIcon,
@@ -49,32 +48,6 @@ const features = [
   },
 ];
 
-// const features = [
-//   {
-//     name: "Guided briefs that spark better drafts",
-//     description:
-//       "Collect property specs, brand voice, and compliance notes in one structured form. ListologyAi transforms context into polished copy instantly.",
-//     icon: AdjustmentsHorizontalIcon,
-//   },
-//   {
-//     name: "Usage guardrails & credits",
-//     description:
-//       "Plan-level limits, monthly resets, and real-time dashboards keep finance and ops confident about AI adoption across teams.",
-//     icon: ShieldCheckIcon,
-//   },
-//   {
-//     name: "Collaboration that feels human",
-//     description:
-//       "Invite writers, marketers, and agents. Leave comments, stage revisions, and approve final copy without jumping between tools.",
-//     icon: SparklesIcon,
-//   },
-//   {
-//     name: "Insights that show ROI",
-//     description:
-//       "Track which templates convert, how much time you save, and where to double down with content automation.",
-//     icon: ChartBarIcon,
-//   },
-// ];
 const faqs = [
   {
     question: "What do I need to generate my first property description?",
@@ -96,43 +69,12 @@ const faqs = [
     answer:
       "Absolutely. ListologyAi includes built-in checks for fair housing compliance and avoids biased or restricted phrasing. You stay creative while staying compliant.",
   },
-  // {
-  //   question: "Can I edit the text after AI generates it?",
-  //   answer:
-  //     "Of course. Every description is fully editable. Use the AI draft as a strong base, then tweak words, add details, or rephrase sections with one click.",
-  // },
   {
     question: "What happens after I finish a listing?",
     answer:
       "You can copy and paste it directly into your MLS, upload it to property sites, or save it for future use. AI analytics will show which style brings more engagement.",
   },
 ];
-
-const partnerLogos = [
-  { alt: "Stripe", src: "/stripe-3.svg" },
-  { alt: "Primer", src: "/primer.svg" },
-  { alt: "Transistor", src: "/transistor-horizontal-logo.svg" },
-  { alt: "Uber", src: "/uber.svg" },
-  { alt: "Statamic", src: "/statamic.svg" },
-];
-
-// const uspHighlights = [
-//   {
-//     title: "Speed up every listing",
-//     description:
-//       "Agents ship MLS-ready descriptions in minutes, not hours, with localised tone and compliance prompts.",
-//   },
-//   {
-//     title: "Scale long-form content",
-//     description:
-//       "Marketing teams craft newsletters, blog posts, and nurture flows with reusable briefs and AI-assisted rewrites.",
-//   },
-//   {
-//     title: "Keep billing transparent",
-//     description:
-//       "Stripe-powered portal lets admins manage seats, update payment methods, and view usage before each renewal.",
-//   },
-// ];
 
 const testimonials = {
   quote: "Since using ListologyAi, my listings get more attention and my properties sell faster than ever.",
@@ -267,7 +209,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link
                   href="/real-estate-generator"
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Try the listing writer
                 </Link>
@@ -451,7 +393,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/real-estate-generator"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Try the listing writer
               </Link>

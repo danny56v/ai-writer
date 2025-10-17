@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -13,7 +12,6 @@ import {
   HomeModernIcon,
   MapPinIcon,
   PencilSquareIcon,
-  PaperAirplaneIcon,
   SparklesIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
@@ -667,7 +665,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                         <button
                           type="button"
                           onClick={handleHistoryLoadMore}
-                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                         >
                           Show more
                         </button>
