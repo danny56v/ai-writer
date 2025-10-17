@@ -187,23 +187,38 @@ export async function generateMetadata({
   const post = blogPosts.find((item) => item.slug === slug);
 
   if (!post) {
-    return { title: "ListologyAi Blog" };
+    return {
+      title: "ListologyAi Blog",
+      description: "ListologyAi insights on AI-powered real estate marketing.",
+      keywords: ["ListologyAi blog", "real estate AI insights"],
+    };
   }
 
+  const pageTitle = `ListologyAi: ${post.title}`;
+  const pageUrl = `https://listologyai.com/blog/${post.slug}`;
+
   return {
-    title: `${post.title} | ListologyAi Blog`,
+    title: pageTitle,
     description: post.description,
+    keywords: [
+      post.title,
+      "ListologyAi real estate marketing",
+      "ListologyAi blog",
+      "real estate AI tips",
+      "property description strategies",
+    ],
     openGraph: {
-      title: `${post.title} | ListologyAi Blog`,
+      title: pageTitle,
       description: post.description,
+      url: pageUrl,
       type: "article",
       publishedTime: post.datetime,
       authors: [post.author.name],
-      images: [{ url: post.imageUrl }],
+      images: [{ url: post.imageUrl, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: pageTitle,
       description: post.description,
       images: [post.imageUrl],
     },

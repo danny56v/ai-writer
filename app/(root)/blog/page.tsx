@@ -5,13 +5,21 @@ import Link from "next/link";
 import { blogPosts } from "@/data/blogPosts";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Blog",
+  title: "ListologyAi Real Estate Marketing Blog",
   description:
-    "Read product deep dives, customer spotlights, and content strategy tips from the ListologyAi team.",
+    "Explore 2025 ListologyAi playbooks for AI listing copy, social-first property launches, and revenue-driving real estate marketing.",
+  keywords: [
+    "ListologyAi blog",
+    "real estate marketing tips",
+    "AI property description strategies",
+    "real estate content workflows",
+  ],
   openGraph: {
-    title: "ListologyAi Blog",
+    title: "ListologyAi Real Estate Marketing Blog",
     description:
-      "Fresh insights on AI-assisted real estate marketing, customer success stories, and workflow best practices.",
+      "Get actionable guidance on AI-powered listings, SEO tactics, and collaboration workflows from the ListologyAi editorial team.",
+    url: "https://listologyai.com/blog",
+    type: "website",
     images: [
       {
         url: "/Logo.png",
@@ -23,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Blog",
+    title: "ListologyAi Real Estate Marketing Blog",
     description:
-      "Stay ahead with articles on AI workflows, listing optimization, and campaign strategy for real estate teams.",
+      "Stay ahead with ListologyAi deep dives on AI listings, social launch strategies, and brokerage content ops.",
     images: ["/Logo.png"],
   },
 };

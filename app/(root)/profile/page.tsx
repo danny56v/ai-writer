@@ -51,9 +51,36 @@ const statusLabels: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "Account settings",
+  title: "ListologyAi Account Hub",
   description:
-    "Manage your ListologyAi profile, subscription plan, billing history, and security preferences from one dashboard.",
+    "Optimize your ListologyAi workspace, plan usage, billing history, and security settings from one dashboard.",
+  keywords: [
+    "ListologyAi account",
+    "real estate AI billing",
+    "ListologyAi subscription management",
+  ],
+  openGraph: {
+    title: "ListologyAi Account Hub",
+    description:
+      "Review ListologyAi profile details, usage analytics, billing history, and security preferences in one place.",
+    url: "https://listologyai.com/profile",
+    type: "website",
+    images: [
+      {
+        url: "/Logo.png",
+        width: 800,
+        height: 800,
+        alt: "ListologyAi account dashboard",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ListologyAi Account Hub",
+    description:
+      "Access ListologyAi account controls, billing tools, and security settings from a single hub.",
+    images: ["/Logo.png"],
+  },
   robots: {
     index: false,
     follow: false,

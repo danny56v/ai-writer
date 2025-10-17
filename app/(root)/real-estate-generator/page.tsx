@@ -11,13 +11,22 @@ import type { PlanKey } from "@/lib/plans";
 import { getRealEstateHistory } from "@/lib/realEstateHistory";
 
 export const metadata: Metadata = {
-  title: "Real estate listing generator powered by guided AI",
+  title: "ListologyAi Real Estate Listing Generator",
   description:
-    "Generate MLS-ready property descriptions with compliant language, brand voice presets, and collaboration tools tailored for agents and marketers.",
+    "Generate SEO-ready MLS listings with ListologyAi's AI prompts, local insights, and compliance guardrails that convert buyers faster.",
+  keywords: [
+    "ListologyAi listing generator",
+    "AI real estate descriptions",
+    "MLS copy automation",
+    "property marketing AI tool",
+    "real estate SEO copywriter",
+  ],
   openGraph: {
-    title: "Real estate listing generator powered by guided AI",
+    title: "ListologyAi Real Estate Listing Generator",
     description:
-      "ListologyAi streamlines briefs, AI drafting, and approvals so you can publish standout listings faster.",
+      "Deliver persuasive, compliant property copy in minutes with ListologyAi's guided workflows, tone controls, and collaboration tools.",
+    url: "https://listologyai.com/real-estate-generator",
+    type: "website",
     images: [
       {
         url: "/Logo.png",
@@ -29,9 +38,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Real estate listing generator powered by guided AI",
+    title: "ListologyAi Real Estate Listing Generator",
     description:
-      "Craft persuasive property copy in minutes with editable briefs, tone controls, and compliance reminders.",
+      "Craft MLS-optimized listing descriptions with ListologyAi's AI prompts, market data, and compliance reminders.",
     images: ["/Logo.png"],
   },
 };

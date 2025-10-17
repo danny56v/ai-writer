@@ -5,13 +5,21 @@ import LandingPage from "@/components/home/LandingPage";
 import { getUserPlan } from "@/lib/billing";
 
 export const metadata: Metadata = {
-  title: "AI real estate listing generator & marketing workspace",
+  title: "ListologyAi Real Estate Marketing Platform",
   description:
-    "Power every property launch with guided briefs, compliant AI descriptions, and collaboration tools built for modern real estate teams.",
+    "Scale listing launches with ListologyAi's AI briefs, SEO copy, and collaboration tools built to help agents win more mandates.",
+  keywords: [
+    "ListologyAi real estate marketing",
+    "AI property description generator",
+    "MLS listing automation",
+    "real estate content platform",
+  ],
   openGraph: {
-    title: "AI real estate listing generator & marketing workspace",
+    title: "ListologyAi Real Estate Marketing Platform",
     description:
-      "ListologyAi helps agents and marketers create MLS-ready listings, long-form content, and campaigns in minutes.",
+      "Activate AI-assisted workflows, compliance checks, and cross-channel content that help real estate teams close faster.",
+    url: "https://listologyai.com",
+    type: "website",
     images: [
       {
         url: "/Logo.png",
@@ -23,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI real estate listing generator & marketing workspace",
+    title: "ListologyAi Real Estate Marketing Platform",
     description:
-      "Guided briefs, AI drafting, and usage analytics keep every listing on-brand and compliant.",
+      "Power every property launch with ListologyAi's AI prompts, SEO insights, and collaborative workspace.",
     images: ["/Logo.png"],
   },
 };

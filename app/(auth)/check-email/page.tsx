@@ -1,5 +1,43 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "ListologyAi Email Confirmation",
+  description:
+    "Check your inbox to confirm your ListologyAi account and start generating MLS-ready real estate descriptions with AI.",
+  keywords: [
+    "ListologyAi email verification",
+    "real estate AI account activation",
+    "ListologyAi confirmation",
+  ],
+  openGraph: {
+    title: "ListologyAi Email Confirmation",
+    description:
+      "Verify your ListologyAi account from your inbox to unlock AI-powered real estate copywriting.",
+    url: "https://listologyai.com/check-email",
+    type: "website",
+    images: [
+      {
+        url: "/Logo.png",
+        width: 800,
+        height: 800,
+        alt: "ListologyAi email confirmation",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ListologyAi Email Confirmation",
+    description:
+      "Confirm your ListologyAi account to keep building AI-powered real estate marketing.",
+    images: ["/Logo.png"],
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 type CheckEmailParams = {
   email?: string;
