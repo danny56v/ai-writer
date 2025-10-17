@@ -1,5 +1,6 @@
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -13,6 +14,165 @@ function formatDate(value: string) {
   });
 }
 
+function renderArticleContent(content: string[], slug: string): ReactNode[] {
+  const elements: ReactNode[] = [];
+  let listBuffer: { ordered: boolean; items: string[]; key: string } | null = null;
+  let paragraphCount = 0;
+  let headingCount = 0;
+
+  const flushList = () => {
+    if (!listBuffer || listBuffer.items.length === 0) return;
+    const marginTop = elements.length === 0 ? "mt-0" : "mt-6";
+
+    if (listBuffer.ordered) {
+      elements.push(
+        <ol
+          key={listBuffer.key}
+          className={`${marginTop} space-y-3 pl-6 text-base leading-7 text-gray-800 marker:text-indigo-500`}
+        >
+          {listBuffer.items.map((item, itemIndex) => (
+            <li key={`${listBuffer.key}-item-${itemIndex}`} className="font-medium">
+              {item}
+            </li>
+          ))}
+        </ol>,
+      );
+    } else {
+      elements.push(
+        <ul key={listBuffer.key} className={`${marginTop} flex flex-col gap-3`}>
+          {listBuffer.items.map((item, itemIndex) => (
+            <li
+              key={`${listBuffer.key}-item-${itemIndex}`}
+              className="flex items-start gap-3 rounded-2xl border border-indigo-100/80 bg-white/90 p-4 shadow-sm shadow-indigo-100/60"
+            >
+              <span className="mt-2 h-2 w-2 flex-none rounded-full bg-indigo-500" />
+              <span className="text-sm font-semibold leading-6 text-gray-800">{item}</span>
+            </li>
+          ))}
+        </ul>,
+      );
+    }
+
+    listBuffer = null;
+  };
+
+  content.forEach((raw, index) => {
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+
+    const marginTop = elements.length === 0 ? "mt-0" : "mt-6";
+
+    if (trimmed.startsWith("## ")) {
+      flushList();
+      const isFirstHeading = headingCount === 0;
+      headingCount += 1;
+      elements.push(
+        <h2
+          key={`${slug}-heading-${index}`}
+          className={`${isFirstHeading ? "mt-0" : "mt-16"} text-2xl font-semibold tracking-tight text-indigo-900 sm:text-3xl`}
+        >
+          {trimmed.replace("## ", "").trim()}
+        </h2>,
+      );
+      return;
+    }
+
+    if (trimmed.startsWith("### ")) {
+      flushList();
+      elements.push(
+        <h3
+          key={`${slug}-subheading-${index}`}
+          className="mt-10 text-xl font-semibold tracking-tight text-indigo-800 sm:text-2xl"
+        >
+          {trimmed.replace("### ", "").trim()}
+        </h3>,
+      );
+      return;
+    }
+
+    if (trimmed.startsWith("[callout]")) {
+      flushList();
+      const payload = trimmed.replace("[callout]", "").trim();
+      if (!payload) return;
+      const segments = payload
+        .split("|")
+        .map((segment) => segment.trim())
+        .filter(Boolean);
+      if (segments.length === 0) return;
+      const [title, ...body] = segments;
+      const calloutMargin = elements.length === 0 ? "mt-0" : "mt-10";
+      elements.push(
+        <div
+          key={`${slug}-callout-${index}`}
+          className={`${calloutMargin} relative overflow-hidden rounded-3xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6 shadow-lg shadow-indigo-100/40 md:p-8`}
+        >
+          <div className="pointer-events-none absolute -right-10 top-1/2 hidden h-56 w-56 -translate-y-1/2 rounded-full bg-indigo-200/40 blur-3xl md:block" />
+          <div className="pointer-events-none absolute -bottom-12 -left-8 h-40 w-40 rounded-full bg-purple-200/30 blur-3xl" />
+          <div className="relative space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">{title}</p>
+            <div className="space-y-3 text-sm leading-6 text-indigo-900">
+              {body.map((line, bodyIndex) => (
+                <p key={`${slug}-callout-${index}-body-${bodyIndex}`}>{line}</p>
+              ))}
+            </div>
+          </div>
+        </div>,
+      );
+      return;
+    }
+
+    if (trimmed.startsWith(">")) {
+      flushList();
+      const quotePayload = trimmed.slice(1).trim();
+      const [quoteText, citation] = quotePayload.split("|").map((part) => part.trim());
+      elements.push(
+        <figure
+          key={`${slug}-quote-${index}`}
+          className="mt-10 border-l-4 border-indigo-500/60 bg-indigo-50/60 px-6 py-5 shadow-sm shadow-indigo-100/40"
+        >
+          <blockquote className="text-base font-semibold leading-7 text-indigo-900">{quoteText}</blockquote>
+          {citation ? <figcaption className="mt-3 text-sm font-medium text-indigo-700">{citation}</figcaption> : null}
+        </figure>,
+      );
+      return;
+    }
+
+    const orderedMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+    if (trimmed.startsWith("- ") || orderedMatch) {
+      const ordered = Boolean(orderedMatch);
+      const itemText = ordered ? orderedMatch?.[2] ?? "" : trimmed.slice(2).trim();
+      if (!itemText) return;
+
+      if (!listBuffer || listBuffer.ordered !== ordered) {
+        flushList();
+        listBuffer = {
+          ordered,
+          items: [],
+          key: `${slug}-list-${index}`,
+        };
+      }
+
+      listBuffer.items.push(itemText);
+      return;
+    }
+
+    flushList();
+    paragraphCount += 1;
+    const isLead = paragraphCount === 1;
+
+    elements.push(
+      <p
+        key={`${slug}-paragraph-${index}`}
+        className={`${marginTop} ${isLead ? "text-lg font-medium leading-8 text-gray-900 sm:text-xl" : "text-base leading-8 text-gray-700"}`}
+      >
+        {trimmed}
+      </p>,
+    );
+  });
+
+  flushList();
+  return elements;
+}
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
@@ -101,13 +261,14 @@ export default async function BlogPostPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
-        <div className="prose prose-lg prose-indigo max-w-none">
-          {post.content.map((paragraph, index) => (
-            <p key={`${post.slug}-paragraph-${index}`}>{paragraph}</p>
-          ))}
+      <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl border border-indigo-100/70 bg-white/90 p-8 shadow-xl shadow-indigo-100/50 backdrop-blur-sm sm:p-12">
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-64 w-64 rounded-full bg-indigo-100/40 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-purple-100/40 blur-3xl" />
+          <div className="relative mx-auto max-w-3xl">
+            {renderArticleContent(post.content, post.slug)}
+          </div>
         </div>
-
       </div>
 
       <section className="relative isolate mt-20 w-full overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-100 px-6 py-16 sm:px-8 lg:px-12">
