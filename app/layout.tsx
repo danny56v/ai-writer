@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
-import "./globals.css";
+// import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.listologyai.com"),
   title: {
-    default: "ListologyAi | Responsible AI copy for real estate teams",
+    default: "ListologyAi | Real Estate AI Generator",
     template: "%s | ListologyAi",
   },
   description:
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     canonical: "https://www.listologyai.com",
   },
   icons: {
-    icon: "/favicon.png",
+    icon: "/public/Logo.png",
   },
 };
 

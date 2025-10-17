@@ -5,7 +5,7 @@ import { stripe } from "@/lib/stripe";
 export const metadata: Metadata = {
   title: "ListologyAi Checkout Status",
   description:
-    "Verify your ListologyAi subscription checkout status and jump back into pricing or the AI listing workspace.",
+    "Verify your ListologyAi subscription checkout status and jump back into pricing or begin generating new listing descriptions.",
   keywords: [
     "ListologyAi checkout",
     "real estate AI subscription",

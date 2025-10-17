@@ -6,7 +6,7 @@ import SignUpScreen from "@/components/auth/SignUpScreen";
 export const metadata: Metadata = {
   title: "ListologyAi Sign Up",
   description:
-    "Create your ListologyAi account to generate compliant real estate listings faster with collaborative AI workflows.",
+    "Create your ListologyAi account to generate compliant real estate listing descriptions faster with AI built for agents.",
   keywords: [
     "ListologyAi sign up",
     "real estate AI trial",

@@ -171,19 +171,19 @@ function HeroPhoto({
 }
 
 export const metadata: Metadata = {
-  title: "ListologyAi Team & Mission",
+  title: "ListologyAi Team for Real Estate Agents",
   description:
-    "Discover how ListologyAi pairs real estate expertise with responsible AI so agents ship compliant, high-converting property marketing.",
+    "Learn how the ListologyAi team combines brokerage insight and responsible AI to help agents create standout property descriptions.",
   keywords: [
     "ListologyAi mission",
     "real estate AI team",
-    "property marketing innovation",
+    "property description software",
     "AI listing generator story",
   ],
   openGraph: {
-    title: "ListologyAi Team & Mission",
+    title: "ListologyAi Team for Real Estate Agents",
     description:
-      "Meet the values, milestones, and people driving ListologyAi's AI-first real estate marketing platform.",
+      "Meet the people building ListologyAi, the AI description assistant dedicated to helping real estate agents write faster.",
     url: "https://listologyai.com/about",
     type: "website",
     images: [
@@ -197,9 +197,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Team & Mission",
+    title: "ListologyAi Team for Real Estate Agents",
     description:
-      "Explore the human expertise and responsible AI behind ListologyAi's faster, compliant real estate marketing.",
+      "Discover the expertise powering ListologyAi's agent-focused AI property description generator.",
     images: ["/Logo.png"],
   },
 };

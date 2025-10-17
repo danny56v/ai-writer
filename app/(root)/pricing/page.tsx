@@ -6,9 +6,9 @@ import { getUserPlan } from "@/lib/billing";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Pricing & Plans",
+  title: "ListologyAi Pricing for Real Estate Agents",
   description:
-    "Compare ListologyAi pricing to scale AI listing generation, team seats, and compliance guardrails across your real estate brand.",
+    "Review ListologyAi plans to generate more MLS-ready property descriptions with AI assistance tailored to individual real estate agents.",
   keywords: [
     "ListologyAi pricing",
     "real estate AI plans",
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     "AI listing generator subscription",
   ],
   openGraph: {
-    title: "ListologyAi Pricing & Plans",
+    title: "ListologyAi Pricing for Real Estate Agents",
     description:
-      "Choose transparent ListologyAi plans with flexible usage limits, collaboration seats, and upgrade-ready billing for your brokerage.",
+      "Choose the ListologyAi plan that helps you produce polished listing descriptions faster, from free trials to unlimited agent usage.",
     url: "https://listologyai.com/pricing",
     type: "website",
     images: [
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Pricing & Plans",
+    title: "ListologyAi Pricing for Real Estate Agents",
     description:
-      "Unlock AI-powered listing copy, analytics, and workflow automation on the ListologyAi tier built for your team.",
+      "Unlock AI-powered listing copy support on the ListologyAi plan that matches your real estate business volume.",
     images: ["/Logo.png"],
   },
 };

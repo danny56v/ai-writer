@@ -202,7 +202,7 @@ export async function generateMetadata({
     description: post.description,
     keywords: [
       post.title,
-      "ListologyAi real estate marketing",
+      "ListologyAi real estate copywriting",
       "ListologyAi blog",
       "real estate AI tips",
       "property description strategies",
