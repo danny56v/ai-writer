@@ -24,7 +24,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       onClick={toggleTheme}
       className={
         className ??
-        "inline-flex items-center justify-center rounded-full border border-white/40 bg-white/70 p-2 text-gray-700 shadow-sm transition hover:bg-white dark:border-slate-600/70 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-700"
+        "inline-flex items-center justify-center rounded-full border border-white/40 bg-white/70 p-2   shadow-sm transition hover:bg-white dark:border-neutral-600/70 dark:bg-neutral-800/80 dark:text-neutral-200 dark:hover:bg-neutral-700"
       }
       aria-label="Toggle theme"
     >

@@ -6,15 +6,10 @@ export const metadata: Metadata = {
   title: "ListologyAi Email Confirmation",
   description:
     "Check your inbox to confirm your ListologyAi account and start generating MLS-ready real estate descriptions with AI.",
-  keywords: [
-    "ListologyAi email verification",
-    "real estate AI account activation",
-    "ListologyAi confirmation",
-  ],
+  keywords: ["ListologyAi email verification", "real estate AI account activation", "ListologyAi confirmation"],
   openGraph: {
     title: "ListologyAi Email Confirmation",
-    description:
-      "Verify your ListologyAi account from your inbox to unlock AI-powered real estate copywriting.",
+    description: "Verify your ListologyAi account from your inbox to unlock AI-powered real estate copywriting.",
     url: "https://listologyai.com/check-email",
     type: "website",
     images: [
@@ -29,8 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ListologyAi Email Confirmation",
-    description:
-      "Confirm your ListologyAi account to keep building AI-powered real estate marketing.",
+    description: "Confirm your ListologyAi account to keep building AI-powered real estate marketing.",
     images: ["/Logo.png"],
   },
   robots: {
@@ -53,19 +47,18 @@ export default async function CheckEmailPage({ searchParams }: CheckEmailPagePro
   const params = (await searchParams) as CheckEmailParams;
 
   // If Next returns arrays, normalize the value:
-  const getStr = (v: string | string[] | undefined) =>
-    Array.isArray(v) ? v[0] : v;
+  const getStr = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
   const email = getStr(params.email);
   const resent = getStr(params.resent);
   const callbackUrl = getStr(params.callbackUrl);
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen flex-col justify-center bg-neutral-50 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Image src="/Logo.png" alt="ListologyAi" width={40} height={40} className="mx-auto h-10 w-10" />
-        <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Check your email</h1>
-        <p className="mt-4 text-sm leading-6 text-gray-600">
+        <h1 className="mt-6 text-3xl font-bold tracking-tight  ">Check your email</h1>
+        <p className="mt-4 text-sm leading-6 text-neutral-600">
           {resent === "1"
             ? "We just sent you another confirmation link."
             : "We sent a confirmation link to your email address."}
@@ -73,16 +66,16 @@ export default async function CheckEmailPage({ searchParams }: CheckEmailPagePro
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
-        <div className="rounded-3xl bg-white px-6 py-10 shadow sm:px-12">
-          <p className="text-sm text-gray-600">
-            Check your inbox (and spam/promotions) for the ListologyAi message. Click the button inside the email within 24
-            hours to activate your account.
+        <div className="rounded-2xl bg-white px-6 py-10 shadow sm:px-12">
+          <p className="text-sm text-neutral-600">
+            Check your inbox (and spam/promotions) for the ListologyAi message. Click the button inside the email within
+            24 hours to activate your account.
           </p>
           <div className="mt-6 rounded-2xl border border-dashed border-indigo-200 bg-indigo-50/70 px-4 py-3 text-left text-sm text-indigo-700">
             <p className="font-semibold">Email sent to</p>
             <p className="mt-1 break-all">{email ?? "your email"}</p>
           </div>
-          <div className="mt-6 space-y-3 text-sm text-gray-600">
+          <div className="mt-6 space-y-3 text-sm text-neutral-600">
             <p>If you don’t see the email yet, request another link from the sign-up page in a few minutes.</p>
             <p>
               Already confirmed?{" "}

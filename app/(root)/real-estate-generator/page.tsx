@@ -45,12 +45,35 @@ export const metadata: Metadata = {
   },
 };
 
-const RealEstateGeneratorPage = async () => {
+interface PageProps {
+  searchParams?: Record<string, string | string[] | undefined>;
+}
+
+const buildCallbackUrl = (searchParams?: Record<string, string | string[] | undefined>) => {
+  const search = new URLSearchParams();
+
+  if (searchParams) {
+    Object.entries(searchParams).forEach(([key, value]) => {
+      if (typeof value === "undefined") return;
+      if (Array.isArray(value)) {
+        value.forEach((item) => search.append(key, item));
+      } else {
+        search.set(key, value);
+      }
+    });
+  }
+
+  const queryString = search.toString();
+  return queryString ? `/real-estate-generator?${queryString}` : "/real-estate-generator";
+};
+
+const RealEstateGeneratorPage = async ({ searchParams }: PageProps) => {
   const session = await auth();
   const userId = session?.user?.id ?? null;
 
   if (!userId) {
-    redirect("/sign-in?callbackUrl=/real-estate-generator");
+    const callbackUrl = buildCallbackUrl(searchParams);
+    redirect(`/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`);
   }
 
   const defaultPlan = { planType: "free", currentPeriodEnd: null, status: "free" } as const;

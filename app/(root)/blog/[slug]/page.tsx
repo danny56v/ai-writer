@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Image from "next/image";
@@ -29,14 +28,14 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
       elements.push(
         <ol
           key={currentList.key}
-          className={`${marginTop} space-y-3 pl-6 text-base leading-7 text-gray-800 marker:text-indigo-500`}
+          className={`${marginTop} space-y-3 pl-6 text-base leading-7   marker:text-neutral-500`}
         >
           {currentList.items.map((item, itemIndex) => (
             <li key={`${currentList.key}-item-${itemIndex}`} className="font-medium">
               {item}
             </li>
           ))}
-        </ol>,
+        </ol>
       );
     } else {
       elements.push(
@@ -44,13 +43,13 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
           {currentList.items.map((item, itemIndex) => (
             <li
               key={`${currentList.key}-item-${itemIndex}`}
-              className="flex items-start gap-3 rounded-2xl border border-indigo-100/80 bg-white/90 p-4 shadow-sm shadow-indigo-100/60"
+              className="flex items-start gap-3 rounded-2xl border border-neutral-100/80 bg-white/90 p-4 shadow-sm shadow-neutral-100/60"
             >
-              <span className="mt-2 h-2 w-2 flex-none rounded-full bg-indigo-500" />
-              <span className="text-sm font-semibold leading-6 text-gray-800">{item}</span>
+              <span className="mt-2 h-2 w-2 flex-none rounded-full bg-neutral-500" />
+              <span className="text-sm font-semibold leading-6  ">{item}</span>
             </li>
           ))}
-        </ul>,
+        </ul>
       );
     }
 
@@ -70,10 +69,10 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
       elements.push(
         <h2
           key={`${slug}-heading-${index}`}
-          className={`${isFirstHeading ? "mt-0" : "mt-16"} text-2xl font-semibold tracking-tight text-indigo-900 sm:text-3xl`}
+          className={`${isFirstHeading ? "mt-0" : "mt-16"} text-2xl font-semibold tracking-tight   sm:text-3xl`}
         >
           {trimmed.replace("## ", "").trim()}
-        </h2>,
+        </h2>
       );
       return;
     }
@@ -81,12 +80,9 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
     if (trimmed.startsWith("### ")) {
       flushList();
       elements.push(
-        <h3
-          key={`${slug}-subheading-${index}`}
-          className="mt-10 text-xl font-semibold tracking-tight text-indigo-800 sm:text-2xl"
-        >
+        <h3 key={`${slug}-subheading-${index}`} className="mt-10 text-xl font-semibold tracking-tight   sm:text-2xl">
           {trimmed.replace("### ", "").trim()}
-        </h3>,
+        </h3>
       );
       return;
     }
@@ -105,19 +101,19 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
       elements.push(
         <div
           key={`${slug}-callout-${index}`}
-          className={`${calloutMargin} relative overflow-hidden rounded-3xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6 shadow-lg shadow-indigo-100/40 md:p-8`}
+          className={`${calloutMargin} relative overflow-hidden rounded-2xl border border-neutral-100/80 bg-gradient-to-br from-neutral-50 via-white to-purple-50 p-6 shadow-lg shadow-neutral-100/40 md:p-8`}
         >
-          <div className="pointer-events-none absolute -right-10 top-1/2 hidden h-56 w-56 -translate-y-1/2 rounded-full bg-indigo-200/40 blur-3xl md:block" />
+          <div className="pointer-events-none absolute -right-10 top-1/2 hidden h-56 w-56 -translate-y-1/2 rounded-full bg-neutral-200/40 blur-3xl md:block" />
           <div className="pointer-events-none absolute -bottom-12 -left-8 h-40 w-40 rounded-full bg-purple-200/30 blur-3xl" />
           <div className="relative space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">{title}</p>
-            <div className="space-y-3 text-sm leading-6 text-indigo-900">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">{title}</p>
+            <div className="space-y-3 text-sm leading-6  ">
               {body.map((line, bodyIndex) => (
                 <p key={`${slug}-callout-${index}-body-${bodyIndex}`}>{line}</p>
               ))}
             </div>
           </div>
-        </div>,
+        </div>
       );
       return;
     }
@@ -129,11 +125,11 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
       elements.push(
         <figure
           key={`${slug}-quote-${index}`}
-          className="mt-10 border-l-4 border-indigo-500/60 bg-indigo-50/60 px-6 py-5 shadow-sm shadow-indigo-100/40"
+          className="mt-10 border-l-4 border-neutral-500/60 bg-neutral-50/60 px-6 py-5 shadow-sm shadow-neutral-100/40"
         >
-          <blockquote className="text-base font-semibold leading-7 text-indigo-900">{quoteText}</blockquote>
-          {citation ? <figcaption className="mt-3 text-sm font-medium text-indigo-700">{citation}</figcaption> : null}
-        </figure>,
+          <blockquote className="text-base font-semibold leading-7  ">{quoteText}</blockquote>
+          {citation ? <figcaption className="mt-3 text-sm font-medium  ">{citation}</figcaption> : null}
+        </figure>
       );
       return;
     }
@@ -164,10 +160,10 @@ function renderArticleContent(content: string[], slug: string): ReactNode[] {
     elements.push(
       <p
         key={`${slug}-paragraph-${index}`}
-        className={`${marginTop} ${isLead ? "text-lg font-medium leading-8 text-gray-900 sm:text-xl" : "text-base leading-8 text-gray-700"}`}
+        className={`${marginTop} ${isLead ? "text-lg font-medium leading-8   sm:text-xl" : "text-base leading-8  "}`}
       >
         {trimmed}
-      </p>,
+      </p>
     );
   });
 
@@ -178,11 +174,7 @@ export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPosts.find((item) => item.slug === slug);
 
@@ -225,11 +217,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = blogPosts.find((item) => item.slug === slug);
 
@@ -238,30 +226,26 @@ export default async function BlogPostPage({
   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (
-    <article className="bg-white text-gray-900">
-      <header className="relative isolate overflow-hidden">
+    <article className="bg-gradient-to-b from-white via-neutral-50 to-white  ">
+      <header className="relative isolate overflow-hidden rounded-b-[40px] border-b border-neutral-100 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)]">
         <div className="absolute inset-0 -z-10">
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gray-950/50" />
+          <Image src={post.imageUrl} alt={post.title} fill className="object-cover" priority sizes="100vw" />
+          <div className="absolute inset-0 bg-neutral-950/55" />
         </div>
         <div className="mx-auto max-w-4xl px-6 py-32 text-white lg:px-8">
-          <Link href="/blog" className="inline-flex items-center text-sm font-semibold text-indigo-200 hover:text-indigo-100">
+          <Link
+            href="/blog"
+            className="inline-flex items-center text-sm font-semibold text-neutral-200 hover:text-neutral-100"
+          >
             ← Back to all posts
           </Link>
-          <div className="mt-6 inline-flex items-center gap-4 text-sm text-indigo-200">
+          <div className="mt-6 inline-flex items-center gap-4 text-sm text-neutral-200">
             <time dateTime={post.datetime}>{formatDate(post.datetime)}</time>
             <span aria-hidden>•</span>
             <span>{post.readTime}</span>
           </div>
           <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{post.title}</h1>
-          <div className="mt-8 flex items-center gap-4 text-sm text-indigo-100">
+          <div className="mt-8 flex items-center gap-4 text-sm text-neutral-100">
             <Image
               src={post.author.imageUrl}
               alt={post.author.name}
@@ -271,23 +255,21 @@ export default async function BlogPostPage({
             />
             <div>
               <p className="font-semibold">{post.author.name}</p>
-              <p className="text-indigo-200/80">ListologyAi Team</p>
+              <p className="text-neutral-200/80">ListologyAi Team</p>
             </div>
           </div>
         </div>
       </header>
 
       <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-indigo-100/70 bg-white/90 p-8 shadow-xl shadow-indigo-100/50 backdrop-blur-sm sm:p-12">
-          <div className="pointer-events-none absolute -right-24 top-1/4 h-64 w-64 rounded-full bg-indigo-100/40 blur-3xl" />
-          <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-purple-100/40 blur-3xl" />
-          <div className="relative mx-auto max-w-3xl">
-            {renderArticleContent(post.content, post.slug)}
-          </div>
+        <div className="relative overflow-hidden rounded-xl border border-neutral-100 bg-white/95 p-8 shadow-[0_45px_120px_-70px_rgba(15,23,42,0.45)] sm:p-12">
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-64 w-64 rounded-full bg-sky-100/40 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-emerald-100/40 blur-3xl" />
+          <div className="relative mx-auto max-w-3xl">{renderArticleContent(post.content, post.slug)}</div>
         </div>
       </div>
 
-      <section className="relative isolate mt-20 w-full overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-100 px-6 py-16 sm:px-8 lg:px-12">
+      <section className="relative isolate mt-20 w-full overflow-hidden bg-gradient-to-b from-white via-neutral-50 to-white px-6 py-16 sm:px-8 lg:px-12">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white via-white/80 to-transparent"
@@ -300,14 +282,14 @@ export default async function BlogPostPage({
         <div className="relative mx-auto max-w-6xl">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-indigo-900 sm:text-2xl">Keep reading</h2>
-              <p className="mt-2 max-w-2xl text-sm text-indigo-700">
+              <h2 className="text-xl font-semibold   sm:text-2xl">Keep reading</h2>
+              <p className="mt-2 max-w-2xl text-sm  ">
                 More stories from the ListologyAi blog to power your next launch and sharpen your marketing playbook.
               </p>
             </div>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-neutral-600 transition hover:text-neutral-500"
             >
               View all articles <span aria-hidden>→</span>
             </Link>
@@ -317,7 +299,7 @@ export default async function BlogPostPage({
             {relatedPosts.map((related) => (
               <article
                 key={related.slug}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-indigo-100/70 bg-white shadow-lg shadow-indigo-100/40 transition hover:-translate-y-1 hover:shadow-2xl"
+                className="group flex h-full flex-col overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)] transition hover:-translate-y-1 hover:shadow-[0_45px_110px_-70px_rgba(15,23,42,0.55)]"
               >
                 <div className="relative aspect-[16/10] w-full overflow-hidden">
                   <Image
@@ -328,7 +310,7 @@ export default async function BlogPostPage({
                     className="object-cover transition duration-500 group-hover:scale-105"
                   />
                   <time
-                    className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-indigo-600 shadow-sm"
+                    className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-neutral-500 shadow-sm"
                     dateTime={related.datetime}
                   >
                     {formatDate(related.datetime)}
@@ -336,21 +318,21 @@ export default async function BlogPostPage({
                 </div>
 
                 <div className="flex flex-1 flex-col gap-4 p-6">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">
                     <span>{related.readTime}</span>
                   </div>
 
                   <Link href={`/blog/${related.slug}`} className="group/title block focus-visible:outline-none">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900 transition group-hover/title:text-indigo-600 group-focus-visible/title:text-indigo-600">
+                    <h3 className="text-lg font-semibold leading-7   transition group-hover/title:text-neutral-600 group-focus-visible/title:text-neutral-600">
                       {related.title}
                     </h3>
                   </Link>
 
-                  <p className="line-clamp-3 text-sm text-gray-600">{related.description}</p>
+                  <p className="line-clamp-3 text-sm text-neutral-600">{related.description}</p>
 
                   <div className="mt-auto flex items-center justify-between pt-4">
                     <div className="flex items-center gap-3">
-                      <span className="relative inline-flex h-10 w-10 overflow-hidden rounded-full ring-2 ring-indigo-100">
+                      <span className="relative inline-flex h-10 w-10 overflow-hidden rounded-full ring-2 ring-neutral-100">
                         <Image
                           src={related.author.imageUrl}
                           alt={related.author.name}
@@ -359,14 +341,14 @@ export default async function BlogPostPage({
                           className="object-cover"
                         />
                       </span>
-                      <div className="text-xs font-semibold text-gray-600">
-                        <p className="text-gray-900">{related.author.name}</p>
-                        <p className="text-gray-500">ListologyAi Team</p>
+                      <div className="text-xs font-semibold text-neutral-600">
+                        <p className=" ">{related.author.name}</p>
+                        <p className="text-neutral-500">ListologyAi Team</p>
                       </div>
                     </div>
                     <Link
                       href={`/blog/${related.slug}`}
-                      className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                      className="inline-flex items-center gap-1 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white shadow-[0_25px_70px_-45px_rgba(15,23,42,0.8)] transition hover:bg-neutral-800"
                     >
                       Read more <span aria-hidden>→</span>
                     </Link>
@@ -380,8 +362,6 @@ export default async function BlogPostPage({
     </article>
   );
 }
-
-
 
 // import type { Metadata } from "next";
 // import Image from "next/image";
@@ -441,7 +421,7 @@ export default async function BlogPostPage({
 //   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
 //   return (
-//     <article className="bg-white text-gray-900">
+//     <article className="bg-white  ">
 //       <header className="relative isolate overflow-hidden">
 //         <div className="absolute inset-0 -z-10">
 //           <Image
@@ -452,19 +432,19 @@ export default async function BlogPostPage({
 //             priority
 //             sizes="100vw"
 //           />
-//           <div className="absolute inset-0 bg-gray-950/50" />
+//           <div className="absolute inset-0 bg-neutral-950/50" />
 //         </div>
 //         <div className="mx-auto max-w-4xl px-6 py-32 text-white lg:px-8">
-//           <Link href="/blog" className="inline-flex items-center text-sm font-semibold text-indigo-200 hover:text-indigo-100">
+//           <Link href="/blog" className="inline-flex items-center text-sm font-semibold text-neutral-200 hover:text-neutral-100">
 //             ← Back to all posts
 //           </Link>
-//           <div className="mt-6 inline-flex items-center gap-4 text-sm text-indigo-200">
+//           <div className="mt-6 inline-flex items-center gap-4 text-sm text-neutral-200">
 //             <time dateTime={post.datetime}>{formatDate(post.datetime)}</time>
 //             <span aria-hidden>•</span>
 //             <span>{post.readTime}</span>
 //           </div>
 //           <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{post.title}</h1>
-//           <div className="mt-8 flex items-center gap-4 text-sm text-indigo-100">
+//           <div className="mt-8 flex items-center gap-4 text-sm text-neutral-100">
 //             <Image
 //               src={post.author.imageUrl}
 //               alt={post.author.name}
@@ -474,7 +454,7 @@ export default async function BlogPostPage({
 //             />
 //             <div>
 //               <p className="font-semibold">{post.author.name}</p>
-//               <p className="text-indigo-200/80">ListologyAi Team</p>
+//               <p className="text-neutral-200/80">ListologyAi Team</p>
 //             </div>
 //           </div>
 //         </div>
@@ -487,21 +467,21 @@ export default async function BlogPostPage({
 //           ))}
 //         </div>
 
-//         <section className="mt-16 rounded-2xl bg-indigo-50 p-8">
-//           <h2 className="text-lg font-semibold text-indigo-900">Keep reading</h2>
-//           <p className="mt-2 text-sm text-indigo-700">
+//         <section className="mt-16 rounded-2xl bg-neutral-50 p-8">
+//           <h2 className="text-lg font-semibold  ">Keep reading</h2>
+//           <p className="mt-2 text-sm  ">
 //             More stories from the ListologyAi blog to power your next launch.
 //           </p>
 //           <div className="mt-8 grid gap-6 lg:grid-cols-3">
 //             {relatedPosts.map((related) => (
-//               <article key={related.slug} className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-indigo-100">
-//                 <time className="text-xs font-semibold uppercase tracking-wide text-indigo-500" dateTime={related.datetime}>
+//               <article key={related.slug} className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-neutral-100">
+//                 <time className="text-xs font-semibold uppercase tracking-wide text-neutral-500" dateTime={related.datetime}>
 //                   {formatDate(related.datetime)}
 //                 </time>
-//                 <h3 className="mt-3 text-base font-semibold text-gray-900">
+//                 <h3 className="mt-3 text-base font-semibold  ">
 //                   <Link href={`/blog/${related.slug}`}>{related.title}</Link>
 //                 </h3>
-//                 <p className="mt-2 line-clamp-3 text-sm text-gray-600">{related.description}</p>
+//                 <p className="mt-2 line-clamp-3 text-sm text-neutral-600">{related.description}</p>
 //               </article>
 //             ))}
 //           </div>

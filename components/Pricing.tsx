@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Radio, RadioGroup} from "@headlessui/react";
+import { Radio, RadioGroup } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import Testimonials from "@/components/Testimonials";
 
@@ -24,11 +24,11 @@ const pricing = {
       id: "tier-free",
       href: "/sign-up",
       price: { monthly: "$0", annually: "$0" },
-      description: "Test ListologyAi with a single monthly generation powered by our starter AI model.",
+      description: "Try ListologyAi with one free listing description — no credit card required.",
       features: [
-        "1 listing generation / month",
-        "Core prompts and templates",
-        "Entry-level AI — limited creative depth",
+        "1 free listing generation (one-time)",
+        "Address → Street View → AI description",
+        "No credit card required to get started",
       ],
       mostPopular: false,
       priceId: null as null | Record<"monthly" | "annually", string>,
@@ -37,39 +37,45 @@ const pricing = {
       name: "Pro",
       id: "tier-pro",
       href: "#",
-      price: { monthly: "$4.99", annually: "$29.99" },
-      description: "Ship polished listings faster with 50 monthly generations and an AI that is 3× more capable.",
+      price: { monthly: "$9.99", annually: "$89.99" },
+      description:
+        "Ideal for active agents who list a few properties every month and want fast, polished descriptions.",
       features: [
-        "50 listing generations / month",
-        "Very good for most listing descriptions",
-        "Pro AI — 3× better descriptions",
+        "Up to 50 listing generations / month",
+        "Full access to Street View–powered descriptions",
+        "Tone and length controls for MLS, portals, and social media",
       ],
       mostPopular: true,
       priceId: {
-        monthly: "price_1SHjjTRzvydSZxMcbOyOM2w3",
-        annually: "price_1SHjjTRzvydSZxMcJ9Rql01O",
+        monthly: "price_1SYX2kRzvydSZxMcuXspBfHN",
+        annually: "price_1SYX1rRzvydSZxMcbquPvxew",
       },
     },
     {
       name: "Unlimited",
       id: "tier-unlimited",
       href: "#",
-      price: { monthly: "$14.99", annually: "$89.99" },
-      description: "Unlock limitless credits and our most advanced AI — 10× better listing descriptions.",
+      price: { monthly: "$19.99", annually: "$179.99" },
+      description: "Best for high-volume agents and small teams handling many listings every month.",
       features: [
-        "Unlimited listing generations",
-        // "Premium prompts, workflows, and analytics",
-        "Elite AI — 10× better for descriptions",
-        "24-hour support response time",
+        "Unlimited listing generations for your account",
+        "Street View–enhanced descriptions for every property",
+        "24-hour email support response time",
       ],
       mostPopular: false,
       priceId: {
-        monthly: "price_1SHjlFRzvydSZxMcO9jzuT1a",
-        annually: "price_1SHjlFRzvydSZxMc1AWszvBW",
+        monthly: "price_1SYX0JRzvydSZxMcC2PmPzRa",
+        annually: "price_1SYX0JRzvydSZxMcgIhJhhFo",
       },
     },
   ],
 };
+
+const pricingHighlights = [
+  "First description free — no card needed",
+  "Secure Stripe-powered billing",
+  "Switch or cancel your plan anytime",
+];
 
 // const faqs = [
 //   {
@@ -99,7 +105,7 @@ export default function Pricing({ currentPriceId }: Props) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [frequency, setFrequency] = useState<Frequency>(pricing.frequencies[0]);
+  const [frequency, setFrequency] = useState<Frequency>(pricing.frequencies[1]);
   const [activePriceId] = useState<string | null>(currentPriceId);
   const [loading, setLoading] = useState(false);
   const isAuthenticated = Boolean(session?.user);
@@ -136,45 +142,89 @@ export default function Pricing({ currentPriceId }: Props) {
   };
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-8 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-base font-semibold leading-7 text-indigo-600">PRICING</h1>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Pricing plans for teams of&nbsp;all&nbsp;sizes
+    <section className="relative isolate px-6 py-16 sm:py-24 lg:px-10">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
+            Pricing
+          </div>
+          <h1 className="mt-6 text-4xl font-bold tracking-tight   sm:text-5xl">
+            Make AI listing copy part of every property you sell.
+          </h1>
+          <p className="mt-4 text-lg leading-8 ">
+            Start with one free description on us. When you’re ready to list more properties, choose a simple plan based
+            on your volume — no long contracts, just address → Street View → AI listing copy in seconds.
           </p>
         </div>
 
-        <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-          Choose an affordable plan that&apos;s packed with the best features for engaging your audience, creating
-          customer loyalty, and driving sales.
-        </p>
-
-        <div className="mt-16 flex justify-center">
-          <fieldset aria-label="Payment frequency">
-            <RadioGroup
-              value={frequency}
-              onChange={setFrequency}
-              className="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-gray-200"
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm ">
+          {pricingHighlights.map((item) => (
+            <span
+              key={item}
+              className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-1.5"
             >
+              <span className="h-2 w-2 rounded-full bg-black" />
+              {item}
+            </span>
+          ))}
+        </div>
+        {/* 
+        <div className="mt-12 flex flex-col items-center gap-6 lg:flex-row lg:justify-center">
+          <fieldset aria-label="Payment frequency" className="rounded-xl border border-neutral-200 bg-white/80 p-2 shadow-sm">
+            <RadioGroup value={frequency} onChange={setFrequency} className="grid grid-cols-2 gap-1">
               {pricing.frequencies.map((option) => (
                 <Radio
                   key={option.value}
                   value={option}
-                  className="cursor-pointer rounded-full px-2.5 py-1 text-gray-500 data-[checked]:bg-indigo-600 data-[checked]:text-white"
+                  className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-neutral-600 transition data-[checked]:bg-neutral-900 data-[checked]:text-white"
                 >
                   {option.label}
                 </Radio>
               ))}
             </RadioGroup>
           </fieldset>
+          <p className="text-sm text-neutral-500">Secure checkout via Stripe. Taxes calculated at payment.</p>
+        </div> */}
+        <div className="mt-12 flex flex-col items-center gap-6 lg:flex-row lg:justify-center">
+          <fieldset
+            aria-label="Payment frequency"
+            className="relative rounded-2xl border border-neutral-200 bg-white/60 backdrop-blur p-2 shadow-lg"
+          >
+            <RadioGroup value={frequency} onChange={setFrequency} className="relative grid grid-cols-2">
+              {/* Background highlight that slides */}
+              <span
+                className={`
+          absolute inset-0 z-0 grid grid-cols-2 transition-transform duration-300 ease-out
+          ${frequency.value === "monthly" ? "translate-x-0" : "translate-x-1/2"}
+        `}
+              >
+                <span className="rounded-xl bg-neutral-900"></span>
+              </span>
+
+              {pricing.frequencies.map((option) => (
+                <Radio
+                  key={option.value}
+                  value={option}
+                  className={({ checked }) =>
+                    classNames(
+                      "relative z-10 cursor-pointer px-6 py-2 text-sm font-semibold transition-colors duration-300",
+                      checked ? "text-white" : "text-black"
+                    )
+                  }
+                >
+                  {option.label}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </fieldset>
+
+          <p className="text-sm ">Secure checkout via Stripe. Taxes calculated at payment.</p>
         </div>
 
-        <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
           {pricing.tiers.map((tier) => {
-    const tierPriceId = tier.priceId?.[frequency.value] ?? null;
+            const tierPriceId = tier.priceId?.[frequency.value] ?? null;
 
-            // The "Free" tier is the current plan only when no active price ID exists
             const isCurrentPlan = isAuthenticated
               ? tier.name === "Free"
                 ? !activePriceId
@@ -184,30 +234,37 @@ export default function Pricing({ currentPriceId }: Props) {
                   )
               : false;
             const isHighlighted = tier.mostPopular;
+            const mutedText = isHighlighted ? "text-neutral-300" : "";
 
             return (
               <div
                 key={tier.id}
                 className={classNames(
-                  isHighlighted ? "ring-2 ring-indigo-600" : "ring-1 ring-gray-200",
-                  "rounded-3xl p-8"
+                  "flex flex-col rounded-xl border p-8 shadow-lg transition",
+                  isHighlighted
+                    ? "border-neutral-900 bg-neutral-900 text-white shadow-[0_45px_120px_rgba(15,23,42,0.45)]"
+                    : "border-neutral-200 bg-white/90  shadow-[0_35px_90px_rgba(15,23,42,0.08)]"
                 )}
               >
-                <h2
-                  id={tier.id}
-                  className={classNames(
-                    tier.mostPopular ? "text-indigo-600" : "text-gray-900",
-                    "text-lg font-semibold leading-8"
+                <div className="flex items-center justify-between">
+                  <h2 id={tier.id} className="text-2xl font-semibold leading-7">
+                    {tier.name}
+                  </h2>
+                  {tier.mostPopular ? (
+                    <span className="rounded-xl bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                      Most popular
+                    </span>
+                  ) : (
+                    <span className={classNames("text-xs font-semibold uppercase tracking-[0.3em]", mutedText)}>
+                      Plan
+                    </span>
                   )}
-                >
-                  {tier.name}
-                </h2>
+                </div>
+                <p className={classNames("mt-4 text-sm leading-6", mutedText)}>{tier.description}</p>
 
-                <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
-
-                <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value]}</span>
-                  <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
+                <p className="mt-8 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold tracking-tight">{tier.price[frequency.value]}</span>
+                  <span className={classNames("text-sm font-semibold", mutedText)}>{frequency.priceSuffix}</span>
                 </p>
 
                 <button
@@ -237,7 +294,6 @@ export default function Pricing({ currentPriceId }: Props) {
                     }
                     if (!tierPriceId) return;
 
-                    // If the user already has a different subscription (any priceId other than this tier’s options)
                     const switchingToDifferentPrice =
                       activePriceId &&
                       activePriceId !== tierPriceId &&
@@ -253,11 +309,11 @@ export default function Pricing({ currentPriceId }: Props) {
                     }
                   }}
                   className={classNames(
-                    tier.mostPopular
-                      ? "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
-                      : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                    "mt-6 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors cursor-pointer",
-                    isCurrentPlan || loading ? "opacity-50 cursor-not-allowed" : ""
+                    "mt-8 block w-full rounded-xl px-4 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2",
+                    isHighlighted
+                      ? "bg-white text-black  hover:bg-neutral-100 focus-visible:outline-white"
+                      : "bg-neutral-900 text-white hover:bg-neutral-800 focus-visible:outline-neutral-900",
+                    isCurrentPlan || loading ? "cursor-not-allowed opacity-90" : ""
                   )}
                 >
                   {isCurrentPlan
@@ -270,10 +326,14 @@ export default function Pricing({ currentPriceId }: Props) {
                     ? "Processing..."
                     : "Buy plan"}
                 </button>
-                <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
+
+                <ul role="list" className={classNames("mt-8 space-y-3 text-sm leading-6", mutedText)}>
                   {tier.features.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
+                    <li key={feature} className="flex gap-3">
+                      <CheckIcon
+                        aria-hidden="true"
+                        className={classNames("h-5 w-5 flex-none", isHighlighted ? "text-white" : " ")}
+                      />
                       {feature}
                     </li>
                   ))}
@@ -283,79 +343,10 @@ export default function Pricing({ currentPriceId }: Props) {
           })}
         </div>
 
-        {/* Logo cloud
-        <div className="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8">
-          <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <Image
-              alt="Transistor"
-              src="/transistor-horizontal-logo.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <Image
-              alt="Microsoft"
-              src="/microsoft.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <Image
-              alt="Uber"
-              src="/uber.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <Image
-              alt="Stripe"
-              src="/stripe-3.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-            />
-            <Image
-              alt="Statamic"
-              src="/statamic.svg"
-              width={158}
-              height={48}
-              className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-            />
-          </div>
-          <div className="mt-16 flex justify-center">
-            <p className="relative rounded-full bg-gray-50 px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/5">
-              <span className="hidden md:inline">Trusted by thousands of content creators worldwide.</span>
-            </p>
-          </div>
-        </div> */}
-<div className="mt-16">
-        <Testimonials />
-</div>
-        {/* FAQ */}
-        {/* <div className="mx-auto my-24 max-w-7xl px-6 sm:my-56 lg:px-8">
-          <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-            <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
-            <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-              {faqs.map((faq) => (
-                <Disclosure key={faq.question} as="div" className="pt-6">
-                  <dt>
-                    <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
-                      <span className="text-base font-semibold leading-7">{faq.question}</span>
-                      <span className="ml-6 flex h-7 items-center">
-                        <PlusSmallIcon aria-hidden="true" className="h-6 w-6 group-data-[open]:hidden" />
-                        <MinusSmallIcon aria-hidden="true" className="h-6 w-6 [.group:not([data-open])_&]:hidden" />
-                      </span>
-                    </DisclosureButton>
-                  </dt>
-                  <DisclosurePanel as="dd" className="mt-2 pr-12">
-                    <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
-                  </DisclosurePanel>
-                </Disclosure>
-              ))}
-            </dl>
-          </div>
-        </div> */}
+        <div className="mt-20">
+          <Testimonials />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

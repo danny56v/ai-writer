@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon, LockClosedIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 
 interface ResetPasswordModalProps {
@@ -76,10 +71,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={
-          triggerClassName ??
-          "font-semibold text-indigo-600 hover:text-indigo-500"
-        }
+        className={triggerClassName ?? "font-semibold text-indigo-600 hover:text-indigo-500"}
       >
         Reset password
       </button>
@@ -87,7 +79,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
       <Dialog open={open} onClose={handleClose} className="relative z-50">
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+          className="fixed inset-0 bg-neutral-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
         />
 
         <div className="fixed inset-0 z-50 flex w-screen items-center justify-center overflow-y-auto p-4">
@@ -99,7 +91,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
               <button
                 type="button"
                 onClick={handleClose}
-                className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="rounded-md bg-white text-neutral-400 hover:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 <span className="sr-only">Close</span>
                 <XMarkIcon aria-hidden="true" className="h-6 w-6" />
@@ -111,10 +103,10 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
                 <LockClosedIcon aria-hidden="true" className="h-6 w-6 text-indigo-600" />
               </div>
               <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                <DialogTitle as="h3" className="text-base font-semibold leading-6  ">
                   Reset password
                 </DialogTitle>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-neutral-500">
                   Enter your current password and choose a new one. Make sure your new password is strong and unique.
                 </p>
               </div>
@@ -122,7 +114,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div>
-                <label htmlFor="current-password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="current-password" className="block text-sm font-medium  ">
                   Current password
                 </label>
                 <input
@@ -133,12 +125,12 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
                   required
                   value={currentPassword}
                   onChange={(event) => setCurrentPassword(event.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
 
               <div>
-                <label htmlFor="new-password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="new-password" className="block text-sm font-medium  ">
                   New password
                 </label>
                 <input
@@ -149,12 +141,12 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
                   required
                   value={newPassword}
                   onChange={(event) => setNewPassword(event.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
 
               <div>
-                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirm-password" className="block text-sm font-medium  ">
                   Confirm new password
                 </label>
                 <input
@@ -165,7 +157,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
                   required
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
 
@@ -186,7 +178,7 @@ export default function ResetPasswordModal({ triggerClassName }: ResetPasswordMo
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
+                  className="inline-flex justify-center rounded-md border border-neutral-300 px-4 py-2 text-sm font-semibold   shadow-sm hover:bg-neutral-50"
                 >
                   Cancel
                 </button>

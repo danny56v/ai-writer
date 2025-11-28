@@ -17,14 +17,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={cx("w-full", wrapperClass)}>
         {label && (
-          <label htmlFor={props.id} className="mb-1 block text-sm font-medium text-gray-800">
+          <label htmlFor={props.id} className="mb-1 block text-sm font-medium  ">
             {label} {props.required && <span className="text-red-500">*</span>}
           </label>
         )}
 
         <div className="relative">
           {iconLeft && (
-            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">
+            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center ">
               {iconLeft}
             </span>
           )}
@@ -33,20 +33,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
             className={cx(
-              "block w-full h-10 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-              "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
-              "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
-              iconLeft ? "pl-10" : "pl-3",
-              iconRight ? "pr-10" : "pr-3",
+              "block h-10 w-full rounded-lg border border-neutral-200/80 bg-white/90 px-4   shadow-[0_12px_40px_-28px_rgba(15,23,42,0.6)] transition",
+              "placeholder:text-neutral-400 hover:border-neutral-300 hover:bg-white",
+              "focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-200",
+              iconLeft ? "pl-11" : "pl-4",
+              iconRight ? "pr-11" : "pr-4",
               error && "border-red-500 focus:border-red-500 focus:ring-red-100",
               className
             )}
           />
 
-          {iconRight && <span className="absolute inset-y-0 right-3 flex items-center text-gray-400">{iconRight}</span>}
+          {iconRight && (
+            <span className="absolute inset-y-0 right-3 flex items-center ">{iconRight}</span>
+          )}
         </div>
 
-        {hint && !error && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
+        {hint && !error && <p className="mt-1 text-xs text-neutral-800">{hint}</p>}
         {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
       </div>
     );

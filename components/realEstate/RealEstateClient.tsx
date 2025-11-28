@@ -42,7 +42,13 @@ type HistoryEntry = {
   bathrooms: string | null;
   language: string;
   amenities: string[];
+  streetViewImage?: string | null;
   createdAt: string;
+};
+
+type GeneratedResult = {
+  text: string;
+  imageUrl?: string | null;
 };
 
 interface Props {
@@ -100,7 +106,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   const [regenerateSignal, setRegenerateSignal] = useState(0);
   const [requestSeq, setRequestSeq] = useState(0);
   const [resultSeq, setResultSeq] = useState(0);
-  const [results, setResults] = useState<string[]>([]);
+  const [results, setResults] = useState<GeneratedResult[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [currentUsageSummary, setCurrentUsageSummary] = useState<RealEstateUsageSummary>(usageSummary);
@@ -113,7 +119,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   const [history, setHistory] = useState<HistoryEntry[]>(initialHistory);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState<string | null>(null);
-  const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+  const [historyModalEntry, setHistoryModalEntry] = useState<HistoryEntry | null>(null);
   const [copiedHistoryId, setCopiedHistoryId] = useState<string | null>(null);
   const [fullyVisibleHistoryCount, setFullyVisibleHistoryCount] = useState(COLLAPSED_HISTORY_FULL_COUNT);
   const [isDesktopHistoryLayout, setIsDesktopHistoryLayout] = useState<boolean>(() => {
@@ -165,7 +171,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   }, []);
 
   const handleResult = useCallback(
-    (value: string) => {
+    (value: GeneratedResult) => {
       setResults((prev) => {
         const next = [...prev, value];
         setCurrentIndex(next.length - 1);
@@ -173,15 +179,38 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
       });
       setLoading(false);
       setResultSeq((s) => s + 1);
-      setExpandedHistoryId(null);
       void refreshHistory();
     },
     [refreshHistory]
   );
 
-  const toggleHistoryEntry = useCallback((id: string) => {
-    setExpandedHistoryId((prev) => (prev === id ? null : id));
+  const handleHistoryViewDetails = useCallback((entry: HistoryEntry) => {
+    setHistoryModalEntry(entry);
   }, []);
+
+  const handleHistoryModalClose = useCallback(() => {
+    setHistoryModalEntry(null);
+  }, []);
+
+  useEffect(() => {
+    if (!historyModalEntry) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        handleHistoryModalClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [historyModalEntry, handleHistoryModalClose]);
 
   const handleHistoryCopy = useCallback(async (entry: HistoryEntry) => {
     if (!entry.text) return;
@@ -311,6 +340,8 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
     setFullyVisibleHistoryCount(history.length);
   }, [history.length]);
 
+  const currentResult = currentIndex >= 0 ? results[currentIndex] : null;
+
   return (
     <div className="mt-10">
       <div className="relative min-h-screen overflow-hidden">
@@ -335,8 +366,8 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                       <CheckCircleIcon aria-hidden="true" className="h-6 w-6 text-green-400" />
                     </div>
                     <div className="ml-3 w-0 flex-1 pt-0.5">
-                      <p className="text-sm font-semibold text-gray-900">Payment successful!</p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="text-sm font-semibold  ">Payment successful!</p>
+                      <p className="mt-1 text-sm text-neutral-600">
                         Your premium features are now unlocked. Start generating listings right away.
                       </p>
                       <Link
@@ -350,7 +381,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                       <button
                         type="button"
                         onClick={() => setShowSuccessToast(false)}
-                        className="inline-flex rounded-md bg-white text-gray-400 transition hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex rounded-md bg-white  transition hover:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
                         <span className="sr-only">Close</span>
                         <XMarkIcon aria-hidden="true" className="h-5 w-5" />
@@ -363,22 +394,22 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           </div>
         </div>
 
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        {/* <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-100/60 via-white to-purple-100/70" />
           <div className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-200/60 blur-3xl" />
           <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white via-white/80 to-transparent" />
           <div className="absolute right-6 bottom-0 hidden h-48 w-48 rounded-full bg-purple-200/50 blur-3xl sm:block" />
           <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-white/80 to-white" />
-        </div>
+        </div> */}
 
-        <div className="mx-auto max-w-full px-3 pb-10 pt-8 sm:px-6 sm:pt-10">
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className={["mx-auto w-full pb-10 pt-8 sm:pt-10", isOpen ? "max-w-screen-2xl" : "max-w-7xl"].join(" ")}>
+          <div className="flex flex-col lg:flex-row gap-3">
             <div
               className={[
-                // "min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm",
+                // "min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm",
                 "transition-all duration-500 ease-out",
-                "w-full p-0 sm:p-4",
-                isOpen ? "lg:w-7/12" : "lg:w-5xl lg:mx-auto",
+                "w-full p-0 ",
+                isOpen ? "lg:w-1/2 xl:w-1/2" : "lg:max-w-7xl lg:mx-auto",
               ].join(" ")}
             >
               <RealEstateForm
@@ -396,11 +427,11 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
             <div
               ref={responseContainerRef}
               className={[
-                // "min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm",
+                // "min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm",
                 "transition-all duration-500 ease-out",
-                "w-full",
-                isOpen ? "lg:w-5/12 md:opacity-100 lg:translate-x-0" : "lg:w-0 md:opacity-0 lg:translate-x-4",
-                isOpen ? "opacity-100 translate-y-0 p-4" : "opacity-0 -translate-y-1 p-0 h-0 overflow-hidden",
+                "max-w-none",
+                isOpen ? "lg:w-1/2 xl:w-1/2 md:opacity-100 lg:translate-x-0" : "lg:w-0 md:opacity-0 lg:translate-x-4",
+                isOpen ? "opacity-100 translate-y-0 " : "opacity-0 -translate-y-1 p-0 h-0 overflow-hidden",
                 isOpen ? "pointer-events-auto" : "pointer-events-none",
               ].join(" ")}
               aria-hidden={!isOpen}
@@ -414,7 +445,8 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                 loading={loading}
                 requestSeq={requestSeq}
                 resultSeq={resultSeq}
-                text={currentIndex >= 0 ? results[currentIndex] : ""}
+                text={currentResult?.text ?? ""}
+                imageUrl={currentResult?.imageUrl}
                 totalResults={results.length}
                 currentIndex={currentIndex}
                 onNavigate={(direction) => {
@@ -431,269 +463,265 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
 
         <section className="relative mt-12">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-purple-700">
-                  History
-                </span>
-                <h2 className="mt-3 text-2xl font-semibold text-gray-900 sm:text-3xl">Latest generated descriptions</h2>
-                <p className="mt-2 text-sm text-gray-500">
-                  Review your recent versions and copy the text without completing the form again.
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => void refreshHistory()}
-                  disabled={historyLoading}
-                  className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {historyLoading ? (
-                    <>
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 0 1 8-8v3.5a4.5 4.5 0 0 0-4.5 4.5H4z"
-                        />
-                      </svg>
-                      Refreshing...
-                    </>
-                  ) : (
-                    <>
-                      <ArrowPathIcon className="h-4 w-4" aria-hidden />
-                      Refresh history
-                    </>
-                  )}
-                </button>
-                <span className="text-xs font-semibold text-indigo-500">
-                  {history.length} {history.length === 1 ? "entry" : "entries"}
-                </span>
-              </div>
-            </div>
-
-            {historyError ? (
-              <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-                {historyError}
-              </div>
-            ) : null}
-
-            {historyLoading && history.length === 0 ? (
-              <div className="mt-8 grid gap-6 lg:grid-cols-2">
-                {[0, 1].map((idx) => (
-                  <div
-                    key={idx}
-                    className="animate-pulse rounded-3xl border border-indigo-100/70 bg-white/70 p-6 shadow-inner"
-                  >
-                    <div className="h-4 w-1/2 rounded-full bg-indigo-100" />
-                    <div className="mt-4 h-3 w-5/6 rounded-full bg-indigo-50" />
-                    <div className="mt-2 h-3 w-3/4 rounded-full bg-indigo-50" />
-                    <div className="mt-6 space-y-2">
-                      <div className="h-2.5 w-full rounded-full bg-indigo-100/70" />
-                      <div className="h-2.5 w-5/6 rounded-full bg-indigo-100/70" />
-                      <div className="h-2.5 w-4/6 rounded-full bg-indigo-100/70" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : null}
-
-            {!historyLoading && history.length === 0 ? (
-              <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-indigo-200 bg-white/70 p-12 text-center">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
-                  <SparklesIcon className="h-6 w-6" aria-hidden />
-                </span>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-gray-900">You do not have any saved generations yet</p>
-                  <p className="text-sm text-gray-500">
-                    Complete the form on the left to start building and saving generated versions here.
+            <div className="rounded-xl border border-neutral-100 bg-white/95 p-5 shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)] sm:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <span className="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em">
+                    History
+                  </span>
+                  <h2 className="mt-3 text-2xl font-semibold  sm:text-3xl">Latest generated descriptions</h2>
+                  <p className="mt-2 text-sm ">
+                    Review your recent versions and copy the text without completing the form again.
                   </p>
                 </div>
-              </div>
-            ) : null}
-
-            {history.length > 0 ? (
-              <div className="mt-8">
-                <div className={["relative", historyHasMoreToReveal ? "pb-24" : ""].join(" ")}>
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    {historyToDisplay.map((entry, index) => {
-                      const paragraphs = extractBodyParagraphs(entry);
-                      const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
-                      const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
-                      const isExpanded = expandedHistoryId === entry.id;
-                      const listingLabel = entry.listingType === "rent" ? "Rent" : "Sale";
-                      const bedroomLabel = entry.bedrooms
-                        ? entry.bedrooms.toLowerCase() === "studio"
-                          ? "Studio"
-                          : `${entry.bedrooms} ${entry.bedrooms === "1" ? "bedroom" : "bedrooms"}`
-                        : null;
-                      const bathroomsLabel = entry.bathrooms
-                        ? `${entry.bathrooms} ${entry.bathrooms === "1" ? "bathroom" : "bathrooms"}`
-                        : null;
-                      const amenitiesLabel = entry.amenities.length
-                        ? `${entry.amenities.length} ${entry.amenities.length === 1 ? "amenity" : "amenities"}`
-                        : null;
-                      const isCollapsedPreview = index >= fullyVisibleHistoryCount;
-                      const isSecondPreview = index >= fullyVisibleHistoryCount + 1;
-                      const cardClasses = [
-                        "group relative overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 p-5 shadow-xl shadow-indigo-100/40 backdrop-blur transition",
-                        isCollapsedPreview
-                          ? "pointer-events-none max-h-56 opacity-80 saturate-75 ring-1 ring-inset ring-indigo-100/70"
-                          : "hover:-translate-y-1 hover:shadow-2xl",
-                        isCollapsedPreview && isSecondPreview ? "hidden lg:block" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ");
-
-                      return (
-                        <article key={entry.id} className={cardClasses} aria-hidden={isCollapsedPreview}>
-                          <div className="flex flex-wrap items-start justify-between gap-4">
-                            <div>
-                              <h3 className="text-base font-semibold text-indigo-700">
-                                {entry.title || "Untitled listing"}
-                              </h3>
-                              <p className="mt-1 flex items-center gap-2 text-xs text-gray-500">
-                                <ClockIcon className="h-4 w-4" aria-hidden />
-                                {historyDateFormatter.format(new Date(entry.createdAt))}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() => handleHistoryCopy(entry)}
-                                className={[
-                                  "inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50",
-                                  isCollapsedPreview ? "opacity-60" : "",
-                                ].join(" ")}
-                                disabled={isCollapsedPreview}
-                              >
-                                {copiedHistoryId === entry.id ? "Copied" : "Copy"}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => toggleHistoryEntry(entry.id)}
-                                className={[
-                                  "inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500",
-                                  isCollapsedPreview ? "opacity-70" : "",
-                                ].join(" ")}
-                                disabled={isCollapsedPreview}
-                              >
-                                {isExpanded ? "Hide" : "View details"}
-                              </button>
-                            </div>
-                          </div>
-
-                          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                              <HomeModernIcon className="h-4 w-4" aria-hidden />
-                              {entry.propertyType}
-                            </span>
-                            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                              <MapPinIcon className="h-4 w-4" aria-hidden />
-                              {entry.location}
-                            </span>
-                            {entry.price !== null ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                                <CurrencyDollarIcon className="h-4 w-4" aria-hidden />
-                                {priceFormatter.format(entry.price)}
-                              </span>
-                            ) : null}
-                            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1">
-                              {listingLabel}
-                            </span>
-                          </div>
-
-                          <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
-                            <span>{entry.language}</span>
-                            {bedroomLabel ? <span>{bedroomLabel}</span> : null}
-                            {bathroomsLabel ? <span>{bathroomsLabel}</span> : null}
-                            {amenitiesLabel ? <span>{amenitiesLabel}</span> : null}
-                          </div>
-
-                          <div className="mt-5 rounded-2xl border border-indigo-50 bg-white/85 p-4 text-sm leading-6 text-gray-700 shadow-inner">
-                            {isExpanded ? (
-                              <div className="space-y-3">
-                                {paragraphs.map((paragraph, paragraphIndex) => (
-                                  <p key={paragraphIndex}>
-                                    {paragraph.split("\n").map((line, lineIdx) => (
-                                      <React.Fragment key={lineIdx}>
-                                        {lineIdx > 0 ? <br /> : null}
-                                        {line}
-                                      </React.Fragment>
-                                    ))}
-                                  </p>
-                                ))}
-                              </div>
-                            ) : (
-                              <p>{preview}</p>
-                            )}
-                          </div>
-
-                          {entry.hashtags.length ? (
-                            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-600">
-                              <HashtagIcon className="h-4 w-4 text-indigo-500" aria-hidden />
-                              {entry.hashtags.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-indigo-700"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          ) : null}
-
-                          {isCollapsedPreview ? (
-                            <div
-                              aria-hidden
-                              className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent via-white/75 to-white"
-                            />
-                          ) : null}
-                        </article>
-                      );
-                    })}
-                  </div>
-
-                  {historyHasMoreToReveal ? (
-                    <>
-                      <div
-                        aria-hidden
-                        className="pointer-events-none absolute inset-x-0 bottom-20 z-10 h-24 bg-gradient-to-b from-transparent via-white/85 to-white"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                        <button
-                          type="button"
-                          onClick={handleHistoryLoadMore}
-                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                        >
-                          Show more
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleHistoryShowAll}
-                          className="text-sm font-semibold text-indigo-600 underline decoration-indigo-200 decoration-2 underline-offset-4 transition hover:text-indigo-500"
-                        >
-                          View full history
-                        </button>
-                      </div>
-                    </>
-                  ) : null}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void refreshHistory()}
+                    disabled={historyLoading}
+                    className="inline-flex items-center gap-2 rounded-lg border border-neutral-200/80 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)] transition hover:border-neutral-300 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {historyLoading ? (
+                      <>
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 0 1 8-8v3.5a4.5 4.5 0 0 0-4.5 4.5H4z"
+                          />
+                        </svg>
+                        Refreshing...
+                      </>
+                    ) : (
+                      <>
+                        <ArrowPathIcon className="h-4 w-4" aria-hidden />
+                        Refresh history
+                      </>
+                    )}
+                  </button>
+                  <span className="text-xs font-semibold ">
+                    {history.length} {history.length === 1 ? "entry" : "entries"}
+                  </span>
                 </div>
               </div>
-            ) : null}
+
+              {historyError ? (
+                <div className="mt-4 rounded-2xl border border-rose-200/80 bg-rose-50/70 p-4 text-sm text-rose-700">
+                  {historyError}
+                </div>
+              ) : null}
+
+              {historyLoading && history.length === 0 ? (
+                <div className="mt-8 grid gap-6 lg:grid-cols-2">
+                  {[0, 1].map((idx) => (
+                    <div
+                      key={idx}
+                      className="animate-pulse rounded-xl border border-neutral-100 bg-white/80 p-6 shadow-[0_25px_60px_-50px_rgba(15,23,42,0.6)]"
+                    >
+                      <div className="h-4 w-1/2 rounded-full bg-neutral-100" />
+                      <div className="mt-4 h-3 w-5/6 rounded-full bg-neutral-50" />
+                      <div className="mt-2 h-3 w-3/4 rounded-full bg-neutral-50" />
+                      <div className="mt-6 space-y-2">
+                        <div className="h-2.5 w-full rounded-full bg-neutral-100/80" />
+                        <div className="h-2.5 w-5/6 rounded-full bg-neutral-100/80" />
+                        <div className="h-2.5 w-4/6 rounded-full bg-neutral-100/80" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {!historyLoading && history.length === 0 ? (
+                <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-neutral-200 bg-white/90 p-12 text-center shadow-[0_25px_60px_-50px_rgba(15,23,42,0.6)]">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100 ">
+                    <SparklesIcon className="h-6 w-6" aria-hidden />
+                  </span>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold ">You do not have any saved generations yet</p>
+                    <p className="text-sm ">
+                      Complete the form on the left to start building and saving generated versions here.
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+
+              {history.length > 0 ? (
+                <div className="mt-8">
+                  <div className={["relative", historyHasMoreToReveal ? "pb-24" : ""].join(" ")}>
+                    <div className="grid gap-6 lg:grid-cols-2">
+                      {historyToDisplay.map((entry, index) => {
+                        const paragraphs = extractBodyParagraphs(entry);
+                        const previewSource = paragraphs.length ? paragraphs.join(" ") : entry.text;
+                        const preview = previewSource.length > 220 ? `${previewSource.slice(0, 220)}…` : previewSource;
+                        const listingLabel = entry.listingType === "rent" ? "Rent" : "Sale";
+                        const bedroomLabel = entry.bedrooms
+                          ? entry.bedrooms.toLowerCase() === "studio"
+                            ? "Studio"
+                            : `${entry.bedrooms} ${entry.bedrooms === "1" ? "bedroom" : "bedrooms"}`
+                          : null;
+                        const bathroomsLabel = entry.bathrooms
+                          ? `${entry.bathrooms} ${entry.bathrooms === "1" ? "bathroom" : "bathrooms"}`
+                          : null;
+                        const amenitiesLabel = entry.amenities.length
+                          ? `${entry.amenities.length} ${entry.amenities.length === 1 ? "amenity" : "amenities"}`
+                          : null;
+                        const isCollapsedPreview = index >= fullyVisibleHistoryCount;
+                        const isSecondPreview = index >= fullyVisibleHistoryCount + 1;
+                        const cardClasses = [
+                          "group relative overflow-hidden rounded-lg border border-neutral-100 bg-white/90 p-5 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)] backdrop-blur transition",
+                          isCollapsedPreview
+                            ? "pointer-events-none max-h-56 opacity-80 saturate-75 ring-1 ring-inset ring-neutral-100/70"
+                            : "hover:-translate-y-1 hover:shadow-[0_45px_100px_-70px_rgba(15,23,42,0.55)]",
+                          isCollapsedPreview && isSecondPreview ? "hidden lg:block" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ");
+
+                        return (
+                          <article key={entry.id} className={cardClasses} aria-hidden={isCollapsedPreview}>
+                            <div className="flex flex-wrap items-start justify-between gap-4">
+                              <div>
+                                <h3 className="text-base font-semibold ">{entry.title || "Untitled listing"}</h3>
+                                <p className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
+                                  <ClockIcon className="h-4 w-4" aria-hidden />
+                                  {historyDateFormatter.format(new Date(entry.createdAt))}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleHistoryCopy(entry)}
+                                  className={[
+                                    "inline-flex items-center gap-2 rounded-lg border border-neutral-200/80 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)] transition hover:border-neutral-300 hover:bg-neutral-50",
+                                    isCollapsedPreview ? "opacity-60" : "",
+                                  ].join(" ")}
+                                  disabled={isCollapsedPreview}
+                                >
+                                  {copiedHistoryId === entry.id ? "Copied" : "Copy"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleHistoryViewDetails(entry)}
+                                  className={[
+                                    "inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-[0_30px_70px_-40px_rgba(15,23,42,0.9)] transition hover:bg-neutral-800",
+                                    isCollapsedPreview ? "opacity-70" : "",
+                                  ].join(" ")}
+                                  disabled={isCollapsedPreview}
+                                >
+                                  View details
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold ">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                <HomeModernIcon className="h-4 w-4" aria-hidden />
+                                {entry.propertyType}
+                              </span>
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                <MapPinIcon className="h-4 w-4" aria-hidden />
+                                {entry.location}
+                              </span>
+                              {entry.price !== null ? (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                  <CurrencyDollarIcon className="h-4 w-4" aria-hidden />
+                                  {priceFormatter.format(entry.price)}
+                                </span>
+                              ) : null}
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                {listingLabel}
+                              </span>
+                            </div>
+
+                            <div className="mt-3 flex flex-wrap gap-3 text-xs">
+                              <span>{entry.language}</span>
+                              {bedroomLabel ? <span>{bedroomLabel}</span> : null}
+                              {bathroomsLabel ? <span>{bathroomsLabel}</span> : null}
+                              {amenitiesLabel ? <span>{amenitiesLabel}</span> : null}
+                            </div>
+
+                            {entry.streetViewImage ? (
+                              <div className="mt-4 overflow-hidden rounded-2xl border border-neutral-100 bg-white/80 shadow-inner">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={entry.streetViewImage}
+                                  alt={`Street View preview for ${entry.title || entry.location}`}
+                                  className="h-48 w-full object-cover"
+                                  loading="lazy"
+                                />
+                              </div>
+                            ) : null}
+
+                            <div className="mt-5 rounded-2xl border border-neutral-100 bg-white/90 p-4 text-sm leading-6shadow-inner">
+                              <p>{preview}</p>
+                            </div>
+
+                            {entry.hashtags.length ? (
+                              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold ">
+                                <HashtagIcon className="h-4 w-4 " aria-hidden />
+                                {entry.hashtags.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 "
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : null}
+
+                            {isCollapsedPreview ? (
+                              <div
+                                aria-hidden
+                                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent via-white/75 to-white"
+                              />
+                            ) : null}
+                          </article>
+                        );
+                      })}
+                    </div>
+
+                    {historyHasMoreToReveal ? (
+                      <>
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-0 bottom-20 z-10 h-24 bg-gradient-to-b from-transparent via-white/90 to-white"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                          <button
+                            type="button"
+                            onClick={handleHistoryLoadMore}
+                            className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-5 py-2 text-sm font-semibold text-white shadow-[0_25px_70px_-45px_rgba(15,23,42,0.8)] transition hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500"
+                          >
+                            Show more
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleHistoryShowAll}
+                            className="text-sm font-semibold  underline decoration-neutral-300 decoration-2 underline-offset-4 transition cursor-pointer hover:text-neutral-600"
+                          >
+                            View full history
+                          </button>
+                        </div>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </section>
 
         <section className="relative py-16 sm:py-24">
           <div className="mx-auto max-w-6xl px-4 lg:px-8">
-            <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-700">
+            <span className="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
               Workflow
             </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               How to use the ListologyAi listing generator
             </h2>
-            <p className="mt-4 text-base leading-7 text-gray-600">
+            <p className="mt-4 text-base leading-7 ">
               Follow the steps below to move from brief to final description in minutes. Everything you enter is saved
               so you can quickly adjust tone, language, or audience without starting over.
             </p>
@@ -701,9 +729,9 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
             <div className="relative mt-10">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-24 -right-16 hidden h-64 w-64 rounded-full bg-indigo-100 blur-3xl lg:block"
+                className="pointer-events-none absolute -top-24 -right-16 hidden h-64 w-64 rounded-full bg-sky-100/60 blur-3xl lg:block"
               />
-              <div className="overflow-hidden rounded-3xl border border-indigo-100 bg-white/80 shadow-xl shadow-indigo-100/40 backdrop-blur-sm">
+              <div className="overflow-hidden rounded-xl border border-neutral-100 bg-white/90 shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)]">
                 <video
                   ref={walkthroughVideoRef}
                   src="/ListologyAi%20Video.mp4"
@@ -718,45 +746,39 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                   Your browser does not support the video tag.
                 </video>
               </div>
-              <p className="mt-4 text-center text-xs font-medium uppercase tracking-wide text-indigo-600">
+              <p className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.35em]">
                 Product walkthrough – ListologyAi generator in action
               </p>
             </div>
 
             <dl className="mt-12 space-y-6">
-              <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
-                <DocumentTextIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
+              <div className="flex gap-4 rounded-lg border border-neutral-100 bg-white/95 p-5 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)]">
+                <DocumentTextIcon className="h-8 w-8 flex-none " aria-hidden="true" />
                 <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-                    1. Complete the brief
-                  </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
-                    Add property details, features, and language. The form guides agents and marketers so they never miss
-                    persuasive, compliant information.
+                  <dt className="text-sm font-semibold uppercase tracking-[0.35em]">1. Complete the brief</dt>
+                  <dd className="text-sm leading-6 ">
+                    Add property details, features, and language. The form guides agents and marketers so they never
+                    miss persuasive, compliant information.
                   </dd>
                 </div>
               </div>
 
-              <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
-                <SparklesIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
+              <div className="flex gap-4 rounded-lg border border-neutral-100 bg-white/95 p-5 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)]">
+                <SparklesIcon className="h-8 w-8 flex-none " aria-hidden="true" />
                 <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-                    2. Generate the description
-                  </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
+                  <dt className="text-sm font-semibold uppercase tracking-[0.35em] ">2. Generate the description</dt>
+                  <dd className="text-sm leading-6">
                     After you submit the form, ListologyAi blends your context with proven templates to deliver an
                     MLS-ready description optimized for conversion and compliance.
                   </dd>
                 </div>
               </div>
 
-              <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
-                <PencilSquareIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
+              <div className="flex gap-4 rounded-lg border border-neutral-100 bg-white/95 p-5 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)]">
+                <PencilSquareIcon className="h-8 w-8 flex-none" aria-hidden="true" />
                 <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-                    3. Review and refine
-                  </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
+                  <dt className="text-sm font-semibold uppercase tracking-[0.35em]">3. Review and refine</dt>
+                  <dd className="text-sm leading-6 ">
                     Open the results panel to copy the text, download the generated version, or tweak the form to try
                     alternative scenarios.
                   </dd>
@@ -769,7 +791,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                   <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
                     4. Publish or share
                   </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
+                  <dd className="text-sm leading-6  ">
                     After internal approval, send the copy straight to the MLS, your agency site, or a newsletter. Use
                     the same session to create multiple versions and track credit usage.
                   </dd>
@@ -784,10 +806,10 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           <span className="inline-flex items-center justify-center rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-700 ring-1 ring-indigo-100">
             Keep exploring
           </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="mt-4 text-3xl font-bold tracking-tight   sm:text-4xl">
             Create a complete experience for your clients
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-neutral-600">
             After you complete the generator steps, explore resources that help you turn descriptions into cohesive campaigns: case studies, pricing plans, and guides for hybrid teams.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -806,6 +828,171 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           </div>
         </div>
       </section> */}
+
+        {historyModalEntry
+          ? (() => {
+              const modalParagraphs = extractBodyParagraphs(historyModalEntry);
+              const displayParagraphs = modalParagraphs.length ? modalParagraphs : [historyModalEntry.text];
+              const listingLabel = historyModalEntry.listingType === "rent" ? "Rent" : "Sale";
+              const bedroomLabel = historyModalEntry.bedrooms
+                ? historyModalEntry.bedrooms.toLowerCase() === "studio"
+                  ? "Studio"
+                  : `${historyModalEntry.bedrooms} ${historyModalEntry.bedrooms === "1" ? "bedroom" : "bedrooms"}`
+                : null;
+              const bathroomsLabel = historyModalEntry.bathrooms
+                ? `${historyModalEntry.bathrooms} ${historyModalEntry.bathrooms === "1" ? "bathroom" : "bathrooms"}`
+                : null;
+              return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8">
+                  <div
+                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    aria-hidden
+                    onClick={handleHistoryModalClose}
+                  />
+                  <div className="relative z-10 max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-neutral-100 bg-gradient-to-b from-white via-neutral-50 to-white shadow-[0_55px_140px_-70px_rgba(15,23,42,0.65)]">
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-20 right-10 h-64 w-64 rounded-full bg-neutral-100/50 blur-3xl"
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -bottom-16 left-8 h-64 w-64 rounded-full bg-neutral-100/60 blur-3xl"
+                    />
+
+                    <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 bg-white/85 px-6 py-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.35em] ">Saved version</p>
+                        <h3 className="text-lg font-semibold">{historyModalEntry.title || "Untitled listing"}</h3>
+                        <p className="mt-1 flex items-center gap-2 text-xs ">
+                          <ClockIcon className="h-4 w-4" aria-hidden />
+                          {historyDateFormatter.format(new Date(historyModalEntry.createdAt))}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleHistoryCopy(historyModalEntry)}
+                          className="inline-flex items-center gap-2 rounded-lg border border-neutral-200/80 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)] transition hover:border-neutral-300 hover:bg-neutral-50"
+                        >
+                          {copiedHistoryId === historyModalEntry.id ? "Copied" : "Copy"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleHistoryModalClose}
+                          className="rounded-full bg-neutral-100 p-2 text-black transition hover:bg-neutral-200 "
+                          aria-label="Close history details"
+                        >
+                          <XMarkIcon className="h-5 w-5" aria-hidden />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="relative space-y-6 p-6 sm:p-8">
+                      <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="space-y-4 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)] rounded-2xl border border-neutral-100 bg-white/90 p-4 lg:col-span-2">
+                          <div>
+                            <p className="text-xs  font-semibold uppercase tracking-[0.35em] ">Location</p>
+                            <p className="mt-2 text-base font-semibold ">{historyModalEntry.location}</p>
+                            <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold ">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                <HomeModernIcon className="h-4 w-4" aria-hidden />
+                                {historyModalEntry.propertyType}
+                              </span>
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                {listingLabel}
+                              </span>
+                              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1">
+                                {historyModalEntry.language}
+                              </span>
+                            </div>
+                          </div>
+
+                          {historyModalEntry.amenities.length ? (
+                            <div className="">
+                              <p className="text-[13px] font-semibold uppercase tracking-[0.3em]">Amenities</p>
+                              <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold ">
+                                {historyModalEntry.amenities.map((amenity) => (
+                                  <span
+                                    key={`modal-amenity-${amenity}`}
+                                    className="rounded-full bg-neutral-100 px-2.5 py-1 "
+                                  >
+                                    {amenity}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className="rounded-2xl border border-neutral-100 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)] bg-white/90 p-4">
+                          <p className="text-xs font-semibold uppercase tracking-[0.35em] ">Snapshot</p>
+                          <dl className="mt-3 space-y-2 text-sm ">
+                            <div className="flex items-center justify-between rounded-xl bg-neutral-50/70 px-3 py-2">
+                              <dt>Price</dt>
+                              <dd>
+                                {historyModalEntry.price !== null
+                                  ? priceFormatter.format(historyModalEntry.price)
+                                  : "—"}
+                              </dd>
+                            </div>
+                            <div className="flex items-center justify-between rounded-xl bg-neutral-50/70 px-3 py-2">
+                              <dt>Bedrooms</dt>
+                              <dd>{bedroomLabel ?? "—"}</dd>
+                            </div>
+                            <div className="flex items-center justify-between rounded-xl bg-neutral-50/70 px-3 py-2">
+                              <dt>Bathrooms</dt>
+                              <dd>{bathroomsLabel ?? "—"}</dd>
+                            </div>
+                          </dl>
+                        </div>
+                      </div>
+
+                      {historyModalEntry.streetViewImage ? (
+                        <div className="overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-inner">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={historyModalEntry.streetViewImage}
+                            alt={`Street View preview for ${historyModalEntry.title || historyModalEntry.location}`}
+                            className="h-72 w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : null}
+
+                      <article className="space-y-3 text-sm leading-6 ">
+                        {displayParagraphs.map((paragraph, idx) => (
+                          <p
+                            key={`modal-paragraph-${idx}`}
+                            className="rounded-xl border border-neutral-200/70 bg-white/90 px-4 py-3 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.6)]"
+                          >
+                            {paragraph.split("\n").map((line, lineIdx) => (
+                              <React.Fragment key={lineIdx}>
+                                {lineIdx > 0 ? <br /> : null}
+                                {line}
+                              </React.Fragment>
+                            ))}
+                          </p>
+                        ))}
+                      </article>
+
+                      {historyModalEntry.hashtags.length ? (
+                        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold ">
+                          <HashtagIcon className="h-4 w-4 " aria-hidden />
+                          {historyModalEntry.hashtags.map((tag) => (
+                            <span
+                              key={`modal-hashtag-${tag}`}
+                              className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 "
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()
+          : null}
       </div>
     </div>
   );

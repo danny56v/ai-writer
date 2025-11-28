@@ -39,27 +39,32 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Return({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
-  const { session_id } = await searchParams;
+export default async function Return({ searchParams }: { searchParams?: { session_id?: string } }) {
+  const sessionId = searchParams?.session_id;
 
-  if (!session_id) {
+  if (!sessionId) {
     return redirect("/pricing");
   }
 
+  let status: string | null = null;
   try {
-    const { status } = await stripe.checkout.sessions.retrieve(session_id, {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["line_items", "subscription"],
     });
 
-    if (status === "open") {
-      return redirect("/pricing");
-    }
-
-    if (status === "complete") {
-      return redirect("/real-estate-generator?checkout=success");
-    }
+    status = session.status;
   } catch (error) {
     console.error("Error retrieving checkout session:", error);
+    return redirect("/pricing?checkout=error");
+  }
+
+  if (status === "open" || status === null) {
     return redirect("/pricing");
   }
+
+  if (status === "complete") {
+    return redirect("/real-estate-generator?checkout=success");
+  }
+
+  return redirect("/pricing");
 }

@@ -66,7 +66,7 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
 
   if (!customerId) {
     return (
-      <div className="rounded-lg border border-dashed border-gray-200 bg-white/70 p-6 text-sm text-gray-500">
+      <div className="rounded-lg border border-dashed border-neutral-200 bg-white/70 p-6 text-sm text-neutral-500">
         You haven&apos;t started a paid subscription yet. Billing history will show here once you do.
       </div>
     );
@@ -74,8 +74,8 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white/80 p-6">
-        <div className="flex items-center gap-3 text-sm text-gray-600">
+      <div className="rounded-lg border border-neutral-200 bg-white/80 p-6">
+        <div className="flex items-center gap-3 text-sm text-neutral-600">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
           Loading billing history…
         </div>
@@ -84,36 +84,42 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
   }
 
   if (error) {
-    return (
-      <div className="rounded-lg border border-red-200 bg-red-50/80 p-6 text-sm text-red-700">
-        {error}
-      </div>
-    );
+    return <div className="rounded-lg border border-red-200 bg-red-50/80 p-6 text-sm text-red-700">{error}</div>;
   }
 
   if (!invoices?.length) {
     return (
-      <div className="rounded-lg border border-dashed border-gray-200 bg-white/70 p-6 text-sm text-gray-500">
+      <div className="rounded-lg border border-dashed border-neutral-200 bg-white/70 p-6 text-sm text-neutral-500">
         No invoices found yet. As soon as we process a payment, the record will appear here.
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white/80 shadow-sm">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
-        <thead className="bg-gray-50/80">
-          <tr className="text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-            <th scope="col" className="px-4 py-3">Date</th>
-            <th scope="col" className="px-4 py-3">Invoice</th>
-            <th scope="col" className="px-4 py-3">Status</th>
-            <th scope="col" className="px-4 py-3 text-right">Amount</th>
-            <th scope="col" className="px-4 py-3 text-right">Actions</th>
+    <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white/80 shadow-sm">
+      <table className="min-w-full divide-y divide-neutral-200 text-sm">
+        <thead className="bg-neutral-50/80">
+          <tr className="text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            <th scope="col" className="px-4 py-3">
+              Date
+            </th>
+            <th scope="col" className="px-4 py-3">
+              Invoice
+            </th>
+            <th scope="col" className="px-4 py-3">
+              Status
+            </th>
+            <th scope="col" className="px-4 py-3 text-right">
+              Amount
+            </th>
+            <th scope="col" className="px-4 py-3 text-right">
+              Actions
+            </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100 bg-white">
+        <tbody className="divide-y divide-neutral-100 bg-white">
           {invoices.map((invoice) => (
-            <tr key={invoice.id} className="text-gray-700">
+            <tr key={invoice.id} className=" ">
               <td className="px-4 py-3">{invoice.created}</td>
               <td className="px-4 py-3 font-medium">{invoice.id}</td>
               <td className="px-4 py-3">
@@ -130,7 +136,7 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
                     href={invoice.hostedInvoiceUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 transition hover:border-indigo-300 hover:text-indigo-600"
+                    className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
                   >
                     View
                   </Link>
@@ -140,7 +146,7 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
                     href={invoice.pdfUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 transition hover:border-indigo-300 hover:text-indigo-600"
+                    className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
                   >
                     PDF
                   </Link>

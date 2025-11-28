@@ -77,27 +77,44 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-16 sm:py-20 lg:px-8">
-        <nav aria-label="Footer" className="-mb-6 columns-2 text-center sm:flex sm:justify-center sm:space-x-12">
-          {navigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <Link href={item.href} className="text-sm leading-6 text-gray-600 transition hover:text-indigo-600">
-                {item.name}
-              </Link>
+    <footer className="relative mt-16 bg-transparent  ">
+      <div className="mx-auto max-w-7xl px-6 pb-14 pt-16 sm:pb-20 sm:pt-20 lg:px-8">
+        <div className="rounded-2xl border border-neutral-100 bg-white/90 px-6 py-10 shadow-[0_30px_90px_-70px_rgba(15,23,42,0.45)] ring-1 ring-neutral-100/70 backdrop-blur">
+          <div className="flex flex-col items-center gap-8">
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-neutral-500">
+              ListologyAi
             </div>
-          ))}
-        </nav>
-        <div className="mt-10 flex justify-center space-x-8 text-gray-400">
-          {navigation.social.map((item) => (
-            <Link key={item.name} href={item.href} className="transition hover:text-indigo-500" aria-label={item.name}>
-              <item.icon aria-hidden className="h-6 w-6" />
-            </Link>
-          ))}
+            <nav
+              aria-label="Footer"
+              className="flex flex-wrap items-center justify-center gap-4 text-sm font-semibold text-neutral-600"
+            >
+              {navigation.main.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="rounded-full px-4 py-2 transition hover:bg-neutral-900 hover:text-white"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-neutral-400">
+              {navigation.social.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="rounded-full border border-neutral-200 bg-white/80 p-2 transition hover:border-neutral-900 hover:bg-neutral-900 hover:text-white"
+                  aria-label={item.name}
+                >
+                  <item.icon aria-hidden className="h-5 w-5" />
+                </Link>
+              ))}
+            </div>
+            <p className="text-xs leading-5 text-neutral-500">
+              &copy; {new Date().getFullYear()} ListologyAi. All rights reserved.
+            </p>
+          </div>
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-          &copy; {new Date().getFullYear()} ListologyAi. All rights reserved.
-        </p>
       </div>
     </footer>
   );

@@ -37,13 +37,13 @@ export default function ForgotPasswordScreen() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-indigo-50 via-white to-slate-100 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-indigo-50 via-white to-neutral-100 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex flex-col items-center gap-3">
           <Image src="/Logo.png" alt="ListologyAi" width={44} height={44} className="h-11 w-11 drop-shadow" />
           <div className="text-center">
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Forgot password?</h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <h1 className="text-3xl font-semibold tracking-tight  ">Forgot password?</h1>
+            <p className="mt-2 text-sm text-neutral-600">
               Enter your email and we&apos;ll send a secure link to choose a new password.
             </p>
           </div>
@@ -51,10 +51,10 @@ export default function ForgotPasswordScreen() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[500px]">
-        <div className="rounded-3xl border border-white/70 bg-white/80 px-6 py-12 shadow-xl ring-1 ring-black/5 backdrop-blur sm:px-12">
+        <div className="rounded-2xl border border-white/70 bg-white/80 px-6 py-12 shadow-xl ring-1 ring-black/5 backdrop-blur sm:px-12">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="email" className="block text-sm font-medium leading-6  ">
                 Email address
               </label>
               <div className="mt-2">
@@ -66,7 +66,7 @@ export default function ForgotPasswordScreen() {
                   autoComplete="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5   shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function ForgotPasswordScreen() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-slate-600">
+          <p className="mt-8 text-center text-sm text-neutral-600">
             Remembered your password?{" "}
             <Link href="/sign-in" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Back to sign in

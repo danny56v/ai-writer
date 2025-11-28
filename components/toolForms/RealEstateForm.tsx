@@ -9,7 +9,6 @@ type Plan = { planType: string; currentPeriodEnd: Date | null; status: string };
 
 interface RealEstateFormProps {
   userPlan: Plan;
-
 }
 
 const PROPERTY_TYPES = [
@@ -39,14 +38,14 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6">
-        <div className="rounded-3xl border border-gray-200 bg-white/80 shadow-lg backdrop-blur-md">
+        <div className="rounded-2xl border border-neutral-200 bg-white/80 shadow-lg backdrop-blur-md">
           {/* Header */}
-          <div className="border-b border-gray-100 px-4 sm:px-6 py-4 sm:py-6">
+          <div className="border-b border-neutral-100 px-4 sm:px-6 py-4 sm:py-6">
             <div className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">
               🏠 Real Estate
             </div>
             <h2 className="mt-3 text-lg sm:text-xl font-semibold tracking-tight">Listing Description Generator</h2>
-            <p className="mt-1 text-sm text-gray-500">Consistent experience across Safari, Chrome, and Firefox.</p>
+            <p className="mt-1 text-sm text-neutral-500">Consistent experience across Safari, Chrome, and Firefox.</p>
           </div>
 
           {/* Form */}
@@ -97,7 +96,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
               {/* Listing type – segmented buttons with wrapping on smaller screens */}
               <div className="md:col-span-2 min-w-0">
-                <span className="mb-1 block text-sm font-medium text-gray-800">Listing type</span>
+                <span className="mb-1 block text-sm font-medium  ">Listing type</span>
                 <input type="hidden" name="listingType" value={listingType} />
                 <div className="flex flex-row flex-wrap gap-3">
                   {[
@@ -112,7 +111,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                         "rounded-2xl border px-4 py-2 text-sm font-medium shadow-sm transition",
                         listingType === opt.key
                           ? "border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-500"
-                          : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                          : "border-neutral-300 bg-white   hover:bg-neutral-50"
                       )}
                     >
                       {opt.label}
@@ -130,6 +129,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                   onChange={setBedrooms}
                   options={BEDROOMS}
                   placeholder="Select bedrooms…"
+                  variant="pill"
                   // className="w-full"
                 />
                 <Select
@@ -139,13 +139,14 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                   onChange={setBathrooms}
                   options={BATHROOMS}
                   placeholder="Select bathrooms…"
+                  variant="pill"
                   // className="w-full"
                 />
               </div>
 
               {/* Living area */}
               <div className="min-w-0">
-                <label htmlFor="area" className="block text-sm font-medium text-gray-800">
+                <label htmlFor="area" className="block text-sm font-medium  ">
                   Living area (sq ft)
                 </label>
                 <div className="relative">
@@ -156,13 +157,13 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     min={0}
                     placeholder="e.g., 1800"
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                      "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
                       "no-spinner"
                     )}
                   />
-                  <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-gray-500">
+                  <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-neutral-500">
                     sq ft
                   </span>
                 </div>
@@ -170,7 +171,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
               {/* Lot size */}
               <div className="min-w-0">
-                <label htmlFor="lot" className="mb-1 block text-sm font-medium text-gray-800">
+                <label htmlFor="lot" className="mb-1 block text-sm font-medium  ">
                   Lot size (sq ft)
                 </label>
                 <div className="relative">
@@ -181,13 +182,13 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     min={0}
                     placeholder="e.g., 7500"
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                      "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100",
                       "no-spinner"
                     )}
                   />
-                  <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-gray-500">
+                  <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-neutral-500">
                     sq ft
                   </span>
                 </div>
@@ -195,7 +196,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
               {/* Year built */}
               <div className="min-w-0">
-                <label htmlFor="year" className="mb-1 block text-sm font-medium text-gray-800">
+                <label htmlFor="year" className="mb-1 block text-sm font-medium  ">
                   Year built
                 </label>
                 <input
@@ -206,8 +207,8 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                   max={2025}
                   placeholder="e.g., 2015"
                   className={cx(
-                    "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                    "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                    "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                    "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                     "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                   )}
                 />
@@ -216,7 +217,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
             {/* Amenities */}
             <div className="mt-8">
-              <span className="mb-2 block text-sm font-medium text-gray-800">Amenities</span>
+              <span className="mb-2 block text-sm font-medium  ">Amenities</span>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {AMENITIES.map((a) => (
                   <Checkbox key={a} name="amenities" value={a.toLowerCase()} label={a} />
@@ -226,7 +227,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
 
             {/* Description */}
             <div className="mt-8">
-              <label htmlFor="description" className="mb-1 block text-sm font-medium text-gray-800">
+              <label htmlFor="description" className="mb-1 block text-sm font-medium  ">
                 Description
               </label>
               <textarea
@@ -235,19 +236,19 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                 rows={5}
                 placeholder="Add relevant details about the property…"
                 className={cx(
-                  "block w-full rounded-2xl border border-gray-200 bg-white/90 px-3 py-2 text-gray-900 shadow-sm transition",
-                  "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                  "block w-full rounded-2xl border border-neutral-200 bg-white/90 px-3 py-2   shadow-sm transition",
+                  "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                   "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                 )}
               />
             </div>
 
             {/* Contact */}
-            <fieldset className="mt-10 rounded-2xl border border-gray-100 p-4">
-              <legend className="px-2 text-sm font-medium text-gray-800">Contact details</legend>
+            <fieldset className="mt-10 rounded-2xl border border-neutral-100 p-4">
+              <legend className="px-2 text-sm font-medium  ">Contact details</legend>
               <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
-                  <label htmlFor="name" className="mb-1 block text-sm font-medium text-gray-800">
+                  <label htmlFor="name" className="mb-1 block text-sm font-medium  ">
                     Name
                   </label>
                   <input
@@ -256,15 +257,15 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     type="text"
                     placeholder="Full name"
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                      "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-800">
+                  <label htmlFor="email" className="mb-1 block text-sm font-medium  ">
                     Email
                   </label>
                   <input
@@ -273,15 +274,15 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     type="email"
                     placeholder="e.g., name@email.com"
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                      "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="mb-1 block text-sm font-medium text-gray-800">
+                  <label htmlFor="phone" className="mb-1 block text-sm font-medium  ">
                     Phone
                   </label>
                   <input
@@ -290,8 +291,8 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
                     type="tel"
                     placeholder="+373 60 000 000"
                     className={cx(
-                      "block w-full h-11 rounded-2xl border border-gray-200 bg-white/90 px-3 text-gray-900 shadow-sm transition",
-                      "placeholder:text-gray-400 hover:border-indigo-300 hover:bg-white",
+                      "block w-full h-11 rounded-2xl border border-neutral-200 bg-white/90 px-3   shadow-sm transition",
+                      "placeholder:text-neutral-400 hover:border-indigo-300 hover:bg-white",
                       "focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
                     )}
                   />
@@ -303,7 +304,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
             <div className="mt-8 flex flex-wrap items-center justify-end gap-3">
               <button
                 type="reset"
-                className="w-full sm:w-auto rounded-2xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50"
+                className="w-full sm:w-auto rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium   shadow-sm transition hover:bg-neutral-50"
                 onClick={() => {
                   setPropertyType(null);
                   setBedrooms(null);
@@ -315,7 +316,6 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
               </button>
               <button
                 type="submit"
-
                 className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-indigo-200"
               >
                 Publish listing
@@ -325,7 +325,7 @@ export default function RealEstateForm({ userPlan }: RealEstateFormProps) {
         </div>
 
         {/* micro footer */}
-        <p className="mx-auto mt-4 px-4 text-center text-xs text-gray-500">
+        <p className="mx-auto mt-4 px-4 text-center text-xs text-neutral-500">
           Interface refined for Safari / Chrome / Firefox (no native <code>&lt;select&gt;</code> styling).
         </p>
       </div>

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next";
+import { headers } from "next/headers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const appSans = Inter({
+  variable: "--font-app-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const appMono = JetBrains_Mono({
+  variable: "--font-app-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,13 +25,7 @@ export const metadata: Metadata = {
   },
   description:
     "ListologyAi centralizes briefs, brand voice, and AI assistants so real estate teams launch listings and campaigns faster with compliance built in.",
-  keywords: [
-    "real estate ai",
-    "listing generator",
-    "ai copywriting",
-    "property marketing platform",
-    "ListologyAi",
-  ],
+  keywords: ["real estate ai", "listing generator", "ai copywriting", "property marketing platform", "ListologyAi"],
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -52,15 +49,36 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerList = await headers();
+  const nextUrl = headerList.get("x-pathname") || headerList.get("next-url") || "/";
+  const isRealEstateGenerator = nextUrl.startsWith("/real-estate-generator");
+
   return (
-    <html lang="en" className="h-full">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
-        <div className="flex-1 flex flex-col">{children}</div>
+    <html lang="en" className={`${appSans.variable} ${appMono.variable} h-full`}>
+      <body className="font-sans antialiased min-h-screen flex flex-col bg-white">
+        <div
+          className={
+            isRealEstateGenerator
+              ? "flex-1 w-full" // full width, no centering
+              : "flex-1 flex justify-center px-4 sm:px-6 lg:px-8"
+          }
+        >
+          {/* <div
+    className={
+      isRealEstateGenerator
+        ? "w-full"       // full width content
+        : "w-full max-w-7xl flex flex-col"
+    }
+  > */}
+          {children}
+        </div>
+        {/* </div> */}
+
         <Footer />
         <Analytics />
       </body>

@@ -18,6 +18,7 @@ export type RealEstateHistoryDocument = {
   bathrooms: string | null;
   language: string;
   amenities: string[];
+  streetViewImage?: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -35,6 +36,7 @@ export type RealEstateHistoryEntry = {
   bathrooms: string | null;
   language: string;
   amenities: string[];
+  streetViewImage?: string | null;
   createdAt: string;
 };
 
@@ -93,6 +95,7 @@ export async function saveRealEstateGeneration(args: {
   bathrooms: string | null;
   language: string;
   amenities: string[];
+  streetViewImage?: string | null;
 }) {
   const database = await db();
   const collection = database.collection<RealEstateHistoryDocument>("realEstateGenerations");
@@ -112,6 +115,7 @@ export async function saveRealEstateGeneration(args: {
     bathrooms: args.bathrooms,
     language: args.language,
     amenities: args.amenities,
+    streetViewImage: args.streetViewImage ?? null,
     createdAt: now,
     updatedAt: now,
   };
@@ -144,6 +148,7 @@ export async function getRealEstateHistory(userId: string, limit = 20): Promise<
     bathrooms: doc.bathrooms ?? null,
     language: doc.language,
     amenities: doc.amenities,
+    streetViewImage: doc.streetViewImage ?? null,
     createdAt: doc.createdAt.toISOString(),
   }));
 }

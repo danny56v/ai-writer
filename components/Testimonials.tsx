@@ -1,13 +1,12 @@
 import Image from "next/image";
 
 const featuredTestimonial = {
-  body: "ListologyAi is the first platform that treats our listing pipeline like a real content workflow. Drafts land in minutes, our tone stays on-brand, and compliance checks happen before an agent ever hits publish.",
+  body: "ListologyAi is the first tool that lets me go from just an address to a finished listing in minutes. I drop the location, it pulls Street View context, and I get clean, on-brand copy I can use on MLS right away.",
   author: {
     name: "Maya Thompson",
     handle: "maya.thompson",
     imageUrl:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-
   },
 };
 
@@ -24,7 +23,7 @@ const testimonials = [
         },
       },
       {
-        body: "I used to spend hours writing descriptions. Now with ListologyAi, I generate polished listings in minutes and see properties sell much quicker.",
+        body: "I used to spend hours writing descriptions. Now I paste the address into ListologyAi and get a polished listing in minutes.",
         author: {
           name: "Jordan Wells",
           handle: "jordanwells",
@@ -35,7 +34,7 @@ const testimonials = [
     ],
     [
       {
-        body: "ListologyAi helped me increase engagement across all my listings. More clicks, more calls, and more sales — all from better copy.",
+        body: "ListologyAi helped me increase engagement across all my listings. Better copy means more clicks, more calls, and more serious buyers.",
         author: {
           name: "Sofia Martinez",
           handle: "sofia.martinez",
@@ -57,7 +56,7 @@ const testimonials = [
   [
     [
       {
-        body: "I manage listings in multiple languages — ListologyAi makes it effortless. My team now publishes faster while keeping every message on-brand.",
+        body: "I work in a competitive market and need to move fast. ListologyAi turns a simple address into a strong listing that’s ready to publish.",
         author: {
           name: "Aiko Tanaka",
           handle: "aikotanaka",
@@ -66,7 +65,7 @@ const testimonials = [
         },
       },
       {
-        body: "Thanks to ListologyAi, my marketing costs dropped while conversions increased. Each listing now attracts serious buyers within days.",
+        body: "Thanks to ListologyAi, my marketing time dropped while conversions increased. Each listing now attracts serious buyers within days.",
         author: {
           name: "Priya Chandrasekar",
           handle: "priyac",
@@ -77,7 +76,7 @@ const testimonials = [
     ],
     [
       {
-        body: "ListologyAi saves me hours each week and helps me sell properties faster. The AI suggestions sound natural and match my tone perfectly.",
+        body: "ListologyAi saves me hours each week and helps me sell properties faster. The suggestions sound natural and match my voice.",
         author: {
           name: "Malik Thompson",
           handle: "malik.thompson",
@@ -98,200 +97,87 @@ const testimonials = [
   ],
 ];
 
+const proofMetrics = [
+  { value: "2K+", label: "Listings generated with AI" },
+  { value: "98%", label: "Agents who would recommend" },
+  { value: "~5 hrs", label: "Average time saved per week" },
+  { value: "<24h", label: "Typical support reply time" },
+];
 
-// const testimonials = [
-//   [
-//     [
-//       {
-//         body: "Our boutique team went from juggling Word docs to shipping polished MLS copy in under ten minutes. ListologyAi keeps every voice guide, prompt, and revision thread in one place—it's basically our fifth teammate.",
-//         author: {
-//           name: "Elena Rossi",
-//           handle: "elena.rossi",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1536520002442-39764a41e067?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//       {
-//         body: "What sold me was the transparency. Finance can see usage, marketing can lock brand presets, and agents still have the freedom to tweak tone. ListologyAi finally got sales, ops, and creative on the same page.",
-//         author: {
-//           name: "Jordan Wells",
-//           handle: "jordanwells",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//     ],
-//     [
-//       {
-//         body: "We tested five AI tools and kept coming back to ListologyAi. The structured briefs mean my copywriters start with the right context, and approval flows give leadership confidence every draft is compliant.",
-//         author: {
-//           name: "Sofia Martinez",
-//           handle: "sofia.martinez",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80",
-//         },
-//       },
-//       {
-//         body: "Listing volume doubled after launch because our agents stopped rewriting paragraphs from scratch. Templates, comments, and analytics live together so we can prove the ROI every month.",
-//         author: {
-//           name: "Connor Blake",
-//           handle: "connorblake",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//     ],
-//   ],
-//   [
-//     [
-//       {
-//         body: "Our franchise network writes in four languages. ListologyAi keeps translations, regional nuances, and compliance guardrails organised so every office publishes faster without losing personality.",
-//         author: {
-//           name: "Aiko Tanaka",
-//           handle: "aikotanaka",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//       {
-//         body: "The billing portal plus usage dashboards have been a gift for our operations team. We can experiment with new campaigns, see results, and scale credits without surprise invoices.",
-//         author: {
-//           name: "Priya Chandrasekar",
-//           handle: "priyac",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//     ],
-//     [
-//       {
-//         body: "We produce weekly investor memos and property spotlights. ListologyAi auto-suggests outlines, pulls in saved talking points, and leaves space for our voice. It feels like a seasoned copy editor on call.",
-//         author: {
-//           name: "Malik Thompson",
-//           handle: "malik.thompson",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//       {
-//         body: "Compliance reviews used to bottleneck launches. Now legal drops comments directly in the draft, approves changes, and everyone sees the history. ListologyAi turned approvals into a shared workflow instead of an email chain.",
-//         author: {
-//           name: "Gabrielle Monroe",
-//           handle: "gabriellemonroe",
-//           imageUrl:
-//             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//         },
-//       },
-//     ],
-//   ],
-// ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+const testimonialCards = testimonials.flat(2);
 
 export default function Testimonials() {
+  const spotlightCards = testimonialCards.slice(0, 4);
+
   return (
-    <div className="relative isolate bg-white pb-32 pt-24 sm:pt-32">
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 transform-gpu overflow-hidden opacity-30 blur-3xl"
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className="ml-[max(50%,38rem)] aspect-[1313/771] w-[82.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc]"
-        />
-      </div>
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 flex transform-gpu overflow-hidden pt-32 opacity-25 blur-3xl sm:pt-40 xl:justify-end"
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className="ml-[-22rem] aspect-[1313/771] w-[82.0625rem] flex-none origin-top-right rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] xl:ml-0 xl:mr-[calc(50%-12rem)]"
-        />
-      </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-xl text-center">
-          <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonials</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Teams trust ListologyAi to keep every launch on message
+    <section className="rounded-2xl border border-neutral-100 bg-gradient-to-br from-white via-white to-indigo-50/30 px-6 py-12 shadow-[0_35px_120px_rgba(15,23,42,0.08)]">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center">
+          <span className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-600">
+            Testimonials
+          </span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight   sm:text-4xl">
+            Agents trust ListologyAi to write better listings
+          </h2>
+          <p className="mt-2 text-base leading-7 text-neutral-600">
+            Real estate agents rely on ListologyAi to turn simple addresses into polished descriptions that help
+            properties stand out and sell faster.
           </p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
-          <figure className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 sm:col-span-2 xl:col-start-2 xl:row-end-1">
-            <blockquote className="p-6 text-lg font-semibold leading-7 tracking-tight text-gray-900 sm:p-12 sm:text-xl sm:leading-8">
-              <p>{`“${featuredTestimonial.body}”`}</p>
-            </blockquote>
-            <figcaption className="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-900/10 px-6 py-4 sm:flex-nowrap">
+
+        <div className="mt-12 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-xl border border-white/70 bg-white/90 p-8 shadow-inner">
+            <blockquote className="text-xl font-semibold leading-8  ">“{featuredTestimonial.body}”</blockquote>
+            <figcaption className="mt-6 flex items-center gap-4">
               <Image
-                alt=""
+                alt={featuredTestimonial.author.name}
                 src={featuredTestimonial.author.imageUrl}
-                className="h-10 w-10 flex-none rounded-full bg-gray-50"
-                width={100}
-                height={100}
+                width={56}
+                height={56}
+                className="h-14 w-14 rounded-full object-cover"
               />
-              <div className="flex-auto">
-                <div className="font-semibold">{featuredTestimonial.author.name}</div>
-                <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
+              <div>
+                <div className="text-base font-semibold  ">{featuredTestimonial.author.name}</div>
+                <div className="text-sm uppercase tracking-wide text-neutral-500">
+                  @{featuredTestimonial.author.handle}
+                </div>
               </div>
-              {/* <Image
-                alt=""
-                src={featuredTestimonial.author.logoUrl}
-                className="h-10 w-auto flex-none"
-                width={100}
-                height={100}
-              /> */}
             </figcaption>
-          </figure>
-          {testimonials.map((columnGroup, columnGroupIdx) => (
-            <div key={columnGroupIdx} className="space-y-8 xl:contents xl:space-y-0">
-              {columnGroup.map((column, columnIdx) => (
-                <div
-                  key={columnIdx}
-                  className={classNames(
-                    (columnGroupIdx === 0 && columnIdx === 0) ||
-                      (columnGroupIdx === testimonials.length - 1 && columnIdx === columnGroup.length - 1)
-                      ? "xl:row-span-2"
-                      : "xl:row-start-1",
-                    "space-y-8"
-                  )}
-                >
-                  {column.map((testimonial) => (
-                    <figure
-                      key={testimonial.author.handle}
-                      className="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-                    >
-                      <blockquote className="text-gray-900">
-                        <p>{`“${testimonial.body}”`}</p>
-                      </blockquote>
-                      <figcaption className="mt-6 flex items-center gap-x-4">
-                        <Image
-                          alt=""
-                          src={testimonial.author.imageUrl}
-                          className="h-10 w-10 rounded-full bg-gray-50"
-                          width={100}
-                          height={100}
-                        />
-                        <div>
-                          <div className="font-semibold">{testimonial.author.name}</div>
-                          <div className="text-gray-600">{`@${testimonial.author.handle}`}</div>
-                        </div>
-                      </figcaption>
-                    </figure>
-                  ))}
+            <dl className="mt-8 grid gap-4 sm:grid-cols-2">
+              {proofMetrics.map((metric) => (
+                <div key={metric.label} className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4 text-center">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{metric.label}</dt>
+                  <dd className="mt-2 text-2xl font-semibold  ">{metric.value}</dd>
                 </div>
               ))}
-            </div>
-          ))}
+            </dl>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            {spotlightCards.map((testimonial) => (
+              <figure
+                key={testimonial.author.handle}
+                className="rounded-2xl border border-neutral-100 bg-white/90 p-6 text-left shadow-sm ring-1 ring-neutral-100/60"
+              >
+                <p className="text-sm  ">“{testimonial.body}”</p>
+                <figcaption className="mt-6 flex items-center gap-3">
+                  <Image
+                    alt={testimonial.author.name}
+                    src={testimonial.author.imageUrl}
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <div className="text-sm font-semibold  ">{testimonial.author.name}</div>
+                    <div className="text-xs uppercase tracking-wide text-neutral-500">@{testimonial.author.handle}</div>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

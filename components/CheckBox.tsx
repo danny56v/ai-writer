@@ -20,11 +20,10 @@ function Checkbox({ name, value, label, checked, onChange }: Props) {
       />
       <div
         className={cx(
-          "flex items-center justify-center rounded-xl border px-3 py-2 text-sm shadow-sm transition",
-          "border-gray-200 bg-white text-gray-700",
-          "hover:border-indigo-300 hover:bg-indigo-50/50",
-          "peer-checked:bg-indigo-600 peer-checked:border-indigo-500 peer-checked:text-white peer-checked:hover:bg-indigo-500",
-          "peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500"
+          "flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium   transition",
+          "border-neutral-200/80 bg-white shadow-[0_12px_40px_-28px_rgba(15,23,42,0.5)] hover:border-neutral-300 hover:bg-neutral-50",
+          "peer-checked:border-neutral-900 peer-checked:bg-neutral-900 peer-checked:text-white peer-checked:shadow-[0_18px_45px_-25px_rgba(15,23,42,0.65)]",
+          "peer-focus-visible:ring-2 peer-focus-visible:ring-neutral-300"
         )}
       >
         {label}

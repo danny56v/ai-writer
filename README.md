@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Google Street View configuration
+
+The real-estate generator now captures a live Street View photo for every address before writing the description. Add an API key
+to your `.env.local` file so it can request imagery:
+
+```bash
+GOOGLE_STREET_VIEW_API_KEY=your_google_maps_key
+```
+
+Make sure the key has access to the [Street View Static API](https://developers.google.com/maps/documentation/streetview/overview).
+If you already expose a general `GOOGLE_MAPS_API_KEY`, that value will also be used automatically.
