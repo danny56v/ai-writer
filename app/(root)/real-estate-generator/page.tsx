@@ -45,9 +45,9 @@ export const metadata: Metadata = {
   },
 };
 
-interface PageProps {
-  searchParams?: Record<string, string | string[] | undefined>;
-}
+type PageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
 
 const buildCallbackUrl = (searchParams?: Record<string, string | string[] | undefined>) => {
   const search = new URLSearchParams();
@@ -68,11 +68,12 @@ const buildCallbackUrl = (searchParams?: Record<string, string | string[] | unde
 };
 
 const RealEstateGeneratorPage = async ({ searchParams }: PageProps) => {
+  const params = await searchParams;
   const session = await auth();
   const userId = session?.user?.id ?? null;
 
   if (!userId) {
-    const callbackUrl = buildCallbackUrl(searchParams);
+    const callbackUrl = buildCallbackUrl(params);
     redirect(`/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`);
   }
 

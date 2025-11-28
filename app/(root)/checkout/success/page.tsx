@@ -39,8 +39,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Return({ searchParams }: { searchParams?: { session_id?: string } }) {
-  const sessionId = searchParams?.session_id;
+type CheckoutSuccessPageProps = {
+  searchParams: Promise<{ session_id?: string | string[] | undefined }>;
+};
+
+export default async function Return({ searchParams }: CheckoutSuccessPageProps) {
+  const params = await searchParams;
+  const rawSessionId = params?.session_id;
+  const sessionId = Array.isArray(rawSessionId) ? rawSessionId[0] : rawSessionId;
 
   if (!sessionId) {
     return redirect("/pricing");

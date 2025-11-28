@@ -399,8 +399,8 @@ export async function genererateRealEstateDescription(
   }
 
   const hasYear = typeof yearRaw === "string" && yearRaw.trim().length > 0;
-  const year = hasYear ? Number(yearRaw) : undefined;
-  if (hasYear && (!Number.isFinite(year) || year <= 0)) {
+  const year = hasYear ? Number(yearRaw) : null;
+  if (year !== null && (!Number.isFinite(year) || year <= 0)) {
     return { text: "", error: "Year built must be a valid number when provided." };
   }
 
@@ -452,7 +452,7 @@ export async function genererateRealEstateDescription(
   if (lot) {
     optionalContextFacts.push(`Lot size (internal reference only): ${lot} sq ft.`);
   }
-  if (year) {
+  if (typeof year === "number") {
     optionalContextFacts.push(`Year built from agent notes: ${year}.`);
   }
   if (hasPrice && typeof price === "number") {
