@@ -60,12 +60,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${appSans.variable} ${appMono.variable} h-full`}>
-      <body className="font-sans antialiased min-h-screen flex flex-col bg-white">
+      <body className="font-sans antialiased min-h-screen flex flex-col bg-white overflow-x-hidden">
         <div
           className={
             isRealEstateGenerator
               ? "flex-1 w-full" // full width, no centering
-              : "flex-1 flex justify-center px-4 sm:px-6 lg:px-8"
+              : "flex-1 flex w-full justify-center px-4 sm:px-6 lg:px-8 overflow-x-hidden"
           }
         >
           {/* <div
