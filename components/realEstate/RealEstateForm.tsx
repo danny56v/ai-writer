@@ -462,8 +462,8 @@ const RealEstateForm = ({
           className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-64 rounded-[32px] bg-gradient-to-r from-neutral-100/0 via-neutral-100/60 to-neutral-100/0 blur-2xl sm:block"
         />
 
-        <div className="relative flex flex-col gap-4 p-4">
-          <header className="rounded-xl border border-neutral-100 bg-white/85 p-4 shadow-[0_20px_55px_-55px_rgba(15,23,42,0.8)] backdrop-blur">
+        <div className="relative flex flex-col gap-4 px-0 pb-5 pt-4 sm:px-4 sm:pb-6">
+          <header className="rounded-xl border border-neutral-100 bg-white/85 p-4 shadow-[0_20px_55px_-55px_rgba(15,23,42,0.8)] backdrop-blur sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="mt-1.5 text-2xl font-semibold  sm:text-[26px]">Listing Description Generator</h2>
@@ -496,7 +496,7 @@ const RealEstateForm = ({
           <div className="">
             <form id="real-estate-form" className="space-y-4 " action={formAction} onSubmit={handleSubmit} noValidate>
               <section className="space-y-4">
-                <div className="rounded-lg border border-neutral-100 bg-white/90 p-4 shadow-[0_25px_65px_-60px_rgba(15,23,42,0.45)]">
+                <div className="rounded-lg border border-neutral-100 bg-white/90 p-4 shadow-[0_25px_65px_-60px_rgba(15,23,42,0.45)] sm:p-5">
                   <div className="flex items-start justify-between">
                     <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Street View capture</p>
                     <span className="text-xs font-medium ">Required</span>
@@ -557,7 +557,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-neutral-100 bg-white/90 p-4 shadow-[0_25px_65px_-60px_rgba(15,23,42,0.45)]">
+                <div className="rounded-lg border border-neutral-100 bg-white/90 p-4 shadow-[0_25px_65px_-60px_rgba(15,23,42,0.45)] sm:p-5">
                   <div className="">
                     {/* <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Optional context</p> */}
                     <h3 className="text-lg font-semibold ">Basic details</h3>
@@ -666,7 +666,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
 
-                <div className="rounded-[24px] border border-neutral-100 bg-white/90 p-5 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)]">
+                <div className="rounded-[24px] border border-neutral-100 bg-white/90 p-5 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)] sm:p-6">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Features & amenities</p>
@@ -691,7 +691,7 @@ const RealEstateForm = ({
                   </div>
                 </div>
 
-                <div className="rounded-[24px] border border-neutral-100 bg-white/90 p-5 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)]">
+                <div className="rounded-[24px] border border-neutral-100 bg-white/90 p-5 shadow-[0_35px_80px_-60px_rgba(15,23,42,0.45)] sm:p-6">
                   <div>
                     <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Agent notes</p>
                     <h3 className="text-lg font-semibold ">Anything else?</h3>
@@ -712,15 +712,15 @@ const RealEstateForm = ({
                   />
                 </div>
               </section>
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-3">
-                <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-col gap-3 pt-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
                   <input type="hidden" name="language" value={language} />
                   <input type="hidden" name="tone" value={tone} />
-                  <div className="flex items-center gap-2 rounded-lg  px-3 py-1.5 text-sm font-semibold  shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)]">
+                  <div className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)] sm:w-auto sm:justify-start">
                     <span>Language:</span>
                     <Listbox value={language} onChange={setLanguage}>
-                      <div className="relative">
-                        <ListboxButton className="relative flex h-9 w-44 cursor-default items-center justify-between rounded-lg border border-neutral-200/80 bg-white/90 px-3 text-sm font-semibold  shadow-[0_10px_30px_-20px_rgba(15,23,42,0.5)] transition hover:border-neutral-300 hover:bg-neutral-50 focus:border-neutral-900 focus:outline-none focus:ring-3 focus:ring-neutral-200">
+                      <div className="relative w-full sm:w-auto">
+                        <ListboxButton className="relative flex h-9 w-full cursor-default items-center justify-between rounded-lg border border-neutral-200/80 bg-white/90 px-3 text-sm font-semibold shadow-[0_10px_30px_-20px_rgba(15,23,42,0.5)] transition hover:border-neutral-300 hover:bg-neutral-50 focus:border-neutral-900 focus:outline-none focus:ring-3 focus:ring-neutral-200 sm:w-44">
                           <span className="block truncate">
                             {languageOptions.find((opt) => opt.value === language)?.label ?? ""}
                           </span>
@@ -731,7 +731,7 @@ const RealEstateForm = ({
 
                         <ListboxOptions
                           transition
-                          className="absolute bottom-full z-20 mb-2 max-h-64 w-48 origin-bottom overflow-auto rounded-lg border border-neutral-100 bg-white/95 py-1 text-sm shadow-xl ring-1 ring-black/5 backdrop-blur-sm focus:outline-none data-[closed]:data-[leave]:scale-95 data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in"
+                          className="absolute bottom-full z-20 mb-2 max-h-64 w-full origin-bottom overflow-auto rounded-lg border border-neutral-100 bg-white/95 py-1 text-sm shadow-xl ring-1 ring-black/5 backdrop-blur-sm focus:outline-none data-[closed]:data-[leave]:scale-95 data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:w-48"
                         >
                           {languageOptions.map((option) => (
                             <ListboxOption
@@ -753,11 +753,11 @@ const RealEstateForm = ({
                     </Listbox>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold  shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)]">
+                  <div className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)] sm:w-auto sm:justify-start">
                     <span>Tone:</span>
                     <Listbox value={tone} onChange={setTone}>
-                      <div className="relative">
-                        <ListboxButton className="relative flex h-9 w-52 cursor-default items-center justify-between rounded-lg border border-neutral-200/80 bg-white/90 px-3 text-sm font-semibold  shadow-[0_10px_30px_-20px_rgba(15,23,42,0.5)] transition hover:border-neutral-300 hover:bg-neutral-50 focus:border-neutral-900 focus:outline-none focus:ring-3 focus:ring-neutral-200">
+                      <div className="relative w-full sm:w-auto">
+                        <ListboxButton className="relative flex h-9 w-full cursor-default items-center justify-between rounded-lg border border-neutral-200/80 bg-white/90 px-3 text-sm font-semibold shadow-[0_10px_30px_-20px_rgba(15,23,42,0.5)] transition hover:border-neutral-300 hover:bg-neutral-50 focus:border-neutral-900 focus:outline-none focus:ring-3 focus:ring-neutral-200 sm:w-52">
                           <span className="block truncate">
                             {toneOptions.find((opt) => opt.value === tone)?.label ?? ""}
                           </span>
@@ -768,7 +768,7 @@ const RealEstateForm = ({
 
                         <ListboxOptions
                           transition
-                          className="absolute bottom-full z-20 mb-2 max-h-64 w-56 origin-bottom overflow-auto rounded-lg border border-neutral-100 bg-white/95 py-1 text-sm shadow-xl ring-1 ring-black/5 backdrop-blur-sm focus:outline-none data-[closed]:data-[leave]:scale-95 data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in"
+                          className="absolute bottom-full z-20 mb-2 max-h-64 w-full origin-bottom overflow-auto rounded-lg border border-neutral-100 bg-white/95 py-1 text-sm shadow-xl ring-1 ring-black/5 backdrop-blur-sm focus:outline-none data-[closed]:data-[leave]:scale-95 data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:w-56"
                         >
                           {toneOptions.map((option) => (
                             <ListboxOption
@@ -792,7 +792,7 @@ const RealEstateForm = ({
 
                   <button
                     type="reset"
-                    className="inline-flex items-center rounded-lg border border-neutral-200/80 bg-white/80 px-5 py-2 text-sm font-semibold  shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)] transition hover:border-neutral-300 hover:bg-neutral-50"
+                    className="inline-flex w-full items-center justify-center rounded-lg border border-neutral-200/80 bg-white/80 px-5 py-2 text-sm font-semibold shadow-[0_12px_40px_-28px_rgba(15,23,42,0.45)] transition hover:border-neutral-300 hover:bg-neutral-50 sm:w-auto"
                     onClick={() => {
                       setPropertyType(null);
                       setBedrooms(null);
@@ -810,7 +810,7 @@ const RealEstateForm = ({
                 <button
                   type="submit"
                   disabled={pending}
-                  className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-8 py-3 text-sm font-semibold text-white shadow-[0_30px_70px_-40px_rgba(15,23,42,0.9)] transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-lg bg-neutral-900 px-8 py-3 text-sm font-semibold text-white shadow-[0_30px_70px_-40px_rgba(15,23,42,0.9)] transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   {pending ? "Generating..." : "Generate"}
                 </button>

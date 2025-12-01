@@ -142,22 +142,22 @@ export default function Pricing({ currentPriceId }: Props) {
   };
 
   return (
-    <section className="relative isolate px-6 py-16 sm:py-24 lg:px-10">
-      <div className="mx-auto max-w-6xl">
+    <section className="relative isolate px-0 py-16 sm:py-24 lg:px-0">
+      <div className="mx-auto w-full max-w-6xl px-0">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
             Pricing
           </div>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight   sm:text-5xl">
+          <h1 className="mx-auto mt-6 max-w-4xl text-3xl font-bold tracking-tight sm:text-5xl">
             Make AI listing copy part of every property you sell.
           </h1>
-          <p className="mt-4 text-lg leading-8 ">
+          <p className="mx-auto mt-4 max-w-3xl text-base leading-7 sm:text-lg sm:leading-8">
             Start with one free description on us. When you’re ready to list more properties, choose a simple plan based
             on your volume — no long contracts, just address → Street View → AI listing copy in seconds.
           </p>
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm ">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 px-4 text-sm sm:px-0">
           {pricingHighlights.map((item) => (
             <span
               key={item}
@@ -188,8 +188,7 @@ export default function Pricing({ currentPriceId }: Props) {
         <div className="mt-12 flex flex-col items-center gap-6 lg:flex-row lg:justify-center">
           <fieldset
             aria-label="Payment frequency"
-            className="relative rounded-2xl border border-neutral-200 bg-white/60 backdrop-blur p-2 shadow-lg"
-          >
+            className="relative w-full max-w-md rounded-2xl border border-neutral-200 bg-white/60 p-2 shadow-lg backdrop-blur"          >
             <RadioGroup value={frequency} onChange={setFrequency} className="relative grid grid-cols-2">
               {/* Background highlight that slides */}
               <span
@@ -218,10 +217,10 @@ export default function Pricing({ currentPriceId }: Props) {
             </RadioGroup>
           </fieldset>
 
-          <p className="text-sm ">Secure checkout via Stripe. Taxes calculated at payment.</p>
+          <p className="text-sm text-center px-4 sm:px-0">Secure checkout via Stripe. Taxes calculated at payment.</p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 px-4 sm:grid-cols-2 sm:gap-6 sm:px-4 lg:grid-cols-3 lg:px-0">
           {pricing.tiers.map((tier) => {
             const tierPriceId = tier.priceId?.[frequency.value] ?? null;
 
@@ -240,7 +239,7 @@ export default function Pricing({ currentPriceId }: Props) {
               <div
                 key={tier.id}
                 className={classNames(
-                  "flex flex-col rounded-xl border p-8 shadow-lg transition",
+                  "flex flex-col rounded-2xl border p-6 shadow-lg transition sm:p-7 lg:p-8",
                   isHighlighted
                     ? "border-neutral-900 bg-neutral-900 text-white shadow-[0_45px_120px_rgba(15,23,42,0.45)]"
                     : "border-neutral-200 bg-white/90  shadow-[0_35px_90px_rgba(15,23,42,0.08)]"

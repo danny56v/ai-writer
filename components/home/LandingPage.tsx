@@ -174,7 +174,7 @@ const testimonials = {
 
 function HeroShowcase() {
   return (
-    <div className="relative mx-auto mt-20 max-w-6xl px-6 sm:px-0">
+    <div className="relative mx-auto mt-20 max-w-6xl px-4 sm:px-0">
       <div className="rounded-2xl border border-neutral-200 bg-white/95 p-4 shadow-[0_35px_90px_rgba(15,23,42,0.08)] ring-1 ring-neutral-100/70">
         <div className="rounded-xl bg-neutral-50 p-1">
           <Image
@@ -234,7 +234,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
     <div className="mt-16  ">
       <main className="isolate">
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 pt-28 pb-40 sm:pt-36 lg:px-8 lg:pb-52">
+        <section className="relative overflow-hidden px-4 pt-14 pb-40 sm:px-6 sm:pt-36 lg:px-8 lg:pb-52">
           {/* <div aria-hidden="true" className="absolute inset-0 -z-10">
             <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-white via-white/90 to-transparent" />
             <div className="absolute left-[-12rem] top-16 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl sm:left-[-6rem]" />
@@ -265,13 +265,13 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               Enter the address.
               <br /> Get a ready-to-use listing description in seconds.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-neutral-600">
+            <p className="mt-6 text-sm sm:text-lg leading-8 text-neutral-600">
               Just drop the property address. We automatically analyze Street View, extract key details, and generate a
               clean, persuasive MLS-ready description—without you writing a single word. Perfect for busy agents who
               want fast, professional copy.
             </p>
             <div className="mt-10">
-              <div className="mx-auto w-full max-w-4xl rounded-2xl  bg-white/85 p-4 shadow-[0_30px_80px_-70px_rgba(15,23,42,0.55)] rbackdrop-blur">
+              <div className="mx-auto w-full max-w-none rounded-2xl bg-white/85 p-4 shadow-[0_30px_80px_-70px_rgba(15,23,42,0.55)] sm:max-w-4xl sm:p-5">
                 <form
                   onSubmit={handleHeroSubmit}
                   className="flex flex-col gap-3 sm:flex-row sm:items-center"
@@ -294,8 +294,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                     />
                   </div>
                   <button
-                    className="relative inline-flex items-center justify-center px-6 py-3 
-             rounded-xl text-white font-semibold bg-black"
+                    className="relative inline-flex w-full items-center justify-center rounded-xl bg-black px-6 py-3 text-white font-semibold sm:w-auto"
                   >
                     <span className="relative z-10">Generate</span>
                   </button>
@@ -310,7 +309,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
         </section>
 
         <section className="bg-transparent py-12 sm:py-14">
-          <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
             <p className="text-center text-[11px] font-semibold uppercase tracking-[0.5em] text-neutral-400">
               Trusted by the best
             </p>
@@ -365,7 +364,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </div>
           </div>
         </section> */}
-        <section id="features" className="bg-transparent px-6 py-24 lg:px-10">
+        <section id="features" className="bg-transparent py-10 sm:py-24 sm:px-6 lg:px-10">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
     <p className="text-sm font-semibold uppercase tracking-wide 
@@ -401,10 +400,10 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                 ))}
               </dl>
             </div>
-            <div className="rounded-xl border border-neutral-100 bg-white/85 p-8 shadow-[0_32px_90px_-70px_rgba(15,23,42,0.45)] ring-1 ring-neutral-100/80">
+            <div className="rounded-xl border border-neutral-100 bg-white/85 p-4 shadow-[0_32px_90px_-70px_rgba(15,23,42,0.45)] ring-1 ring-neutral-100/80">
               <div className="grid grid-cols-3 gap-4">
                 {productStats.map((stat) => (
-                  <div key={stat.value} className="rounded-xl bg-neutral-50 p-4 text-center ring-1 ring-neutral-100">
+                  <div key={stat.value} className="rounded-xl bg-neutral-50 p-1 text-center ring-1 ring-neutral-100">
                     <div className="text-2xl font-semibold  ">{stat.value}</div>
                     <p className="mt-1 text-xs uppercase tracking-wide text-neutral-500">{stat.label}</p>
                   </div>
@@ -442,32 +441,34 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </div>
           </div>
         </section>
-        <section id="resources" className="relative overflow-hidden bg-transparent px-6 py-24 lg:px-10">
-          <div className="mx-auto max-w-6xl rounded-2xl border border-neutral-100 bg-gradient-to-br from-white via-neutral-50 to-indigo-50/40 px-10 py-16 shadow-[0_45px_120px_-70px_rgba(15,23,42,0.55)] sm:px-14">
-            <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-600">
+        <section id="resources" className="relative overflow-hidden bg-transparent sm:p-3 sm:py-24 sm:px-6 lg:px-10">
+          <div className="mx-auto max-w-6xl rounded-2xl sm:border sm:border-neutral-100 sm:bg-gradient-to-br from-white via-neutral-50 to-indigo-50/40 px-3 py-7 sm:shadow-[0_45px_120px_-70px_rgba(15,23,42,0.55)] sm:px-10 sm:py-16 lg:px-12">
+            <div className="grid gap-5 sm:gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="rounded-2xl border border-neutral-100 bg-white/95 p-3 shadow-[0_30px_90px_-70px_rgba(15,23,42,0.35)] sm:p-8">
+                <div className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-600 sm:justify-start">
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   Customer story
                 </div>
-                <blockquote className="mt-8 text-3xl font-semibold leading-tight  ">“{testimonials.quote}”</blockquote>
-                <figcaption className="mt-6 text-sm font-semibold text-neutral-500">
+                <blockquote className="mt-6 text-2xl font-semibold leading-tight sm:mt-8 sm:text-3xl">
+                  “{testimonials.quote}”
+                </blockquote>
+                <figcaption className="mt-5 text-sm font-semibold text-neutral-500 sm:mt-6 sm:text-base">
                   {testimonials.name} · {testimonials.role}
                 </figcaption>
               </div>
-              <div className="rounded-xl border border-neutral-100 bg-white/90 p-8 shadow-lg ring-1 ring-neutral-100">
+              <div className="rounded-2xl border border-neutral-100 bg-white/90 p-3 shadow-lg ring-1 ring-neutral-100 sm:p-8">
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-neutral-500">Why they switched</p>
-                <ul className="mt-6 space-y-4">
+                <ul className="mt-5 space-y-4 sm:mt-6">
                   {testimonialChecklist.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm  ">
-                      <span className="mt-0.5 h-5 w-5 rounded-full bg-neutral-900 text-[11px] font-semibold leading-5 text-white">
+                    <li key={item} className="flex items-start gap-3 text-sm sm:text-base">
+                      <span className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold leading-5 text-white">
                         ✓
                       </span>
-                      {item}
+                      <span className="leading-6 text-neutral-700">{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 rounded-2xl bg-neutral-50 p-5 ring-1 ring-neutral-100">
+                <div className="mt-8 rounded-2xl bg-neutral-50 p-5 ring-1 ring-neutral-100 sm:mt-10">
                   <p className="text-sm font-semibold  ">Focus area</p>
                   <p className="mt-1 text-sm text-neutral-600">
                     Busy solo agents and small teams who handle multiple listings per month and need instant, MLS-safe
@@ -482,7 +483,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-white/70 to-white"
           />
         </section>
-        <section id="pricing" className="bg-transparent px-6 py-10 lg:px-10">
+        <section id="pricing" className="bg-transparent px-4 py-10 sm:px-6 lg:px-10">
           {/* <div className="mx-auto max-w-4xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-neutral-500">Pricing</p>
             <h2 className="mt-3 text-4xl font-bold tracking-tight   sm:text-5xl">
@@ -503,7 +504,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           description="Tips, product updates, and real examples to help you create stronger listing descriptions and stand out in any market."
         />
 
-        <section className="bg-transparent px-6 py-24 lg:px-10">
+        <section className="bg-transparent px-4 py-24 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.4em] text-neutral-500">FAQ</p>
@@ -529,7 +530,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </dl>
           </div>
         </section>
-        <section className="bg-transparent px-6 pb-32 pt-16 lg:px-10">
+        <section className="bg-transparent px-4 pb-32 pt-16 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-5xl rounded-2xl border border-neutral-100 bg-gradient-to-r from-white via-neutral-50 to-indigo-50/60 px-10 py-14 text-center shadow-[0_40px_120px_-80px_rgba(15,23,42,0.5)]">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-neutral-500">Get started</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight   sm:text-4xl">

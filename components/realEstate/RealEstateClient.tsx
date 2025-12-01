@@ -402,7 +402,11 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-white/80 to-white" />
         </div> */}
 
-        <div className={["mx-auto w-full pb-10 pt-8 sm:pt-10", isOpen ? "max-w-screen-2xl" : "max-w-7xl"].join(" ")}>
+        <div
+          className={["mx-auto w-full px-4 pb-10 pt-8 sm:px-6 sm:pt-10", isOpen ? "max-w-screen-2xl" : "max-w-7xl"].join(
+            " "
+          )}
+        >
           <div className="flex flex-col lg:flex-row gap-3">
             <div
               className={[
@@ -461,8 +465,8 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
           </div>
         </div>
 
-        <section className="relative mt-12">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <section className="relative mt-12 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
             <div className="rounded-xl border border-neutral-100 bg-white/95 p-5 shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)] sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
@@ -714,7 +718,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
         </section>
 
         <section className="relative py-16 sm:py-24">
-          <div className="mx-auto max-w-6xl px-4 lg:px-8">
+          <div className="mx-auto max-w-6xl px-0 md:px-6 lg:px-8">
             <span className="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
               Workflow
             </span>
