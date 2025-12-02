@@ -3,13 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Email Confirmation",
+  title: "Confirm email | Start pasting addresses for instant descriptions",
   description:
-    "Check your inbox to confirm your ListologyAi account and start generating MLS-ready real estate descriptions with AI.",
-  keywords: ["ListologyAi email verification", "real estate AI account activation", "ListologyAi confirmation"],
+    "Check your inbox to confirm your ListologyAi account and begin turning any property address into an MLS-ready real estate description.",
+  keywords: ["ListologyAi email verification", "address to description", "real estate AI account activation", "ListologyAi confirmation"],
   openGraph: {
-    title: "ListologyAi Email Confirmation",
-    description: "Verify your ListologyAi account from your inbox to unlock AI-powered real estate copywriting.",
+    title: "Confirm email | Start pasting addresses for instant descriptions",
+    description: "Verify your ListologyAi account from your inbox to unlock AI-powered real estate copywriting from any address.",
     url: "https://listologyai.com/check-email",
     type: "website",
     images: [
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Email Confirmation",
-    description: "Confirm your ListologyAi account to keep building AI-powered real estate marketing.",
+    title: "Confirm email | Start pasting addresses for instant descriptions",
+    description: "Confirm your ListologyAi account to keep building AI-powered real estate marketing from a property address.",
     images: ["/Logo.png"],
   },
   robots: {

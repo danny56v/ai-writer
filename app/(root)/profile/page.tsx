@@ -45,13 +45,14 @@ const statusLabels: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "ListologyAi Account Settings",
+  title: "Account settings for address-to-description AI | ListologyAi",
   description:
-    "Manage your ListologyAi profile, plan usage, billing history, and security settings for your real estate description generator.",
-  keywords: ["ListologyAi account", "real estate AI billing", "ListologyAi subscription management"],
+    "Manage your ListologyAi profile, plan usage, billing, and security so you can keep pasting property addresses and receiving ready-to-publish descriptions.",
+  keywords: ["ListologyAi account", "address to description", "real estate AI billing", "ListologyAi subscription management"],
   openGraph: {
-    title: "ListologyAi Account Settings",
-    description: "Review ListologyAi profile details, usage, billing history, and security preferences in one place.",
+    title: "Account settings for address-to-description AI | ListologyAi",
+    description:
+      "Review ListologyAi profile details, usage, billing history, and security preferences so you can keep turning addresses into listing descriptions.",
     url: "https://listologyai.com/profile",
     type: "website",
     images: [
@@ -65,8 +66,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Account Settings",
-    description: "Access ListologyAi account controls, billing tools, and security settings from a single hub.",
+    title: "Account settings for address-to-description AI | ListologyAi",
+    description: "Access ListologyAi account controls to keep pasting addresses and receiving MLS-ready descriptions.",
     images: ["/Logo.png"],
   },
   robots: {

@@ -113,8 +113,10 @@ export default function Testimonials() {
     <section className="rounded-2xl border border-neutral-100 bg-gradient-to-br from-white via-white to-indigo-50/30 px-6 py-12 shadow-[0_35px_120px_rgba(15,23,42,0.08)]">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <span className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-600">
-            Testimonials
+          <span className="inline-flex rounded-full bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 via-green-500 via-blue-500 to-blue-700 p-[1px]">
+            <span className="inline-flex items-center justify-center rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-600">
+              Testimonials
+            </span>
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight   sm:text-4xl">
             Agents trust ListologyAi to write better listings

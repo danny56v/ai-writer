@@ -2,18 +2,13 @@ import type { Metadata } from "next";
 import ResetPasswordScreen from "@/components/auth/ResetPasswordScreen";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Reset Password",
+  title: "Reset password | Continue turning addresses into descriptions",
   description:
-    "Reset your ListologyAi password and get back to generating compliant real estate listings with AI-powered workflows.",
-  keywords: [
-    "ListologyAi reset password",
-    "real estate AI account recovery",
-    "ListologyAi login help",
-  ],
+    "Reset your ListologyAi password and get back to pasting property addresses to generate compliant real estate listings with AI.",
+  keywords: ["ListologyAi reset password", "address to description", "real estate AI account recovery", "ListologyAi login help"],
   openGraph: {
-    title: "ListologyAi Reset Password",
-    description:
-      "Securely reset your ListologyAi credentials to continue managing property marketing with AI.",
+    title: "Reset password | Continue turning addresses into descriptions",
+    description: "Securely reset your ListologyAi credentials to keep generating property marketing copy from a single address.",
     url: "https://listologyai.com/reset-password",
     type: "website",
     images: [
@@ -27,9 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Reset Password",
-    description:
-      "Recover your ListologyAi access to keep producing MLS-ready property descriptions.",
+    title: "Reset password | Continue turning addresses into descriptions",
+    description: "Recover your ListologyAi access to keep producing MLS-ready property descriptions from addresses.",
     images: ["/Logo.png"],
   },
   robots: {

@@ -11,20 +11,14 @@ import type { PlanKey } from "@/lib/plans";
 import { getRealEstateHistory } from "@/lib/realEstateHistory";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Real Estate Listing Generator",
+  title: "Enter a property address for an instant listing description | ListologyAi",
   description:
-    "Generate MLS-ready property descriptions in minutes with ListologyAi's AI prompts built for real estate agents.",
-  keywords: [
-    "ListologyAi listing generator",
-    "AI real estate descriptions",
-    "MLS copy for agents",
-    "property description software",
-    "real estate listing generator",
-  ],
+    "Paste any property address into ListologyAi and receive a persuasive, MLS-ready listing description informed by Street View context and agent voice.",
+  keywords: ["ListologyAi listing generator", "address to description", "AI real estate descriptions", "MLS copy for agents", "property description software", "real estate listing generator"],
   openGraph: {
-    title: "ListologyAi Real Estate Listing Generator",
+    title: "Enter a property address for an instant listing description | ListologyAi",
     description:
-      "Deliver persuasive, compliant listing copy in minutes with ListologyAi's guided prompts tailored to real estate agents.",
+      "Drop an address and ListologyAi writes the full, compliant listing description in minutes with context from Street View.",
     url: "https://listologyai.com/real-estate-generator",
     type: "website",
     images: [
@@ -38,9 +32,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Real Estate Listing Generator",
-    description:
-      "Craft MLS-optimized listing descriptions with ListologyAi's AI assistant for real estate agents.",
+    title: "Enter a property address for an instant listing description | ListologyAi",
+    description: "Introdu doar adresa si primesti o descriere MLS-ready in cateva secunde cu ListologyAi.",
     images: ["/Logo.png"],
   },
 };

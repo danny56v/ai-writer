@@ -145,9 +145,25 @@ export default function Pricing({ currentPriceId }: Props) {
     <section className="relative isolate px-0 py-16 sm:py-24 lg:px-0">
       <div className="mx-auto w-full max-w-6xl px-0">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
+          {/* <div className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] ">
             Pricing
-          </div>
+          </div> */}
+            <div
+              className="relative inline-flex items-center gap-2 rounded-full px-4 py-1 
+             text-[13px] font-semibold uppercase tracking-[0.35em]
+             bg-white shadow-sm
+             
+             before:absolute before:inset-0 before:rounded-full before:p-[2px]
+             before:bg-[conic-gradient(at_top_left,_#d00000,_#ffba08,_#d00000)]
+             before:content-[''] before:-z-10
+
+             after:absolute after:inset-0 after:rounded-full after:blur-md
+             after:bg-[conic-gradient(at_top_left,_#d00000,_#ffba08,_#d00000)]
+             after:opacity-40 after:-z-20"
+            >
+              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.15)]" />
+             Pricing
+            </div>
           <h1 className="mx-auto mt-6 max-w-4xl text-3xl font-bold tracking-tight sm:text-5xl">
             Make AI listing copy part of every property you sell.
           </h1>
@@ -188,8 +204,9 @@ export default function Pricing({ currentPriceId }: Props) {
         <div className="mt-12 flex flex-col items-center gap-6 lg:flex-row lg:justify-center">
           <fieldset
             aria-label="Payment frequency"
-            className="relative w-full max-w-md rounded-2xl border border-neutral-200 bg-white/60 p-2 shadow-lg backdrop-blur"          >
-            <RadioGroup value={frequency} onChange={setFrequency} className="relative grid grid-cols-2">
+            className="relative inline-flex rounded-2xl border border-neutral-200 bg-white/60 px-2 py-2 shadow-lg backdrop-blur"
+          >
+            <RadioGroup value={frequency} onChange={setFrequency} className="relative grid min-w-[230px] grid-cols-2">
               {/* Background highlight that slides */}
               <span
                 className={`
@@ -206,7 +223,7 @@ export default function Pricing({ currentPriceId }: Props) {
                   value={option}
                   className={({ checked }) =>
                     classNames(
-                      "relative z-10 cursor-pointer px-6 py-2 text-sm font-semibold transition-colors duration-300",
+                      "relative z-10 flex cursor-pointer items-center justify-center px-4 py-2 text-sm font-semibold text-center transition-colors duration-300",
                       checked ? "text-white" : "text-black"
                     )
                   }
@@ -250,7 +267,7 @@ export default function Pricing({ currentPriceId }: Props) {
                     {tier.name}
                   </h2>
                   {tier.mostPopular ? (
-                    <span className="rounded-xl bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                    <span className="rounded-xl bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white ">
                       Most popular
                     </span>
                   ) : (

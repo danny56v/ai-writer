@@ -181,27 +181,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) {
     return {
       title: "ListologyAi Blog",
-      description: "ListologyAi insights on AI-powered real estate marketing.",
-      keywords: ["ListologyAi blog", "real estate AI insights"],
+      description: "ListologyAi insights on turning property addresses into ready-to-publish real estate descriptions.",
+      keywords: ["ListologyAi blog", "address to description", "real estate AI insights"],
     };
   }
 
   const pageTitle = `ListologyAi: ${post.title}`;
   const pageUrl = `https://listologyai.com/blog/${post.slug}`;
+  const pageDescription = `${post.description} Learn how ListologyAi turns any property address into an MLS-ready description.`;
 
   return {
     title: pageTitle,
-    description: post.description,
+    description: pageDescription,
     keywords: [
       post.title,
       "ListologyAi real estate copywriting",
+      "address to description",
       "ListologyAi blog",
       "real estate AI tips",
       "property description strategies",
     ],
     openGraph: {
       title: pageTitle,
-      description: post.description,
+      description: pageDescription,
       url: pageUrl,
       type: "article",
       publishedTime: post.datetime,
@@ -211,7 +213,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
-      description: post.description,
+      description: pageDescription,
       images: [post.imageUrl],
     },
   };

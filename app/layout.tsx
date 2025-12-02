@@ -18,34 +18,41 @@ const appMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.listologyai.com"),
+  metadataBase: new URL("https://listologyai.com"),
   title: {
-    default: "ListologyAi | Real Estate AI Generator",
+    default: "ListologyAi | Address-to-description real estate AI",
     template: "%s | ListologyAi",
   },
   description:
-    "ListologyAi centralizes briefs, brand voice, and AI assistants so real estate teams launch listings and campaigns faster with compliance built in.",
-  keywords: ["real estate ai", "listing generator", "ai copywriting", "property marketing platform", "ListologyAi"],
+    "Paste any property address and ListologyAi returns an MLS-ready description with Street View context, brand voice, and compliance baked in.",
+  keywords: [
+    "address to description",
+    "real estate ai",
+    "listing generator",
+    "ai copywriting",
+    "property address description",
+    "ListologyAi",
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "ListologyAi",
-    url: "https://www.listologyai.com",
-    title: "ListologyAi | Responsible AI copy for real estate teams",
+    url: "https://listologyai.com",
+    title: "ListologyAi | Enter an address, get a listing description",
     description:
-      "Launch MLS-ready listings, newsletters, and campaigns in minutes. ListologyAi unites briefs, workflows, and compliance-friendly AI drafting in one workspace.",
+      "Drop an address into ListologyAi and instantly get a persuasive, compliant property story tuned for your market.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi | Responsible AI copy for real estate teams",
+    title: "ListologyAi | Enter an address, get a listing description",
     description:
-      "Accelerate real estate marketing with guided briefs, AI-assisted drafts, and analytics that prove ROI.",
+      "Introduce doar adresa si primesti o descriere completa: ListologyAi livreaza text MLS-ready in cateva secunde.",
   },
   alternates: {
-    canonical: "https://www.listologyai.com",
+    canonical: "https://listologyai.com",
   },
   icons: {
-    icon: "/public/Logo.png",
+    icon: "/Logo.png",
   },
 };
 

@@ -5,19 +5,14 @@ import Link from "next/link";
 import { blogPosts } from "@/data/blogPosts";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Real Estate Copywriting Blog",
+  title: "ListologyAi Blog: address-to-description playbooks",
   description:
-    "Explore ListologyAi guides on AI-assisted listing descriptions, MLS copy best practices, and persuasive writing tips for real estate agents.",
-  keywords: [
-    "ListologyAi blog",
-    "real estate copywriting tips",
-    "AI property description strategies",
-    "MLS listing advice",
-  ],
+    "Explore ListologyAi guides on turning any property address into a persuasive listing description, plus MLS copy best practices and AI workflows for agents.",
+  keywords: ["ListologyAi blog", "address to description", "real estate copywriting tips", "AI property description strategies", "MLS listing advice"],
   openGraph: {
-    title: "ListologyAi Real Estate Copywriting Blog",
+    title: "ListologyAi Blog: address-to-description playbooks",
     description:
-      "Get actionable guidance on AI-powered listing descriptions and persuasive copywriting from the ListologyAi editorial team.",
+      "Get actionable guidance on using ListologyAi to drop an address and receive MLS-ready copy, plus persuasive writing tips for real estate agents.",
     url: "https://listologyai.com/blog",
     type: "website",
     images: [
@@ -31,9 +26,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Real Estate Copywriting Blog",
+    title: "ListologyAi Blog: address-to-description playbooks",
     description:
-      "Stay ahead with ListologyAi articles on AI listing copy, showing descriptions, and MLS writing techniques.",
+      "Stay ahead with ListologyAi articles on pasting an address to get a listing description, plus MLS-ready writing techniques.",
     images: ["/Logo.png"],
   },
 };

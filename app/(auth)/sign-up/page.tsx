@@ -4,18 +4,13 @@ import type { Metadata } from "next";
 import SignUpScreen from "@/components/auth/SignUpScreen";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Sign Up",
+  title: "Sign up to paste an address and get a description | ListologyAi",
   description:
-    "Create your ListologyAi account to generate compliant real estate listing descriptions faster with AI built for agents.",
-  keywords: [
-    "ListologyAi sign up",
-    "real estate AI trial",
-    "property listing generator signup",
-  ],
+    "Create your ListologyAi account to drop any property address and receive a compliant, MLS-ready listing description in seconds.",
+  keywords: ["ListologyAi sign up", "address to description", "real estate AI trial", "property listing generator signup"],
   openGraph: {
-    title: "ListologyAi Sign Up",
-    description:
-      "Join ListologyAi to transform property details into persuasive, MLS-ready copy in minutes.",
+    title: "Sign up to paste an address and get a description | ListologyAi",
+    description: "Join ListologyAi to transform any address into persuasive, MLS-ready copy in minutes.",
     url: "https://listologyai.com/sign-up",
     type: "website",
     images: [
@@ -29,9 +24,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Sign Up",
-    description:
-      "Start using ListologyAi to generate on-brand, compliant real estate descriptions with AI.",
+    title: "Sign up to paste an address and get a description | ListologyAi",
+    description: "Start using ListologyAi to paste an address and get on-brand, compliant real estate descriptions with AI.",
     images: ["/Logo.png"],
   },
   robots: {

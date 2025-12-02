@@ -175,16 +175,35 @@ const testimonials = {
 function HeroShowcase() {
   return (
     <div className="relative mx-auto mt-20 max-w-6xl px-4 sm:px-0">
-      <div className="rounded-2xl border border-neutral-200 bg-white/95 p-4 shadow-[0_35px_90px_rgba(15,23,42,0.08)] ring-1 ring-neutral-100/70">
+      <div
+        className="rounded-2xl border border-neutral-200 bg-white/95 p-4 shadow-[0_35px_90px_rgba(15,23,42,0.08)] ring-1 ring-neutral-100/70"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(180deg, #000 0%, #000 38%, rgba(0,0,0,0.9) 52%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0.25) 82%, rgba(0,0,0,0) 100%)",
+          maskImage:
+            "linear-gradient(180deg, #000 0%, #000 38%, rgba(0,0,0,0.9) 52%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0.25) 82%, rgba(0,0,0,0) 100%)",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+        }}
+      >
         <div className="rounded-xl bg-neutral-50 p-1">
-          <Image
-            src="/screenshot.png"
-            alt="Example of the ListologyAi workspace"
-            width={1600}
-            height={860}
-            className="h-auto w-full rounded-lg object-cover"
-            priority
-          />
+          <div className="relative overflow-hidden rounded-lg">
+            <Image
+              src="/screenshot.png"
+              alt="Example of the ListologyAi workspace"
+              width={1600}
+              height={860}
+              className="h-auto w-full rounded-lg object-cover"
+              priority
+            />
+            <div
+              className="pointer-events-none absolute inset-0 rounded-lg"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,0.18) 58%, rgba(255,255,255,0.55) 70%, rgba(255,255,255,0.82) 84%, rgba(255,255,255,1) 100%)",
+              }}
+            />
+          </div>
         </div>
         {/* <div className="absolute left-1/2 top-full w-full max-w-sm -translate-x-1/2 -translate-y-12 rounded-xl border border-neutral-100 bg-white px-6 py-5 shadow-2xl sm:left-auto sm:right-12 sm:top-auto sm:-bottom-10 sm:translate-x-0 sm:translate-y-0">
           <p className="text-sm font-semibold  ">Set up your Workspace</p>
@@ -234,7 +253,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
     <div className="mt-16  ">
       <main className="isolate">
         {/* Hero */}
-        <section className="relative overflow-hidden px-4 pt-14 pb-40 sm:px-6 sm:pt-36 lg:px-8 lg:pb-52">
+        <section className="relative overflow-hidden px-4 pt-14 pb-10 sm:px-6 sm:pt-36 lg:px-8 lg:pb-12">
           {/* <div aria-hidden="true" className="absolute inset-0 -z-10">
             <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-white via-white/90 to-transparent" />
             <div className="absolute left-[-12rem] top-16 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl sm:left-[-6rem]" />
@@ -243,8 +262,8 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           </div> */}
 
           <div className="mx-auto max-w-5xl text-center">
-         <div
-  className="relative inline-flex items-center gap-2 rounded-full px-4 py-1 
+            <div
+              className="relative inline-flex items-center gap-2 rounded-full px-4 py-1 
              text-[11px] font-semibold uppercase tracking-[0.35em]
              bg-white shadow-sm
              
@@ -255,11 +274,10 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
              after:absolute after:inset-0 after:rounded-full after:blur-md
              after:bg-[conic-gradient(at_top_left,_#d00000,_#ffba08,_#d00000)]
              after:opacity-40 after:-z-20"
->
-  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.15)]" />
-  Address → Instant Listing Copy
-</div>
-
+            >
+              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.15)]" />
+              Address → Instant Listing Copy
+            </div>
 
             <h1 className="mt-6 text-4xl font-bold tracking-tight   sm:text-6xl">
               Enter the address.
@@ -293,9 +311,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                       className="w-full rounded-xl border border-neutral-200 bg-white/95 px-4 py-3 text-base   shadow-sm outline-none transition focus:border-neutral-900 focus:ring-2 focus:ring-neutral-200"
                     />
                   </div>
-                  <button
-                    className="relative inline-flex w-full items-center justify-center rounded-xl bg-black px-6 py-3 text-white font-semibold sm:w-auto"
-                  >
+                  <button className="relative inline-flex w-full items-center justify-center rounded-xl bg-black px-6 py-3 text-white font-semibold sm:w-auto">
                     <span className="relative z-10">Generate</span>
                   </button>
                 </form>
@@ -308,7 +324,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           <HeroShowcase />
         </section>
 
-        <section className="bg-transparent py-12 sm:py-14">
+        <section className="bg-transparent ">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
             <p className="text-center text-[11px] font-semibold uppercase tracking-[0.5em] text-neutral-400">
               Trusted by the best
@@ -364,16 +380,16 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </div>
           </div>
         </section> */}
-        <section id="features" className="bg-transparent py-10 sm:py-24 sm:px-6 lg:px-10">
+        <section id="features" className="bg-transparent mt-20 sm:py-24 sm:px-6 lg:px-10">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
-    <p className="text-sm font-semibold uppercase tracking-wide 
+              <p
+                className="text-sm font-semibold uppercase tracking-wide 
    bg-gradient-to-r from-[#ff0000] via-[#1900ff] to-[#ff0000] 
-   bg-clip-text text-transparent drop-shadow-[0_2px_6px_rgba(240,46,170,0.55)]">
-  Built for real estate agents
-</p>
-
-
+   bg-clip-text text-transparent drop-shadow-[0_2px_6px_rgba(240,46,170,0.55)]"
+              >
+                Built for real estate agents
+              </p>
 
               <h2 className="mt-3 text-3xl font-bold tracking-tight   sm:text-4xl">
                 A smarter way to generate high-quality listing descriptions.
@@ -420,28 +436,20 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                   </div>
                 ))}
               </div>
-<Link
-  href="/real-estate-generator"
-  className="relative mt-8 inline-flex w-full items-center justify-center
+              <Link
+                href="/real-estate-generator"
+                className="relative mt-8 inline-flex w-full items-center justify-center
              px-4 py-3 text-sm font-semibold text-white rounded-xl
              overflow-hidden bg-transparent"
->
+              >
+                <span aria-hidden="true" className="absolute inset-[3px] rounded-lg bg-neutral-900" />
 
-
-  <span
-    aria-hidden="true"
-    className="absolute inset-[3px] rounded-lg bg-neutral-900"
-  />
-
-  <span className="relative z-10">Generate your first description</span>
-</Link>
-
-
-
+                <span className="relative z-10">Generate your first description</span>
+              </Link>
             </div>
           </div>
         </section>
-        <section id="resources" className="relative overflow-hidden bg-transparent sm:p-3 sm:py-24 sm:px-6 lg:px-10">
+        <section id="resources" className="relative overflow-hidden bg-transparent sm:p-3 sm:py-10 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-6xl rounded-2xl sm:border sm:border-neutral-100 sm:bg-gradient-to-br from-white via-neutral-50 to-indigo-50/40 px-3 py-7 sm:shadow-[0_45px_120px_-70px_rgba(15,23,42,0.55)] sm:px-10 sm:py-16 lg:px-12">
             <div className="grid gap-5 sm:gap-10 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="rounded-2xl border border-neutral-100 bg-white/95 p-3 shadow-[0_30px_90px_-70px_rgba(15,23,42,0.35)] sm:p-8">
@@ -483,7 +491,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-white/70 to-white"
           />
         </section>
-        <section id="pricing" className="bg-transparent px-4 py-10 sm:px-6 lg:px-10">
+        <section id="pricing" className="bg-transparent px-4 pt-10 sm:px-6 lg:px-10">
           {/* <div className="mx-auto max-w-4xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-neutral-500">Pricing</p>
             <h2 className="mt-3 text-4xl font-bold tracking-tight   sm:text-5xl">

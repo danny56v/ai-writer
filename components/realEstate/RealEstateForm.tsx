@@ -501,13 +501,11 @@ const RealEstateForm = ({
                     <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Street View capture</p>
                     <span className="text-xs font-medium ">Required</span>
                   </div>
-                  {/* <p className="mt-2 text-sm ">Add the full address and we handle the Street View photo automatically.</p> */}
 
                   <div className=" grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-12">
                     <div className="space-y-2 lg:col-span-6">
                       <h3 className="text-lg font-semibold ">Property address</h3>
                       <Input
-                        // label="Full address"
                         name="location"
                         type="text"
                         placeholder="123 Main St, Miami, FL"
@@ -551,7 +549,6 @@ const RealEstateForm = ({
                         className="h-10 w-full rounded-lg border-neutral-200 focus:border-neutral-900 focus:ring-neutral-200"
                         value={formValues.price}
                         onChange={handleFieldChange}
-                        // hint="Purely for context — never printed."
                       />
                     </div>
                   </div>
@@ -559,9 +556,7 @@ const RealEstateForm = ({
 
                 <div className="rounded-lg border border-neutral-100 bg-white/90 p-4 shadow-[0_25px_65px_-60px_rgba(15,23,42,0.45)] sm:p-5">
                   <div className="">
-                    {/* <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] ">Optional context</p> */}
                     <h3 className="text-lg font-semibold ">Basic details</h3>
-                    {/* <p className="text-sm ">Use only what you have handy — everything else stays blank.</p> */}
                   </div>
 
                   <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

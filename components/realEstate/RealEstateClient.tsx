@@ -393,24 +393,15 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
             </Transition>
           </div>
         </div>
-
-        {/* <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-100/60 via-white to-purple-100/70" />
-          <div className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-200/60 blur-3xl" />
-          <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white via-white/80 to-transparent" />
-          <div className="absolute right-6 bottom-0 hidden h-48 w-48 rounded-full bg-purple-200/50 blur-3xl sm:block" />
-          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-white/80 to-white" />
-        </div> */}
-
         <div
-          className={["mx-auto w-full px-4 pb-10 pt-8 sm:px-6 sm:pt-10", isOpen ? "max-w-screen-2xl" : "max-w-7xl"].join(
-            " "
-          )}
+          className={[
+            "mx-auto w-full px-4 pb-10 pt-8 sm:px-6 sm:pt-10",
+            isOpen ? "max-w-screen-2xl" : "max-w-7xl",
+          ].join(" ")}
         >
           <div className="flex flex-col lg:flex-row gap-3">
             <div
               className={[
-                // "min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm",
                 "transition-all duration-500 ease-out",
                 "w-full p-0 ",
                 isOpen ? "lg:w-1/2 xl:w-1/2" : "lg:max-w-7xl lg:mx-auto",
@@ -464,7 +455,6 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
             </div>
           </div>
         </div>
-
         <section className="relative mt-12 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="rounded-xl border border-neutral-100 bg-white/95 p-5 shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)] sm:p-8">
@@ -733,13 +723,13 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
             <div className="relative mt-10">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-24 -right-16 hidden h-64 w-64 rounded-full bg-sky-100/60 blur-3xl lg:block"
+                className="pointer-events-none absolute -top-24 -right-16 hidden h-64 w-64 rounded-full  blur-3xl lg:block"
               />
-              <div className="overflow-hidden rounded-xl border border-neutral-100 bg-white/90 shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)]">
+              <div className="relative aspect-video overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)]">
                 <video
                   ref={walkthroughVideoRef}
                   src="/ListologyAi%20Video.mp4"
-                  className="h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                   autoPlay
                   loop
                   muted
@@ -788,50 +778,9 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                   </dd>
                 </div>
               </div>
-
-              {/* <div className="flex gap-4 rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm">
-                <PaperAirplaneIcon className="h-8 w-8 flex-none text-indigo-600" aria-hidden="true" />
-                <div className="space-y-1">
-                  <dt className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-                    4. Publish or share
-                  </dt>
-                  <dd className="text-sm leading-6  ">
-                    After internal approval, send the copy straight to the MLS, your agency site, or a newsletter. Use
-                    the same session to create multiple versions and track credit usage.
-                  </dd>
-                </div>
-              </div> */}
             </dl>
           </div>
         </section>
-        {/* 
-      <section className="relative mt-12 py-20 sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <span className="inline-flex items-center justify-center rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-700 ring-1 ring-indigo-100">
-            Keep exploring
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight   sm:text-4xl">
-            Create a complete experience for your clients
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-neutral-600">
-            After you complete the generator steps, explore resources that help you turn descriptions into cohesive campaigns: case studies, pricing plans, and guides for hybrid teams.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/pricing"
-              className="rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
-            >
-              See upgrade options
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm font-semibold leading-6 text-indigo-700 transition hover:text-indigo-600"
-            >
-              Discover real stories <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </div>
-      </section> */}
 
         {historyModalEntry
           ? (() => {
@@ -883,7 +832,7 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                         <button
                           type="button"
                           onClick={handleHistoryModalClose}
-                          className="rounded-full bg-neutral-100 p-2 text-black transition hover:bg-neutral-200 "
+                          className="absolute right-4 top-4 rounded-full bg-neutral-100 p-2 text-black transition hover:bg-neutral-200 sm:relative sm:right-auto sm:top-auto"
                           aria-label="Close history details"
                         >
                           <XMarkIcon className="h-5 w-5" aria-hidden />

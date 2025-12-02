@@ -77,7 +77,7 @@ const RealEstateResponse = ({
     <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-100 bg-gradient-to-b from-white via-neutral-50 to-white shadow-[0_55px_140px_-70px_rgba(15,23,42,0.45)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-20 right-8 hidden h-72 w-72 rounded-full bg-sky-100/50 blur-3xl sm:block"
+        className="pointer-events-none absolute -top-20 right-8 hidden h-72 w-72 rounded-full bg-neutral-100 blur-3xl sm:block"
       />
       <div
         aria-hidden

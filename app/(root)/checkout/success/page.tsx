@@ -3,18 +3,13 @@ import { redirect } from "next/navigation";
 import { stripe } from "@/lib/stripe";
 
 export const metadata: Metadata = {
-  title: "ListologyAi Checkout Status",
+  title: "Checkout success | Start turning addresses into descriptions",
   description:
-    "Verify your ListologyAi subscription checkout status and jump back into pricing or begin generating new listing descriptions.",
-  keywords: [
-    "ListologyAi checkout",
-    "real estate AI subscription",
-    "ListologyAi billing confirmation",
-  ],
+    "Confirm your ListologyAi subscription and jump back in to paste any address and receive a complete, MLS-ready property description.",
+  keywords: ["ListologyAi checkout", "address to description", "real estate AI subscription", "ListologyAi billing confirmation"],
   openGraph: {
-    title: "ListologyAi Checkout Status",
-    description:
-      "Review your ListologyAi checkout outcome and jump back into the platform.",
+    title: "Checkout success | Start turning addresses into descriptions",
+    description: "Review your ListologyAi checkout outcome and return to generating property descriptions from a single address.",
     url: "https://listologyai.com/checkout/success",
     type: "website",
     images: [
@@ -28,9 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ListologyAi Checkout Status",
-    description:
-      "Check the status of your ListologyAi subscription checkout and continue onboarding.",
+    title: "Checkout success | Start turning addresses into descriptions",
+    description: "Check your ListologyAi subscription status and continue by dropping an address to get a description.",
     images: ["/Logo.png"],
   },
   robots: {
