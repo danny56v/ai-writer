@@ -39,7 +39,7 @@ function Select({
       {/* keep the selected value when submitting the form */}
       <input type="hidden" name={name} value={value ?? ""} />
 
-      <Listbox value={value} onChange={onChange}>
+      <Listbox value={value ?? undefined} onChange={onChange}>
         <div className="relative">
           <Listbox.Button
             className={cx(
