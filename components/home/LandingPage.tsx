@@ -324,7 +324,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
           <HeroShowcase />
         </section>
 
-        <section className="bg-transparent ">
+        {/* <section className="bg-transparent ">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
             <p className="text-center text-[11px] font-semibold uppercase tracking-[0.5em] text-neutral-400">
               Trusted by the best
@@ -342,7 +342,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* <section className="bg-gradient-to-b from-white via-neutral-50 to-white px-6 py-20 lg:px-10">
           <div className="mx-auto max-w-3xl text-center">
