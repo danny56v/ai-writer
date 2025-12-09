@@ -105,7 +105,7 @@ export default function Pricing({ currentPriceId }: Props) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [frequency, setFrequency] = useState<Frequency>(pricing.frequencies[1]);
+  const [frequency, setFrequency] = useState<Frequency>(pricing.frequencies[0]);
   const [activePriceId] = useState<string | null>(currentPriceId);
   const [loading, setLoading] = useState(false);
   const isAuthenticated = Boolean(session?.user);
