@@ -63,7 +63,7 @@ export default async function Return({ searchParams }: CheckoutSuccessPageProps)
   }
 
   if (status === "complete") {
-    return redirect("/real-estate-generator?checkout=success");
+    return redirect("/real-estate-generator?checkout=success&subscription=purchased");
   }
 
   return redirect("/pricing");

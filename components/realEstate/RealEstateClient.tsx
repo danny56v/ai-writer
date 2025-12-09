@@ -17,7 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Transition } from "@headlessui/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import RealEstateForm from "./RealEstateForm";
 import RealEstateResponse from "./RealEstateResponse";
@@ -113,8 +113,6 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   const lastSigRef = useRef<string | null>(null);
   const responseContainerRef = useRef<HTMLDivElement | null>(null);
   const walkthroughVideoRef = useRef<HTMLVideoElement | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [history, setHistory] = useState<HistoryEntry[]>(initialHistory);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -261,11 +259,12 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
   }, []);
 
   useEffect(() => {
-    if (searchParams.get("checkout") === "success") {
+    const checkoutSuccess = searchParams.get("checkout") === "success";
+    const subscriptionPurchased = searchParams.get("subscription") === "purchased";
+    if (checkoutSuccess || subscriptionPurchased) {
       setShowSuccessToast(true);
-      router.replace(pathname, { scroll: false });
     }
-  }, [searchParams, router, pathname]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!showSuccessToast) return;
