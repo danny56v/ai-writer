@@ -5,7 +5,7 @@ import SignInScreen from "@/components/auth/SignInScreen";
 export const metadata: Metadata = {
   title: "Sign in to turn addresses into descriptions | ListologyAi",
   description:
-    "Log in to ListologyAi and keep pasting property addresses to instantly receive persuasive, MLS-ready descriptions.",
+    "Log in to ListologyAi and keep pasting property addresses to instantly receive persuasive, ready-to-publish descriptions.",
   keywords: ["ListologyAi login", "address to description", "real estate AI sign in", "property description generator account"],
   openGraph: {
     title: "Sign in to turn addresses into descriptions | ListologyAi",

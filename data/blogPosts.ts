@@ -48,7 +48,7 @@ export const blogPosts: BlogPost[] = [
       "> \"Buyers respond to descriptions that help them envision a daily routine, not just square footage.\" | Mara I., listing agent",
       "## Back Up Every Claim",
       "Bolster claims with proof whenever possible. Reference recent upgrades, include the year warranties were added, and point to walk scores or nearby amenities with numbers. Testimonials from current owners or quotes from neighbors lend credibility without sounding salesy.",
-      "[callout]Pre-launch checklist|Verify disclosures and HOA documents so every detail you quote can be audited.|Align copy with the photo order buyers will see in MLS feeds.|Draft a short version for portals that enforce character limits, then link to the full story on your site.",
+      "[callout]Pre-launch checklist|Verify disclosures and HOA documents so every detail you quote can be audited.|Align copy with the photo order buyers will see on listing portals.|Draft a short version for portals that enforce character limits, then link to the full story on your site.",
       "## Close With Confident Direction",
       "End with a clear call to action that makes next steps obvious. Invite buyers to schedule a virtual walkthrough, attend an open house, or request a detailed feature sheet. Remind them of limited availability or competitive interest to create momentum."
     ],

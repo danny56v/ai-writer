@@ -5,14 +5,14 @@ import LandingPage from "@/components/home/LandingPage";
 import { getUserPlan } from "@/lib/billing";
 
 export const metadata: Metadata = {
-  title: "Paste an address, get an MLS description | ListologyAi",
+  title: "Paste an address, get a listing description | ListologyAi",
   description:
     "ListologyAi transforms any property address into a ready-to-publish listing description using Street View context and your brand voice—just paste the address to get the copy.",
-  keywords: ["ListologyAi", "address to description", "real estate description generator", "AI MLS copy", "property story from address"],
+  keywords: ["ListologyAi", "address to description", "real estate description generator", "AI listing copy", "property story from address"],
   openGraph: {
-    title: "Paste an address, get an MLS description | ListologyAi",
+    title: "Paste an address, get a listing description | ListologyAi",
     description:
-      "Enter an address and ListologyAi writes the entire listing description in seconds—MLS-ready, compliant, and tuned for agents.",
+      "Enter an address and ListologyAi writes the entire listing description in seconds—ready to publish, compliant, and tuned for agents.",
     url: "https://listologyai.com",
     type: "website",
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paste an address, get an MLS description | ListologyAi",
+    title: "Paste an address, get a listing description | ListologyAi",
     description:
       "Paste an address and instantly receive a persuasive, compliant real estate description with ListologyAi.",
     images: ["/Logo.png"],

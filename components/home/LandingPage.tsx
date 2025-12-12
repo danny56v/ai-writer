@@ -53,7 +53,7 @@ const features = [
   {
     name: "Boost engagement & interest",
     description:
-      "Descriptions created with AI context get more clicks and attention across MLS, Zillow, and social media.",
+      "Descriptions created with AI context get more clicks and attention across listing sites, Zillow, and social media.",
     icon: ChartBarIcon,
   },
 ];
@@ -103,6 +103,15 @@ const productStats = [
   { value: "98%", label: "Agent satisfaction" },
 ];
 
+const comparisonRows = [
+  { feature: "Auto Street View analysis", listology: "✓", chatgpt: "✗", other: "✗" },
+  { feature: "One-click generation", listology: "✓", chatgpt: "✗", other: "Varies" },
+  { feature: "Real estate-specific training", listology: "✓", chatgpt: "✗", other: "✓" },
+  { feature: "Consistent brand voice", listology: "✓", chatgpt: "✗", other: "✓" },
+  { feature: "Multiple output formats", listology: "✓", chatgpt: "✗", other: "Varies" },
+  { feature: "Address → Auto property research", listology: "✓", chatgpt: "✗", other: "✗" },
+];
+
 const workflowHighlights = [
   {
     title: "Start with an address",
@@ -116,7 +125,7 @@ const workflowHighlights = [
   {
     title: "Publish in seconds",
     description:
-      "Get a clean, ready-to-use MLS description you can copy straight into listings, websites, or marketing materials.",
+      "Get a clean, ready-to-use listing description you can copy straight into listings, websites, or marketing materials.",
   },
 ];
 
@@ -154,20 +163,20 @@ const faqs = [
       "Yes. You can adjust tone, length, and style—professional, friendly, luxury, concise, or custom. The description will sound natural and tailored to your voice.",
   },
   {
-    question: "Is the copy safe to use on MLS and real estate platforms?",
+    question: "Is the copy safe to use on real estate platforms?",
     answer:
-      "Yes. ListologyAI avoids restricted, biased, or non-compliant language, making it safe for MLS, Zillow, Realtor.com, social media, and other listing platforms.",
+      "Yes. ListologyAI avoids restricted, biased, or non-compliant language, making it safe for major portals like Zillow, Realtor.com, social media, and other listing platforms.",
   },
   {
     question: "How do I use the description after it’s generated?",
     answer:
-      "Simply copy and paste it wherever you need: MLS, property portals, your website, brochures, emails—even Instagram captions. Exporting takes just one click.",
+      "Simply copy and paste it wherever you need: property portals, your website, brochures, emails—even Instagram captions. Exporting takes just one click.",
   },
 ];
 
 const testimonials = {
   quote:
-    "Before ListologyAi, I spent 20–30 minutes writing each description. Now I just drop the address and get a polished, MLS-ready listing in seconds.",
+    "Before ListologyAi, I spent 20–30 minutes writing each description. Now I just drop the address and get a polished listing in seconds.",
   name: "Laura Mitrea",
   role: "Real Estate Agent",
 };
@@ -285,8 +294,8 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </h1>
             <p className="mt-6 text-sm sm:text-lg leading-8 text-neutral-600">
               Just drop the property address. We automatically analyze Street View, extract key details, and generate a
-              clean, persuasive MLS-ready description—without you writing a single word. Perfect for busy agents who
-              want fast, professional copy.
+              clean, persuasive listing description—without you writing a single word. Perfect for busy agents who want
+              fast, professional copy.
             </p>
             <div className="mt-10">
               <div className="mx-auto w-full max-w-none rounded-2xl bg-white/85 p-4 shadow-[0_30px_80px_-70px_rgba(15,23,42,0.55)] sm:max-w-4xl sm:p-5">
@@ -322,6 +331,71 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </div>
           </div>
           <HeroShowcase />
+        </section>
+
+        <section className="relative px-4 pb-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl rounded-2xl border border-neutral-100 bg-gradient-to-r from-white via-neutral-50 to-amber-50/50 p-6 shadow-[0_38px_110px_-80px_rgba(15,23,42,0.55)] sm:p-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">Feature comparison</p>
+                <h3 className="mt-2 text-2xl font-semibold sm:text-3xl">How ListologyAi stacks up</h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  Built specifically for real estate teams, with workflows tuned for addresses—not generic chat.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <div className="hidden overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-[0_24px_80px_-70px_rgba(15,23,42,0.45)] sm:block">
+                <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] items-center bg-neutral-50 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500 sm:px-6 sm:text-xs sm:tracking-[0.25em]">
+                  <span className="whitespace-nowrap">Feature</span>
+                  <span className="whitespace-nowrap text-center">ListologyAi</span>
+                  <span className="whitespace-nowrap text-center">ChatGPT</span>
+                  <span className="whitespace-nowrap text-center">Other RE tools</span>
+                </div>
+                <div className="divide-y divide-neutral-100">
+                  {comparisonRows.map((row) => (
+                    <div
+                      key={row.feature}
+                      className="grid grid-cols-[1.4fr_repeat(3,1fr)] items-center px-4 py-4 text-sm leading-6 sm:px-6"
+                    >
+                      <span className="font-semibold text-neutral-800">{row.feature}</span>
+                      <span className="text-center text-green-600">{row.listology}</span>
+                      <span className="text-center text-neutral-500">{row.chatgpt}</span>
+                      <span className="text-center text-neutral-700">{row.other}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:hidden">
+                {comparisonRows.map((row) => (
+                  <div
+                    key={row.feature}
+                    className="rounded-xl border border-neutral-100 bg-white shadow-[0_18px_70px_-65px_rgba(15,23,42,0.35)]"
+                  >
+                    <div className="px-4 py-3">
+                      <p className="text-sm font-semibold text-neutral-800">{row.feature}</p>
+                    </div>
+                    <div className="grid grid-cols-3 divide-x divide-neutral-100 border-t border-neutral-100 text-center">
+                      <div className="px-3 py-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">ListologyAi</p>
+                        <p className="mt-1 text-sm text-green-600">{row.listology}</p>
+                      </div>
+                      <div className="px-3 py-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">ChatGPT</p>
+                        <p className="mt-1 text-sm text-neutral-500">{row.chatgpt}</p>
+                      </div>
+                      <div className="px-3 py-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">Other RE tools</p>
+                        <p className="mt-1 text-sm text-neutral-700">{row.other}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* <section className="bg-transparent ">
@@ -395,9 +469,8 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                 A smarter way to generate high-quality listing descriptions.
               </h2>
               <p className="mt-4 text-base leading-7 text-neutral-600">
-                Start with the property address — ListologyAI scans Street View for context and generates a polished,
-                MLS-ready description in seconds. Want to fine-tune it? Add your own details anytime for even better
-                accuracy.
+                Start with the property address — ListologyAI scans Street View for context and generates a polished
+                description in seconds. Want to fine-tune it? Add your own details anytime for even better accuracy.
               </p>
               <dl className="mt-4 space-y-3">
                 {features.map((feature) => (
@@ -479,7 +552,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
                 <div className="mt-8 rounded-2xl bg-neutral-50 p-5 ring-1 ring-neutral-100 sm:mt-10">
                   <p className="text-sm font-semibold  ">Focus area</p>
                   <p className="mt-1 text-sm text-neutral-600">
-                    Busy solo agents and small teams who handle multiple listings per month and need instant, MLS-safe
+                    Busy solo agents and small teams who handle multiple listings per month and need instant, compliance-safe
                     copy that still feels personal.
                   </p>
                 </div>
@@ -498,7 +571,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
               Start free, scale when the team is ready.
             </h2>
             <p className="mt-4 text-base leading-7 text-neutral-600">
-              Every plan includes unlimited collaborators, MLS-safe templates, and access to billing inside Stripe.
+              Every plan includes unlimited collaborators, compliance-minded templates, and access to billing inside Stripe.
             </p>
           </div> */}
           <div className="mx-auto mt-16 max-w-6xl">
@@ -546,7 +619,7 @@ export default function LandingPage({ currentPriceId }: LandingPageProps) {
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-neutral-600">
               Start free with one description on us. Just enter the property address, let the AI pull Street View
-              context, and get a clean, MLS-ready listing you can use immediately. Upgrade only if you need more
+              context, and get a clean, ready-to-use listing you can use immediately. Upgrade only if you need more
               descriptions.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm  ">

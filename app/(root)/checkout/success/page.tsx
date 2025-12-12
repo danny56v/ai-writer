@@ -5,7 +5,7 @@ import { stripe } from "@/lib/stripe";
 export const metadata: Metadata = {
   title: "Checkout success | Start turning addresses into descriptions",
   description:
-    "Confirm your ListologyAi subscription and jump back in to paste any address and receive a complete, MLS-ready property description.",
+    "Confirm your ListologyAi subscription and jump back in to paste any address and receive a complete, ready-to-publish property description.",
   keywords: ["ListologyAi checkout", "address to description", "real estate AI subscription", "ListologyAi billing confirmation"],
   openGraph: {
     title: "Checkout success | Start turning addresses into descriptions",

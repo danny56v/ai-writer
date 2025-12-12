@@ -761,8 +761,8 @@ const RealEstateClient = ({ userPlan, usageSummary, isAuthenticated, initialHist
                 <div className="space-y-1">
                   <dt className="text-sm font-semibold uppercase tracking-[0.35em] ">2. Generate the description</dt>
                   <dd className="text-sm leading-6">
-                    After you submit the form, ListologyAi blends your context with proven templates to deliver an
-                    MLS-ready description optimized for conversion and compliance.
+                    After you submit the form, ListologyAi blends your context with proven templates to deliver a
+                    publication-ready description optimized for conversion and compliance.
                   </dd>
                 </div>
               </div>

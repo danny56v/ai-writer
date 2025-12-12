@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Reset password | Continue turning addresses into descriptions",
-    description: "Recover your ListologyAi access to keep producing MLS-ready property descriptions from addresses.",
+    description: "Recover your ListologyAi access to keep producing ready-to-publish property descriptions from addresses.",
     images: ["/Logo.png"],
   },
   robots: {

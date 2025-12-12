@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Account settings for address-to-description AI | ListologyAi",
-    description: "Access ListologyAi account controls to keep pasting addresses and receiving MLS-ready descriptions.",
+    description: "Access ListologyAi account controls to keep pasting addresses and receiving ready-to-publish descriptions.",
     images: ["/Logo.png"],
   },
   robots: {

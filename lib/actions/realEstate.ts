@@ -440,7 +440,7 @@ export async function genererateRealEstateDescription(
     optionalContextFacts.push(`Agent believes the property is a ${propertyType}.`);
   }
   optionalContextFacts.push(listingType === "rent" ? "Listing objective: rent the home." : "Listing objective: sell the home.");
-  optionalContextFacts.push(`Requested tone: ${tone}. Keep it MLS-safe even if playful.`);
+  optionalContextFacts.push(`Requested tone: ${tone}. Keep it compliant even if playful.`);
   if (bedrooms) {
     optionalContextFacts.push(`Exact bedroom count to respect: ${bedrooms}.`);
   }
@@ -475,74 +475,101 @@ export async function genererateRealEstateDescription(
       : "- No additional specs were provided.";
 
   const sharedFormatInstructions = `
-Task 3 — Write the listing:
-- 1 bold title (max 12 words).
-- 1 italicized summary (2–3 sentences).
-- 2–3 marketing paragraphs that feel like an MLS-ready narrative.
-- A "Highlights:" label followed by 5–7 punchy bullet points (one benefit each).
-- A final line of 3–5 localized hashtags.
+Task 3 — Write the description in ${language}:
 
-Rules:
-- Never mention cameras, Street View, or that you are inferring or missing data.
-- Match this tone: ${tone}. Stay confident, as if you walked the property, and keep it MLS-safe even when playful.
-- Do NOT mention price, taxes, HOA dues, or exact square footage (even if provided).
-- Keep the language professional, vivid, and grounded in real observations.
-- Output every word in ${language}.
-- After the hashtags, append a metadata block like <metadata>{"propertyType":"","listingType":"","bedrooms":"","bathrooms":"","language":"","amenities":["",""]}</metadata> so we can parse it.
-`;
+MANDATORY STRUCTURE:
+1. Bold title (5–8 words, must instantly grab attention)
+2. Opening hook (1 powerful sentence summarizing the main benefit)
+3. Core description (3–4 direct, concrete sentences):
+   - First: Space and layout (no exact square meters)
+   - Second: Finishes and condition (modern, renovated, premium, etc.)
+   - Third: Location and access (transport, parks, centers)
+   - Fourth: Subtle call-to-action (perfect for, ideal for)
+4. Hashtags (3–4 relevant to the market)
 
-  const system = hasStreetViewImage
-    ? `
-You are a real estate analyst and listing description writer.
-You receive a property address plus a live Google Street View photo showing the exterior.
+ABSOLUTE RULES:
+✓ ${tone} tone, but NATURAL — like you’re talking to a friend
+✓ First sentence = strongest selling argument
+✓ Every sentence must add value (zero filler)
+✓ Use action verbs: "offers", "combines", "you benefit from"
+✓ Create subtle urgency: "rarely available", "limited opportunity"
+✓ Describe the BENEFIT, not just the feature
+  ❌ "Has 3 bedrooms"
+  ✅ "Generous space for the whole family"
 
-Task 1 — Analyze the image:
-- Identify architecture/style, exterior materials, and number of floors.
-- Note visible condition, driveway/garage/balcony/porch elements, landscaping, and curb appeal.
-- Determine the surrounding vibe (quiet suburban street, coastal corridor, dense urban block, etc.).
+FORBIDDEN:
+✗ Exact price, taxes, HOA, exact square meters
+✗ Clichés: "unique opportunity", "ultimate luxury", "don’t miss out"
+✗ Mentions of cameras, Street View, or missing data
+✗ Vague descriptions: "beautiful property", "good location"
+✗ Long paragraphs (max 2 lines per sentence)
 
-Task 2 — Blend image insights with the address:
-- Infer the likely property type, layout expectations, and lifestyle perks common to the neighborhood.
-- Use local knowledge (parks, cafes, waterfront, transit access) to enrich the story.
+Example of a good description: 
+**Modern Apartment in the Heart of the City**
+
+*Bright, functional living space, fully renovated in 2024.*
+
+Enjoy generous living areas with premium finishes and a fully equipped kitchen. Contemporary design with attention to detail — quality flooring, energy-efficient windows, and a modern bathroom. Just 5 minutes from Central Park and public transport, with quick access to shopping centers and schools. Perfect for young families or professionals seeking comfort and accessibility.
+
+#ChisinauApartments #ModernLiving #CityCenter
+<metadata>
+{"propertyType":"apartment","listingType":"sale","bedrooms":"3","bathrooms":"1","language":"English","amenities":["hardwood floors","double-glazed windows","equipped kitchen"]}
+</metadata>
+
+  `;
+
+const system = hasStreetViewImage
+  ? `
+You are the best real estate copywriter.
+Your mission: write descriptions that make people call immediately.
+
+Analyze the Street View image and identify:
+- Architectural style and materials (modern, classic, minimalist)
+- Exterior condition (well-maintained, recently renovated, vintage)
+- Neighborhood context (quiet, dynamic, residential, central)
+
+Then TRANSFORM these observations into CONCRETE BENEFITS for the buyer.
+Don’t describe what you see — explain WHAT IT MEANS for their daily life.
+
 ${sharedFormatInstructions}
 `
-    : `
-You are a real estate analyst and listing description writer.
-You only receive a property address plus optional agent notes—no photos.
+  : `
+You are the best real estate copywriter.
+Your mission: write descriptions that make people call immediately.
 
-Task 1 — Analyze the address context:
-- Use knowledge about local architecture, climate, and buyer expectations to infer a realistic property profile (type, style, condition).
-- Estimate a plausible bedroom/bathroom mix, number of floors, and standout exterior elements that fit the neighborhood.
+Use your knowledge about ${location}:
+- What types of properties are popular in the area
+- What buyers are looking for in this location
+- The main strengths of the neighborhood
 
-Task 2 — Use location cues:
-- Describe lifestyle perks tied to the area (schools, nightlife, beaches, tech hubs, mountain escapes, etc.).
-- Reference regional finishes, landscaping, or amenities that commonly appear near the provided address.
+Then write a description that answers EXACTLY what potential clients care about.
+Focus on BENEFITS, not technical specifications.
+
 ${sharedFormatInstructions}
 `;
 
-  const user = hasStreetViewImage
-    ? `
-Street address: ${location}
-Listing objective: ${listingType === "rent" ? "For rent" : "For sale"}
-Language: ${language}
-Preferred tone: ${tone} (keep it credible and MLS-ready)
+  const user = `
+PROPERTY: ${location}
+OBJECTIVE: ${listingType === "rent" ? "Rent" : "Sale"}
+LANGUAGE: ${language}
+TONE: ${tone}
 
-Additional context to respect:
+IMPORTANT CONTEXT:
 ${additionalContext}
 
-Treat the Street View photo as a real inspection. Never explain that you're guessing, and never mention the photo. The metadata block must use lowercase "sale"/"rent" for listingType, keep amenities concise nouns, and stay valid JSON.
-`
-    : `
-Street address: ${location}
-Listing objective: ${listingType === "rent" ? "For rent" : "For sale"}
-Language: ${language}
-Preferred tone: ${tone} (keep it credible and MLS-ready)
+YOUR TASK:
+Write a 4–5 sentence description that makes the client FEEL they must see this property NOW.
 
-Additional context to respect:
-${additionalContext}
+The first sentence must be the strongest — it has to grab attention in 3 seconds.
+Every word must matter. Zero filler. Zero clichés.
 
-You do not have imagery. Infer a realistic property and neighborhood profile using what is typical for this address. Never mention that you are inferring, and never reference missing data. The metadata block must use lowercase "sale"/"rent" for listingType, keep amenities concise nouns, and stay valid JSON.
+Think: "If I had 30 seconds to convince someone to visit this property, what would I say?"
+
+${hasStreetViewImage
+  ? "Use the image for concrete details."
+  : "Rely on your knowledge of the area for realism."}
 `;
+
 
   try {
     const userContent: Array<

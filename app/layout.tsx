@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | ListologyAi",
   },
   description:
-    "Paste any property address and ListologyAi returns an MLS-ready description with Street View context, brand voice, and compliance baked in.",
+    "Paste any property address and ListologyAi returns a ready-to-publish description with Street View context, brand voice, and compliance baked in.",
   keywords: [
     "address to description",
     "real estate ai",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ListologyAi | Enter an address, get a listing description",
     description:
-      "Introduce doar adresa si primesti o descriere completa: ListologyAi livreaza text MLS-ready in cateva secunde.",
+      "Introduce doar adresa si primesti o descriere completa: ListologyAi livreaza text gata de publicat in cateva secunde.",
   },
   alternates: {
     canonical: "https://listologyai.com",

@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Confirm email | Start pasting addresses for instant descriptions",
   description:
-    "Check your inbox to confirm your ListologyAi account and begin turning any property address into an MLS-ready real estate description.",
+    "Check your inbox to confirm your ListologyAi account and begin turning any property address into a polished real estate description.",
   keywords: ["ListologyAi email verification", "address to description", "real estate AI account activation", "ListologyAi confirmation"],
   openGraph: {
     title: "Confirm email | Start pasting addresses for instant descriptions",

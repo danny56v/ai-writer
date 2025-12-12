@@ -312,7 +312,7 @@ export default async function AboutPage() {
                   <p className="mt-3 text-sm leading-6 text-neutral-600">
                     No more rewriting old listings or staring at a blank screen. With ListologyAi, agents paste the
                     address, add any key details they care about, and instantly get a complete, well-structured
-                    description they can publish on MLS or anywhere else.
+                    description they can publish anywhere.
                   </p>
                 </div>
 

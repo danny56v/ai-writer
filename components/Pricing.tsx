@@ -43,7 +43,7 @@ const pricing = {
       features: [
         "Up to 50 listing generations / month",
         "Full access to Street View–powered descriptions",
-        "Tone and length controls for MLS, portals, and social media",
+        "Tone and length controls for listings across portals and social media",
       ],
       mostPopular: true,
       priceId: {

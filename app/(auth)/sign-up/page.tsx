@@ -6,11 +6,11 @@ import SignUpScreen from "@/components/auth/SignUpScreen";
 export const metadata: Metadata = {
   title: "Sign up to paste an address and get a description | ListologyAi",
   description:
-    "Create your ListologyAi account to drop any property address and receive a compliant, MLS-ready listing description in seconds.",
+    "Create your ListologyAi account to drop any property address and receive a compliant, ready-to-publish listing description in seconds.",
   keywords: ["ListologyAi sign up", "address to description", "real estate AI trial", "property listing generator signup"],
   openGraph: {
     title: "Sign up to paste an address and get a description | ListologyAi",
-    description: "Join ListologyAi to transform any address into persuasive, MLS-ready copy in minutes.",
+    description: "Join ListologyAi to transform any address into persuasive, ready-to-publish copy in minutes.",
     url: "https://listologyai.com/sign-up",
     type: "website",
     images: [

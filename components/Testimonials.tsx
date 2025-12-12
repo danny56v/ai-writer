@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const featuredTestimonial = {
-  body: "ListologyAi is the first tool that lets me go from just an address to a finished listing in minutes. I drop the location, it pulls Street View context, and I get clean, on-brand copy I can use on MLS right away.",
+  body: "ListologyAi is the first tool that lets me go from just an address to a finished listing in minutes. I drop the location, it pulls Street View context, and I get clean, on-brand copy I can publish right away.",
   author: {
     name: "Maya Thompson",
     handle: "maya.thompson",

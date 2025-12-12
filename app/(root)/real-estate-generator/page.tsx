@@ -13,8 +13,8 @@ import { getRealEstateHistory } from "@/lib/realEstateHistory";
 export const metadata: Metadata = {
   title: "Enter a property address for an instant listing description | ListologyAi",
   description:
-    "Paste any property address into ListologyAi and receive a persuasive, MLS-ready listing description informed by Street View context and agent voice.",
-  keywords: ["ListologyAi listing generator", "address to description", "AI real estate descriptions", "MLS copy for agents", "property description software", "real estate listing generator"],
+    "Paste any property address into ListologyAi and receive a persuasive, ready-to-publish listing description informed by Street View context and agent voice.",
+  keywords: ["ListologyAi listing generator", "address to description", "AI real estate descriptions", "listing copy for agents", "property description software", "real estate listing generator"],
   openGraph: {
     title: "Enter a property address for an instant listing description | ListologyAi",
     description:
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Enter a property address for an instant listing description | ListologyAi",
-    description: "Introdu doar adresa si primesti o descriere MLS-ready in cateva secunde cu ListologyAi.",
+    description: "Introdu doar adresa si primesti o descriere gata de publicat in cateva secunde cu ListologyAi.",
     images: ["/Logo.png"],
   },
 };

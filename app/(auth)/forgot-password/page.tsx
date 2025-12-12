@@ -4,12 +4,12 @@ import ForgotPasswordScreen from "@/components/auth/ForgotPasswordScreen";
 export const metadata: Metadata = {
   title: "Forgot password | Get back to address-to-description in ListologyAi",
   description:
-    "Request a secure reset link to restore access to ListologyAi so you can keep pasting addresses and receiving MLS-ready descriptions.",
+    "Request a secure reset link to restore access to ListologyAi so you can keep pasting addresses and receiving ready-to-publish descriptions.",
   keywords: ["ListologyAi forgot password", "address to description", "real estate AI password reset", "ListologyAi account support"],
   openGraph: {
     title: "Forgot password | Get back to address-to-description in ListologyAi",
     description:
-      "Send yourself a ListologyAi password reset link and keep delivering MLS-ready property descriptions from a single address.",
+      "Send yourself a ListologyAi password reset link and keep delivering polished property descriptions from a single address.",
     url: "https://listologyai.com/forgot-password",
     type: "website",
     images: [

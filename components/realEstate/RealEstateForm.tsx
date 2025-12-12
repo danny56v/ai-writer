@@ -468,7 +468,7 @@ const RealEstateForm = ({
               <div>
                 <h2 className="mt-1.5 text-2xl font-semibold  sm:text-[26px]">Listing Description Generator</h2>
                 <p className="mt-1 text-sm  leading-relaxed">
-                  Enter an address, optionally add context, and ship a modern MLS-ready draft in seconds.
+                  Enter an address, optionally add context, and ship a modern, publication-ready draft in seconds.
                 </p>
               </div>
               <div className="flex flex-col items-start rounded-2xl border border-neutral-100 bg-white/90 px-4 py-3 text-left shadow-[0_20px_60px_-40px_rgba(15,23,42,0.45)] sm:w-auto sm:min-w-[220px]">

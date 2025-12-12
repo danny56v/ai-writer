@@ -188,7 +188,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const pageTitle = `ListologyAi: ${post.title}`;
   const pageUrl = `https://listologyai.com/blog/${post.slug}`;
-  const pageDescription = `${post.description} Learn how ListologyAi turns any property address into an MLS-ready description.`;
+  const pageDescription = `${post.description} Learn how ListologyAi turns any property address into a ready-to-publish description.`;
 
   return {
     title: pageTitle,

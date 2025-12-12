@@ -20,7 +20,7 @@ const SIGN_UP_STATS = [
 const SIGN_UP_HIGHLIGHTS = [
   "Invite teammates and keep roles aligned",
   "Save tone & brand libraries once",
-  "Ship MLS-ready copy in minutes",
+  "Ship ready-to-publish copy in minutes",
 ] as const;
 
 const SignUpScreen = () => {
@@ -62,7 +62,7 @@ const SignUpScreen = () => {
 
             <p className="text-base leading-7 text-neutral-600 lg:max-w-xl">
               Launch an AI workspace designed for real estate teams — generate property briefs, manage approvals, and
-              publish MLS-ready copy without juggling ten different tools.
+              publish polished copy without juggling ten different tools.
             </p>
 
             <div className="grid gap-4 sm:grid-cols-3">
