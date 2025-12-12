@@ -97,65 +97,67 @@ export default function BillingHistory({ customerId }: BillingHistoryProps) {
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white/80 shadow-sm">
-      <table className="min-w-full divide-y divide-neutral-200 text-sm">
-        <thead className="bg-neutral-50/80">
-          <tr className="text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
-            <th scope="col" className="px-4 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-4 py-3">
-              Invoice
-            </th>
-            <th scope="col" className="px-4 py-3">
-              Status
-            </th>
-            <th scope="col" className="px-4 py-3 text-right">
-              Amount
-            </th>
-            <th scope="col" className="px-4 py-3 text-right">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-neutral-100 bg-white">
-          {invoices.map((invoice) => (
-            <tr key={invoice.id} className=" ">
-              <td className="px-4 py-3">{invoice.created}</td>
-              <td className="px-4 py-3 font-medium">{invoice.id}</td>
-              <td className="px-4 py-3">
-                <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-600">
-                  {invoice.status}
-                </span>
-              </td>
-              <td className="px-4 py-3 text-right font-semibold">
-                {invoice.currency} {invoice.amountPaid.toFixed(2)}
-              </td>
-              <td className="px-4 py-3 text-right space-x-2">
-                {invoice.hostedInvoiceUrl ? (
-                  <Link
-                    href={invoice.hostedInvoiceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
-                  >
-                    View
-                  </Link>
-                ) : null}
-                {invoice.pdfUrl ? (
-                  <Link
-                    href={invoice.pdfUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
-                  >
-                    PDF
-                  </Link>
-                ) : null}
-              </td>
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-[640px] divide-y divide-neutral-200 text-sm">
+          <thead className="bg-neutral-50/80">
+            <tr className="text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
+              <th scope="col" className="px-4 py-3">
+                Date
+              </th>
+              <th scope="col" className="px-4 py-3">
+                Invoice
+              </th>
+              <th scope="col" className="px-4 py-3">
+                Status
+              </th>
+              <th scope="col" className="px-4 py-3 text-right">
+                Amount
+              </th>
+              <th scope="col" className="px-4 py-3 text-right">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-neutral-100 bg-white">
+            {invoices.map((invoice) => (
+              <tr key={invoice.id} className=" ">
+                <td className="px-4 py-3">{invoice.created}</td>
+                <td className="px-4 py-3 font-medium">{invoice.id}</td>
+                <td className="px-4 py-3">
+                  <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-600">
+                    {invoice.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-right font-semibold">
+                  {invoice.currency} {invoice.amountPaid.toFixed(2)}
+                </td>
+                <td className="px-4 py-3 space-x-2 text-right">
+                  {invoice.hostedInvoiceUrl ? (
+                    <Link
+                      href={invoice.hostedInvoiceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
+                    >
+                      View
+                    </Link>
+                  ) : null}
+                  {invoice.pdfUrl ? (
+                    <Link
+                      href={invoice.pdfUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-600 transition hover:border-indigo-300 hover:text-indigo-600"
+                    >
+                      PDF
+                    </Link>
+                  ) : null}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

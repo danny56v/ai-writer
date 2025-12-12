@@ -233,21 +233,24 @@ export default async function ProfilePage() {
   const customerId = user.stripeCustomerId ?? null;
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-white via-neutral-50 to-white font-sans  ">
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-neutral-50 to-white font-sans">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         {/* <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-white via-white/95 to-transparent" /> */}
         <div className="absolute -left-32 top-24 h-96 w-96 rounded-full bg-neutral-100/50 blur-3xl" />
         {/* <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-emerald-100/50 blur-3xl" /> */}
       </div>
-      <div className="mx-auto max-w-7xl px-4 pt-32 pb-16 sm:px-6 lg:flex lg:gap-x-16 lg:px-8">
-        <aside className="flex overflow-x-auto border-b border-neutral-200 pb-4 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:w-64 lg:flex-none lg:border-0 lg:pb-0">
+      <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-16 sm:px-6 lg:flex lg:gap-x-16 lg:px-8">
+        <aside className="w-full border-b border-neutral-200 pb-4 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:w-64 lg:flex-none lg:border-0 lg:pb-0">
           <nav className="flex-none px-2 sm:px-0 lg:px-0">
-            <ul role="list" className="flex gap-2 whitespace-nowrap text-sm font-semibold  lg:flex-col">
+            <ul
+              role="list"
+              className="grid grid-cols-2 gap-2 text-sm font-semibold sm:grid-cols-3 lg:flex lg:flex-col lg:gap-1"
+            >
               {secondaryNavigation.map((item) => (
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
-                    className="group flex items-center gap-3 rounded-md px-3 py-2 transition hover:bg-neutral-100 "
+                    className="group flex items-center gap-3 rounded-md px-3 py-2 transition hover:bg-neutral-100 lg:w-full"
                   >
                     <item.icon aria-hidden="true" className="h-5 w-5  transition group-hover: " />
                     {item.name}
