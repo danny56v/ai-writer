@@ -11,6 +11,7 @@ import type { PlanKey } from "@/lib/plans";
 import { extractStructuredOutput, saveRealEstateGeneration } from "@/lib/realEstateHistory";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const REAL_ESTATE_MODEL = "gpt-5.1";
 
 const STREET_VIEW_BASE_URL = "https://maps.googleapis.com/maps/api/streetview";
 const STREET_VIEW_API_KEY = process.env.GOOGLE_STREET_VIEW_API_KEY ?? process.env.GOOGLE_MAPS_API_KEY;
@@ -553,7 +554,7 @@ You do not have imagery. Infer a realistic property and neighborhood profile usi
     }
 
     const resp = await openai.responses.create({
-      model: "gpt-5-mini",
+      model: REAL_ESTATE_MODEL,
       input: [
         { role: "system", content: [{ type: "input_text", text: system.trim() }] },
         {
